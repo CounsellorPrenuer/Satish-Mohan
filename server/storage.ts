@@ -11,22 +11,30 @@ import {
   type InsertLeadDownload,
   type Payment,
   type InsertPayment,
+  type TimeSlot,
+  type InsertTimeSlot,
+  type Client,
+  type InsertClient,
   users,
   bookings,
   contactForms,
   blogPosts,
   leadDownloads,
-  payments
+  payments,
+  timeSlots,
+  clients
 } from "@shared/schema";
 import { randomUUID } from "crypto";
 import { db } from "./db";
-import { eq, count, sum, desc } from "drizzle-orm";
+import { eq, count, sum, desc, and, sql } from "drizzle-orm";
+import bcrypt from "bcryptjs";
 
 export interface IStorage {
   // Users
   getUser(id: string): Promise<User | undefined>;
   getUserByUsername(username: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
+  validateUserCredentials(username: string, password: string): Promise<User | null>;
 
   // Bookings
   getAllBookings(): Promise<Booking[]>;
@@ -61,6 +69,22 @@ export interface IStorage {
   createPayment(payment: InsertPayment): Promise<Payment>;
   updatePayment(id: string, updates: Partial<Payment>): Promise<Payment | undefined>;
 
+  // Time Slots
+  getAllTimeSlots(): Promise<TimeSlot[]>;
+  getAvailableTimeSlots(date: string, serviceType?: string): Promise<TimeSlot[]>;
+  getTimeSlot(id: string): Promise<TimeSlot | undefined>;
+  createTimeSlot(timeSlot: InsertTimeSlot): Promise<TimeSlot>;
+  updateTimeSlot(id: string, updates: Partial<TimeSlot>): Promise<TimeSlot | undefined>;
+  deleteTimeSlot(id: string): Promise<boolean>;
+  reserveTimeSlot(slotId: string): Promise<TimeSlot | null>;
+
+  // Clients
+  getAllClients(): Promise<Client[]>;
+  getClient(id: string): Promise<Client | undefined>;
+  getClientByEmail(email: string): Promise<Client | undefined>;
+  createClient(client: InsertClient): Promise<Client>;
+  updateClient(id: string, updates: Partial<Client>): Promise<Client | undefined>;
+
   // Statistics
   getStats(): Promise<{
     totalBookings: number;
@@ -86,10 +110,18 @@ export class DatabaseStorage implements IStorage {
       // Check if admin user exists, if not create one
       const existingAdmin = await this.getUserByUsername("admin");
       if (!existingAdmin) {
+        // Require admin password from environment - fail fast if not provided
+        const adminPassword = process.env.ADMIN_PASSWORD;
+        if (!adminPassword) {
+          console.error("❌ FATAL: ADMIN_PASSWORD environment variable is required for first-time setup.");
+          console.error("Please set a secure password and restart the application.");
+          process.exit(1);
+        }
         await this.createUser({
           username: "admin",
-          password: "admin123" // In production, this should be hashed
+          password: adminPassword
         });
+        console.log("✓ Admin user created successfully. Please ensure ADMIN_PASSWORD is kept secure.");
       }
 
       // Create sample blog posts if none exist
@@ -98,6 +130,10 @@ export class DatabaseStorage implements IStorage {
         await this.createSampleBlogPosts();
       }
     } catch (error) {
+      // Only catch database connection errors during initialization
+      if (error instanceof Error && error.message.includes("ADMIN_PASSWORD")) {
+        throw error; // Re-throw admin password errors - these should be fatal
+      }
       console.log("Note: Database tables not ready yet, will initialize after migration");
     }
   }
@@ -150,11 +186,27 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createUser(insertUser: InsertUser): Promise<User> {
+    // Hash password before storing
+    const hashedPassword = await bcrypt.hash(insertUser.password, 10);
+    
     const [user] = await db
       .insert(users)
-      .values(insertUser)
+      .values({
+        ...insertUser,
+        password: hashedPassword
+      })
       .returning();
     return user;
+  }
+
+  async validateUserCredentials(username: string, password: string): Promise<User | null> {
+    const user = await this.getUserByUsername(username);
+    if (!user) {
+      return null;
+    }
+
+    const isValidPassword = await bcrypt.compare(password, user.password);
+    return isValidPassword ? user : null;
   }
 
   // Bookings
@@ -186,7 +238,7 @@ export class DatabaseStorage implements IStorage {
 
   async deleteBooking(id: string): Promise<boolean> {
     const result = await db.delete(bookings).where(eq(bookings.id, id));
-    return result.rowCount > 0;
+    return (result.rowCount || 0) > 0;
   }
 
   // Contact Forms
@@ -270,7 +322,7 @@ export class DatabaseStorage implements IStorage {
 
   async deleteBlogPost(id: string): Promise<boolean> {
     const result = await db.delete(blogPosts).where(eq(blogPosts.id, id));
-    return result.rowCount > 0;
+    return (result.rowCount || 0) > 0;
   }
 
   // Lead Downloads
@@ -316,6 +368,106 @@ export class DatabaseStorage implements IStorage {
       .where(eq(payments.id, id))
       .returning();
     return payment || undefined;
+  }
+
+  // Time Slots
+  async getAllTimeSlots(): Promise<TimeSlot[]> {
+    return await db.select().from(timeSlots).orderBy(desc(timeSlots.date));
+  }
+
+  async getAvailableTimeSlots(date: string, serviceType?: string): Promise<TimeSlot[]> {
+    const conditions = [
+      eq(timeSlots.date, date), 
+      eq(timeSlots.isAvailable, true),
+      sql`current_bookings < max_bookings`
+    ];
+    
+    if (serviceType) {
+      conditions.push(eq(timeSlots.serviceType, serviceType));
+    }
+    
+    return await db.select().from(timeSlots)
+      .where(and(...conditions))
+      .orderBy(timeSlots.startTime);
+  }
+
+  async getTimeSlot(id: string): Promise<TimeSlot | undefined> {
+    const [slot] = await db.select().from(timeSlots).where(eq(timeSlots.id, id));
+    return slot || undefined;
+  }
+
+  async createTimeSlot(insertTimeSlot: InsertTimeSlot): Promise<TimeSlot> {
+    const [slot] = await db
+      .insert(timeSlots)
+      .values(insertTimeSlot)
+      .returning();
+    return slot;
+  }
+
+  async updateTimeSlot(id: string, updates: Partial<TimeSlot>): Promise<TimeSlot | undefined> {
+    const [slot] = await db
+      .update(timeSlots)
+      .set(updates)
+      .where(eq(timeSlots.id, id))
+      .returning();
+    return slot || undefined;
+  }
+
+  async deleteTimeSlot(id: string): Promise<boolean> {
+    const result = await db.delete(timeSlots).where(eq(timeSlots.id, id));
+    return (result.rowCount || 0) > 0;
+  }
+
+  async reserveTimeSlot(slotId: string): Promise<TimeSlot | null> {
+    // Atomic operation to reserve a time slot safely
+    const [reservedSlot] = await db
+      .update(timeSlots)
+      .set({
+        currentBookings: sql`current_bookings + 1`,
+        isAvailable: sql`CASE WHEN current_bookings + 1 >= max_bookings THEN false ELSE true END`
+      })
+      .where(
+        and(
+          eq(timeSlots.id, slotId),
+          sql`current_bookings < max_bookings`,
+          eq(timeSlots.isAvailable, true)
+        )
+      )
+      .returning();
+    
+    return reservedSlot || null;
+  }
+
+  // Clients
+  async getAllClients(): Promise<Client[]> {
+    return await db.select().from(clients).orderBy(desc(clients.createdAt));
+  }
+
+  async getClient(id: string): Promise<Client | undefined> {
+    const [client] = await db.select().from(clients).where(eq(clients.id, id));
+    return client || undefined;
+  }
+
+  async getClientByEmail(email: string): Promise<Client | undefined> {
+    const [client] = await db.select().from(clients).where(eq(clients.email, email));
+    return client || undefined;
+  }
+
+  async createClient(insertClient: InsertClient): Promise<Client> {
+    const [client] = await db
+      .insert(clients)
+      .values(insertClient)
+      .returning();
+    return client;
+  }
+
+  async updateClient(id: string, updates: Partial<Client>): Promise<Client | undefined> {
+    const [client] = await db
+      .update(clients)
+      .set({ ...updates, updatedAt: new Date() })
+      .where(eq(clients.id, id))
+      .returning();
+    return client || undefined;
   }
 
   // Statistics

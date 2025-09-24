@@ -1,7 +1,8 @@
 import { sql } from "drizzle-orm";
-import { pgTable, text, varchar, timestamp, decimal, boolean, jsonb } from "drizzle-orm/pg-core";
+import { pgTable, text, varchar, timestamp, decimal, boolean, jsonb, date, time, integer, unique, foreignKey } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
+import { relations } from "drizzle-orm";
 
 // Users table for admin authentication
 export const users = pgTable("users", {
@@ -18,8 +19,10 @@ export const bookings = pgTable("bookings", {
   phone: text("phone").notNull(),
   serviceType: text("service_type").notNull(),
   sessionType: text("session_type").notNull(),
-  preferredDate: text("preferred_date").notNull(),
-  preferredTime: text("preferred_time").notNull(),
+  preferredDate: text("preferred_date").notNull(), // Keep for backward compatibility
+  preferredTime: text("preferred_time").notNull(), // Keep for backward compatibility
+  timeSlotId: varchar("time_slot_id"), // New field for linking to time slots
+  clientId: varchar("client_id"), // New field for linking to clients
   description: text("description"),
   amount: decimal("amount", { precision: 10, scale: 2 }).notNull(),
   status: text("status").notNull().default("pending"), // pending, confirmed, completed, cancelled
@@ -78,10 +81,84 @@ export const payments = pgTable("payments", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
+// Time slots table for advanced booking calendar
+export const timeSlots = pgTable("time_slots", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  date: date("date").notNull(),
+  startTime: time("start_time").notNull(),
+  endTime: time("end_time").notNull(),
+  serviceType: text("service_type").notNull(),
+  isAvailable: boolean("is_available").default(true),
+  maxBookings: integer("max_bookings").default(1),
+  currentBookings: integer("current_bookings").default(0),
+  createdAt: timestamp("created_at").defaultNow(),
+}, (table) => {
+  return {
+    uniqueSlot: unique().on(table.date, table.startTime, table.serviceType),
+  };
+});
+
+// Client users table (different from admin users)
+export const clients = pgTable("clients", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  email: text("email").notNull().unique(),
+  fullName: text("full_name").notNull(),
+  phone: text("phone"),
+  dateOfBirth: date("date_of_birth"),
+  profession: text("profession"),
+  experience: text("experience"),
+  preferences: jsonb("preferences"), // Store client preferences as JSON
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Relations
+export const bookingsRelations = relations(bookings, ({ one }) => ({
+  payment: one(payments, {
+    fields: [bookings.paymentId],
+    references: [payments.id],
+  }),
+  timeSlot: one(timeSlots, {
+    fields: [bookings.timeSlotId],
+    references: [timeSlots.id],
+  }),
+  client: one(clients, {
+    fields: [bookings.clientId],
+    references: [clients.id],
+  }),
+}));
+
+export const paymentsRelations = relations(payments, ({ one }) => ({
+  booking: one(bookings, {
+    fields: [payments.bookingId],
+    references: [bookings.id],
+  }),
+}));
+
+export const timeSlotsRelations = relations(timeSlots, ({ many }) => ({
+  bookings: many(bookings),
+}));
+
+export const clientsRelations = relations(clients, ({ many }) => ({
+  bookings: many(bookings),
+}));
+
 // Schema validation
 export const insertUserSchema = createInsertSchema(users).pick({
   username: true,
   password: true,
+});
+
+export const insertTimeSlotSchema = createInsertSchema(timeSlots).omit({
+  id: true,
+  createdAt: true,
+  currentBookings: true,
+});
+
+export const insertClientSchema = createInsertSchema(clients).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
 });
 
 export const insertBookingSchema = createInsertSchema(bookings).omit({
@@ -134,3 +211,9 @@ export type InsertLeadDownload = z.infer<typeof insertLeadDownloadSchema>;
 
 export type Payment = typeof payments.$inferSelect;
 export type InsertPayment = z.infer<typeof insertPaymentSchema>;
+
+export type TimeSlot = typeof timeSlots.$inferSelect;
+export type InsertTimeSlot = z.infer<typeof insertTimeSlotSchema>;
+
+export type Client = typeof clients.$inferSelect;
+export type InsertClient = z.infer<typeof insertClientSchema>;
