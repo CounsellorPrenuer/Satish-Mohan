@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "wouter";
-import logoImage from "@assets/logo-clarity_1758707307653.png";
+import logoImage from "@assets/logo-clarity_1758707529304.png";
 
 interface NavigationProps {
   onBookingClick: () => void;
