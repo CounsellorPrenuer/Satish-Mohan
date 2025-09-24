@@ -95,7 +95,7 @@ export default function BlogPreviewSection() {
         <div className="text-center mt-12">
           <Link 
             href="/blogs"
-            className="inline-block bg-primary text-primary-foreground px-8 py-3 rounded-lg font-semibold hover:bg-primary/90 transition-colors btn-primary" 
+            className="inline-block bg-primary text-dark px-8 py-3 rounded-lg font-semibold hover:bg-primary/90 transition-colors btn-primary border border-2" 
             data-testid="blog-view-all"
           >
             View All Articles
