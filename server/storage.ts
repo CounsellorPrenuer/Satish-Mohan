@@ -10,9 +10,17 @@ import {
   type LeadDownload,
   type InsertLeadDownload,
   type Payment,
-  type InsertPayment
+  type InsertPayment,
+  users,
+  bookings,
+  contactForms,
+  blogPosts,
+  leadDownloads,
+  payments
 } from "@shared/schema";
 import { randomUUID } from "crypto";
+import { db } from "./db";
+import { eq, count, sum, desc } from "drizzle-orm";
 
 export interface IStorage {
   // Users
@@ -67,317 +75,275 @@ export interface IStorage {
   }>;
 }
 
-export class MemStorage implements IStorage {
-  private users: Map<string, User>;
-  private bookings: Map<string, Booking>;
-  private contactForms: Map<string, ContactForm>;
-  private blogPosts: Map<string, BlogPost>;
-  private leadDownloads: Map<string, LeadDownload>;
-  private payments: Map<string, Payment>;
-
+export class DatabaseStorage implements IStorage {
   constructor() {
-    this.users = new Map();
-    this.bookings = new Map();
-    this.contactForms = new Map();
-    this.blogPosts = new Map();
-    this.leadDownloads = new Map();
-    this.payments = new Map();
-
-    // Create default admin user
-    this.createDefaultAdmin();
-    this.createSampleBlogPosts();
+    // Initialize default data if needed
+    this.initializeDefaultData();
   }
 
-  private async createDefaultAdmin() {
-    const adminUser: User = {
-      id: randomUUID(),
-      username: "admin",
-      password: "admin123" // In production, this should be hashed
-    };
-    this.users.set(adminUser.id, adminUser);
+  private async initializeDefaultData() {
+    try {
+      // Check if admin user exists, if not create one
+      const existingAdmin = await this.getUserByUsername("admin");
+      if (!existingAdmin) {
+        await this.createUser({
+          username: "admin",
+          password: "admin123" // In production, this should be hashed
+        });
+      }
+
+      // Create sample blog posts if none exist
+      const existingPosts = await this.getAllBlogPosts();
+      if (existingPosts.length === 0) {
+        await this.createSampleBlogPosts();
+      }
+    } catch (error) {
+      console.log("Note: Database tables not ready yet, will initialize after migration");
+    }
   }
 
   private async createSampleBlogPosts() {
-    const samplePosts: BlogPost[] = [
+    const samplePosts = [
       {
-        id: randomUUID(),
         title: "5 Signs It's Time for a Career Change",
-        slug: "5-signs-time-for-career-change",
         excerpt: "Discover the key indicators that suggest you're ready for a new professional direction and how to make the transition smoothly.",
         content: "<p>Career transitions can be both exciting and daunting. Here are five clear signs that indicate it might be time to consider a career change...</p>",
         featuredImage: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400",
         category: "Career Growth",
         published: true,
-        featured: true,
-        createdAt: new Date(),
-        updatedAt: new Date()
+        featured: true
       },
       {
-        id: randomUUID(),
         title: "The Power of Daily Meditation",
-        slug: "power-of-daily-meditation",
         excerpt: "Learn how incorporating meditation into your daily routine can transform your stress levels and decision-making abilities.",
         content: "<p>Meditation is more than just a relaxation technique. It's a powerful tool for personal transformation...</p>",
         featuredImage: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400",
         category: "Mindfulness",
         published: true,
-        featured: false,
-        createdAt: new Date(),
-        updatedAt: new Date()
+        featured: false
       },
       {
-        id: randomUUID(),
         title: "Choosing the Right College Course",
-        slug: "choosing-right-college-course",
-        excerpt: "A comprehensive guide for students and parents on selecting the perfect college course aligned with career aspirations.",
-        content: "<p>Choosing the right college course is one of the most important decisions in a student's life...</p>",
-        featuredImage: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400",
+        excerpt: "A comprehensive guide to selecting a college course that aligns with your interests, skills, and career aspirations.",
+        content: "<p>Choosing the right college course is one of the most important decisions you'll make...</p>",
+        featuredImage: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400",
         category: "Education",
         published: true,
-        featured: false,
-        createdAt: new Date(),
-        updatedAt: new Date()
+        featured: false
       }
     ];
 
-    samplePosts.forEach(post => {
-      this.blogPosts.set(post.id, post);
-    });
+    for (const post of samplePosts) {
+      await this.createBlogPost(post);
+    }
   }
 
   // Users
   async getUser(id: string): Promise<User | undefined> {
-    return this.users.get(id);
+    const [user] = await db.select().from(users).where(eq(users.id, id));
+    return user || undefined;
   }
 
   async getUserByUsername(username: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(user => user.username === username);
+    const [user] = await db.select().from(users).where(eq(users.username, username));
+    return user || undefined;
   }
 
   async createUser(insertUser: InsertUser): Promise<User> {
-    const id = randomUUID();
-    const user: User = { ...insertUser, id };
-    this.users.set(id, user);
+    const [user] = await db
+      .insert(users)
+      .values(insertUser)
+      .returning();
     return user;
   }
 
   // Bookings
   async getAllBookings(): Promise<Booking[]> {
-    return Array.from(this.bookings.values()).sort((a, b) => 
-      new Date(b.createdAt!).getTime() - new Date(a.createdAt!).getTime()
-    );
+    return await db.select().from(bookings).orderBy(desc(bookings.createdAt));
   }
 
   async getBooking(id: string): Promise<Booking | undefined> {
-    return this.bookings.get(id);
+    const [booking] = await db.select().from(bookings).where(eq(bookings.id, id));
+    return booking || undefined;
   }
 
   async createBooking(insertBooking: InsertBooking): Promise<Booking> {
-    const id = randomUUID();
-    const now = new Date();
-    const booking: Booking = { 
-      ...insertBooking, 
-      id, 
-      createdAt: now,
-      updatedAt: now,
-      paymentId: null,
-      paymentStatus: "pending",
-      description: insertBooking.description || null,
-      status: insertBooking.status || "pending"
-    };
-    this.bookings.set(id, booking);
+    const [booking] = await db
+      .insert(bookings)
+      .values(insertBooking)
+      .returning();
     return booking;
   }
 
   async updateBooking(id: string, updates: Partial<Booking>): Promise<Booking | undefined> {
-    const booking = this.bookings.get(id);
-    if (!booking) return undefined;
-    
-    const updatedBooking: Booking = { ...booking, ...updates, updatedAt: new Date() };
-    this.bookings.set(id, updatedBooking);
-    return updatedBooking;
+    const [booking] = await db
+      .update(bookings)
+      .set({ ...updates, updatedAt: new Date() })
+      .where(eq(bookings.id, id))
+      .returning();
+    return booking || undefined;
   }
 
   async deleteBooking(id: string): Promise<boolean> {
-    return this.bookings.delete(id);
+    const result = await db.delete(bookings).where(eq(bookings.id, id));
+    return result.rowCount > 0;
   }
 
   // Contact Forms
   async getAllContactForms(): Promise<ContactForm[]> {
-    return Array.from(this.contactForms.values()).sort((a, b) => 
-      new Date(b.createdAt!).getTime() - new Date(a.createdAt!).getTime()
-    );
+    return await db.select().from(contactForms).orderBy(desc(contactForms.createdAt));
   }
 
   async getContactForm(id: string): Promise<ContactForm | undefined> {
-    return this.contactForms.get(id);
+    const [form] = await db.select().from(contactForms).where(eq(contactForms.id, id));
+    return form || undefined;
   }
 
   async createContactForm(insertForm: InsertContactForm): Promise<ContactForm> {
-    const id = randomUUID();
-    const form: ContactForm = { 
-      ...insertForm, 
-      id, 
-      status: "new",
-      createdAt: new Date() 
-    };
-    this.contactForms.set(id, form);
+    const [form] = await db
+      .insert(contactForms)
+      .values(insertForm)
+      .returning();
     return form;
   }
 
   async updateContactForm(id: string, updates: Partial<ContactForm>): Promise<ContactForm | undefined> {
-    const form = this.contactForms.get(id);
-    if (!form) return undefined;
-    
-    const updatedForm: ContactForm = { ...form, ...updates };
-    this.contactForms.set(id, updatedForm);
-    return updatedForm;
+    const [form] = await db
+      .update(contactForms)
+      .set(updates)
+      .where(eq(contactForms.id, id))
+      .returning();
+    return form || undefined;
   }
 
   // Blog Posts
   async getAllBlogPosts(): Promise<BlogPost[]> {
-    return Array.from(this.blogPosts.values()).sort((a, b) => 
-      new Date(b.createdAt!).getTime() - new Date(a.createdAt!).getTime()
-    );
+    return await db.select().from(blogPosts).orderBy(desc(blogPosts.createdAt));
   }
 
   async getPublishedBlogPosts(): Promise<BlogPost[]> {
-    return Array.from(this.blogPosts.values())
-      .filter(post => post.published)
-      .sort((a, b) => new Date(b.createdAt!).getTime() - new Date(a.createdAt!).getTime());
+    return await db.select().from(blogPosts)
+      .where(eq(blogPosts.published, true))
+      .orderBy(desc(blogPosts.createdAt));
   }
 
   async getBlogPost(id: string): Promise<BlogPost | undefined> {
-    return this.blogPosts.get(id);
+    const [post] = await db.select().from(blogPosts).where(eq(blogPosts.id, id));
+    return post || undefined;
   }
 
   async getBlogPostBySlug(slug: string): Promise<BlogPost | undefined> {
-    return Array.from(this.blogPosts.values()).find(post => post.slug === slug);
+    const [post] = await db.select().from(blogPosts).where(eq(blogPosts.slug, slug));
+    return post || undefined;
   }
 
   async createBlogPost(insertPost: InsertBlogPost): Promise<BlogPost> {
-    const id = randomUUID();
+    // Generate slug from title
     const slug = insertPost.title.toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/(^-|-$)+/g, '');
+      .replace(/[^\w\s-]/g, '')
+      .replace(/\s+/g, '-')
+      .trim();
     
-    const now = new Date();
-    const post: BlogPost = { 
-      ...insertPost, 
-      id, 
-      slug,
-      createdAt: now,
-      updatedAt: now,
-      published: insertPost.published || false,
-      featured: insertPost.featured || false,
-      featuredImage: insertPost.featuredImage || null
-    };
-    this.blogPosts.set(id, post);
+    const [post] = await db
+      .insert(blogPosts)
+      .values({ ...insertPost, slug })
+      .returning();
     return post;
   }
 
   async updateBlogPost(id: string, updates: Partial<BlogPost>): Promise<BlogPost | undefined> {
-    const post = this.blogPosts.get(id);
-    if (!post) return undefined;
-    
-    const updatedPost: BlogPost = { ...post, ...updates, updatedAt: new Date() };
-    this.blogPosts.set(id, updatedPost);
-    return updatedPost;
+    // If title is being updated, regenerate slug
+    if (updates.title) {
+      updates.slug = updates.title.toLowerCase()
+        .replace(/[^\w\s-]/g, '')
+        .replace(/\s+/g, '-')
+        .trim();
+    }
+
+    const [post] = await db
+      .update(blogPosts)
+      .set({ ...updates, updatedAt: new Date() })
+      .where(eq(blogPosts.id, id))
+      .returning();
+    return post || undefined;
   }
 
   async deleteBlogPost(id: string): Promise<boolean> {
-    return this.blogPosts.delete(id);
+    const result = await db.delete(blogPosts).where(eq(blogPosts.id, id));
+    return result.rowCount > 0;
   }
 
   // Lead Downloads
   async getAllLeadDownloads(): Promise<LeadDownload[]> {
-    return Array.from(this.leadDownloads.values()).sort((a, b) => 
-      new Date(b.createdAt!).getTime() - new Date(a.createdAt!).getTime()
-    );
+    return await db.select().from(leadDownloads).orderBy(desc(leadDownloads.createdAt));
   }
 
   async createLeadDownload(insertLead: InsertLeadDownload): Promise<LeadDownload> {
-    const id = randomUUID();
-    const lead: LeadDownload = { 
-      ...insertLead, 
-      id, 
-      createdAt: new Date(),
-      resourceId: insertLead.resourceId || null
-    };
-    this.leadDownloads.set(id, lead);
+    const [lead] = await db
+      .insert(leadDownloads)
+      .values(insertLead)
+      .returning();
     return lead;
   }
 
   // Payments
   async getAllPayments(): Promise<Payment[]> {
-    return Array.from(this.payments.values()).sort((a, b) => 
-      new Date(b.createdAt!).getTime() - new Date(a.createdAt!).getTime()
-    );
+    return await db.select().from(payments).orderBy(desc(payments.createdAt));
   }
 
   async getPayment(id: string): Promise<Payment | undefined> {
-    return this.payments.get(id);
+    const [payment] = await db.select().from(payments).where(eq(payments.id, id));
+    return payment || undefined;
   }
 
   async getPaymentByBookingId(bookingId: string): Promise<Payment | undefined> {
-    return Array.from(this.payments.values()).find(payment => payment.bookingId === bookingId);
+    const [payment] = await db.select().from(payments).where(eq(payments.bookingId, bookingId));
+    return payment || undefined;
   }
 
   async createPayment(insertPayment: InsertPayment): Promise<Payment> {
-    const id = randomUUID();
-    const now = new Date();
-    const payment: Payment = { 
-      ...insertPayment, 
-      id, 
-      createdAt: now,
-      updatedAt: now,
-      status: insertPayment.status || "pending",
-      razorpayPaymentId: insertPayment.razorpayPaymentId || null,
-      razorpayOrderId: insertPayment.razorpayOrderId || null,
-      currency: insertPayment.currency || "INR",
-      paymentMethod: insertPayment.paymentMethod || null
-    };
-    this.payments.set(id, payment);
+    const [payment] = await db
+      .insert(payments)
+      .values(insertPayment)
+      .returning();
     return payment;
   }
 
   async updatePayment(id: string, updates: Partial<Payment>): Promise<Payment | undefined> {
-    const payment = this.payments.get(id);
-    if (!payment) return undefined;
-    
-    const updatedPayment: Payment = { ...payment, ...updates, updatedAt: new Date() };
-    this.payments.set(id, updatedPayment);
-    return updatedPayment;
+    const [payment] = await db
+      .update(payments)
+      .set({ ...updates, updatedAt: new Date() })
+      .where(eq(payments.id, id))
+      .returning();
+    return payment || undefined;
   }
 
   // Statistics
   async getStats() {
-    const bookings = Array.from(this.bookings.values());
-    const payments = Array.from(this.payments.values());
+    const [bookingsCount] = await db.select({ count: count() }).from(bookings);
+    const [pendingCount] = await db.select({ count: count() }).from(bookings).where(eq(bookings.status, "pending"));
+    const [completedCount] = await db.select({ count: count() }).from(bookings).where(eq(bookings.status, "completed"));
+    const [confirmedCount] = await db.select({ count: count() }).from(bookings).where(eq(bookings.status, "confirmed"));
+    const [contactFormsCount] = await db.select({ count: count() }).from(contactForms);
+    const [leadDownloadsCount] = await db.select({ count: count() }).from(leadDownloads);
+    const [successPaymentsCount] = await db.select({ count: count() }).from(payments).where(eq(payments.status, "success"));
     
-    const totalBookings = bookings.length;
-    const pendingBookings = bookings.filter(b => b.status === "pending").length;
-    const completedBookings = bookings.filter(b => b.status === "completed").length;
-    const contactedBookings = bookings.filter(b => b.status === "confirmed").length;
-    const contactForms = this.contactForms.size;
-    const leadDownloads = this.leadDownloads.size;
-    const totalPayments = payments.filter(p => p.status === "success").length;
-    const totalRevenue = payments
-      .filter(p => p.status === "success")
-      .reduce((sum, p) => sum + parseFloat(p.amount), 0);
+    const [revenueResult] = await db.select({ 
+      revenue: sum(payments.amount) 
+    }).from(payments).where(eq(payments.status, "success"));
 
     return {
-      totalBookings,
-      pendingBookings,
-      completedBookings,
-      contactedBookings,
-      contactForms,
-      leadDownloads,
-      totalPayments,
-      totalRevenue,
+      totalBookings: bookingsCount.count,
+      pendingBookings: pendingCount.count,
+      completedBookings: completedCount.count,
+      contactedBookings: confirmedCount.count,
+      contactForms: contactFormsCount.count,
+      leadDownloads: leadDownloadsCount.count,
+      totalPayments: successPaymentsCount.count,
+      totalRevenue: parseFloat(revenueResult.revenue || "0"),
       investments: 0 // Can be implemented based on business needs
     };
   }
 }
 
-export const storage = new MemStorage();
+export const storage = new DatabaseStorage();
