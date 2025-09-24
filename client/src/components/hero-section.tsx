@@ -133,7 +133,7 @@ export default function HeroSection({ onBookingClick }: HeroSectionProps) {
         }
       `}</style>
       
-      <section id="home" className="pt-20 sm:pt-24 lg:pt-16 min-h-screen flex items-center gradient-bg relative overflow-hidden">
+      <section id="home" className="pt-25 py-29 sm:pt-24 lg:pt-16 min-h-screen flex items-center gradient-bg relative overflow-hidden">
         <div className="absolute inset-0 bg-black/10"></div>
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
