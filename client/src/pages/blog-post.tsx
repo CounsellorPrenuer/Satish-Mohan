@@ -1,0 +1,137 @@
+import { useQuery } from "@tanstack/react-query";
+import { useParams, Link } from "wouter";
+import type { BlogPost } from "@shared/schema";
+import { ArrowLeft, Calendar, User, Tag } from "lucide-react";
+
+export default function BlogPostPage() {
+  const { id } = useParams<{ id: string }>();
+  
+  const { data: post, isLoading, error } = useQuery<BlogPost>({
+    queryKey: ["/api/blog-posts", id],
+    queryFn: () => fetch(`/api/blog-posts/${id}`).then(res => {
+      if (!res.ok) throw new Error('Blog post not found');
+      return res.json();
+    }),
+    enabled: !!id,
+  });
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="mb-8">
+            <div className="h-4 skeleton w-32 mb-6"></div>
+          </div>
+          <div className="space-y-6">
+            <div className="h-8 skeleton w-3/4"></div>
+            <div className="h-64 skeleton w-full rounded-lg"></div>
+            <div className="space-y-4">
+              <div className="h-4 skeleton w-full"></div>
+              <div className="h-4 skeleton w-full"></div>
+              <div className="h-4 skeleton w-2/3"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !post) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-foreground mb-4">Blog Post Not Found</h1>
+          <p className="text-muted-foreground mb-6">The blog post you're looking for doesn't exist.</p>
+          <Link href="/" className="text-primary hover:text-primary/80 font-medium">
+            ← Back to Home
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-background" data-testid="blog-post-page">
+      {/* Header */}
+      <div className="bg-gradient-to-r from-primary to-secondary py-8">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <Link 
+            href="/" 
+            className="inline-flex items-center text-white hover:text-white/80 transition-colors mb-6"
+            data-testid="back-home-link"
+          >
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Back to Home
+          </Link>
+          
+          <div className="text-white">
+            <div className="inline-block bg-white/20 text-white px-3 py-1 rounded-full text-sm font-medium mb-4" data-testid="blog-category">
+              <Tag className="w-3 h-3 inline mr-1" />
+              {post.category}
+            </div>
+            
+            <h1 className="text-4xl lg:text-5xl font-bold mb-4" data-testid="blog-title">
+              {post.title}
+            </h1>
+            
+            <div className="flex items-center space-x-6 text-white/90">
+              <div className="flex items-center" data-testid="blog-author">
+                <User className="w-4 h-4 mr-2" />
+                Satish Mohan
+              </div>
+              <div className="flex items-center" data-testid="blog-date">
+                <Calendar className="w-4 h-4 mr-2" />
+                {post.createdAt ? new Date(post.createdAt).toLocaleDateString('en-US', { 
+                  year: 'numeric', 
+                  month: 'long', 
+                  day: 'numeric' 
+                }) : ''}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Content */}
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {post.featuredImage && (
+          <img 
+            src={post.featuredImage} 
+            alt={post.title} 
+            className="w-full h-64 lg:h-80 object-cover rounded-lg mb-8 shadow-lg"
+            data-testid="blog-featured-image"
+          />
+        )}
+
+        {post.excerpt && (
+          <div className="text-xl text-muted-foreground mb-8 p-6 bg-muted/30 rounded-lg border-l-4 border-primary" data-testid="blog-excerpt">
+            {post.excerpt}
+          </div>
+        )}
+
+        <div 
+          className="prose prose-lg max-w-none text-foreground" 
+          data-testid="blog-content"
+          dangerouslySetInnerHTML={{ __html: post.content }}
+        />
+        
+        {/* Call to Action */}
+        <div className="mt-12 p-8 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-lg border border-primary/20">
+          <div className="text-center">
+            <h3 className="text-2xl font-bold text-foreground mb-4">Ready to Transform Your Career?</h3>
+            <p className="text-muted-foreground mb-6">
+              Get personalized guidance from Satish Mohan to accelerate your professional growth.
+            </p>
+            <Link 
+              href="/" 
+              className="inline-block bg-primary text-primary-foreground px-8 py-3 rounded-lg font-semibold hover:bg-primary/90 transition-colors"
+              data-testid="blog-cta-button"
+            >
+              Book a Session
+            </Link>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

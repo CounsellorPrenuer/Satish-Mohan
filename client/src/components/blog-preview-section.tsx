@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { Link } from "wouter";
 import type { BlogPost } from "@shared/schema";
 
 export default function BlogPreviewSection() {
@@ -78,9 +79,13 @@ export default function BlogPreviewSection() {
                       day: 'numeric' 
                     }) : ''}
                   </span>
-                  <button className="text-primary hover:text-primary/80 font-medium text-sm" data-testid={`blog-read-more-${post.id}`}>
+                  <Link 
+                    href={`/blog/${post.id}`} 
+                    className="text-primary hover:text-primary/80 font-medium text-sm transition-colors" 
+                    data-testid={`blog-read-more-${post.id}`}
+                  >
                     Read More →
-                  </button>
+                  </Link>
                 </div>
               </div>
             </article>
@@ -88,9 +93,13 @@ export default function BlogPreviewSection() {
         </div>
 
         <div className="text-center mt-12">
-          <button className="bg-primary text-primary-foreground px-8 py-3 rounded-lg font-semibold hover:bg-primary/90 transition-colors btn-primary" data-testid="blog-view-all">
+          <Link 
+            href="/"
+            className="inline-block bg-primary text-primary-foreground px-8 py-3 rounded-lg font-semibold hover:bg-primary/90 transition-colors btn-primary" 
+            data-testid="blog-view-all"
+          >
             View All Articles
-          </button>
+          </Link>
         </div>
       </div>
     </section>

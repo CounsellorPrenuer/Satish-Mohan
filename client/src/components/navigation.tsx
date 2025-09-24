@@ -78,7 +78,7 @@ export default function Navigation({ onBookingClick }: NavigationProps) {
             </button>
             <button 
               onClick={onBookingClick} 
-              className="bg-primary text-primary-foreground px-6 py-2 rounded-lg hover:bg-primary/90 transition-colors font-medium btn-primary"
+              className="bg-gradient-to-r from-primary to-secondary text-white px-6 py-2 rounded-lg hover:from-primary/90 hover:to-secondary/90 transition-all duration-300 font-medium shadow-lg border-2 border-transparent hover:border-primary/20"
               data-testid="nav-book-session"
             >
               Book Session

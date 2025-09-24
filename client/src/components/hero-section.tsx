@@ -26,7 +26,7 @@ export default function HeroSection({ onBookingClick }: HeroSectionProps) {
             <div className="flex flex-col sm:flex-row gap-4">
               <button 
                 onClick={onBookingClick} 
-                className="bg-accent text-accent-foreground px-8 py-4 rounded-lg font-semibold text-lg hover:bg-accent/90 transition-colors btn-primary"
+                className="bg-white text-primary px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white/95 hover:shadow-xl transition-all duration-300 transform hover:scale-105 shadow-lg"
                 data-testid="hero-start-journey"
               >
                 Start Your Journey
