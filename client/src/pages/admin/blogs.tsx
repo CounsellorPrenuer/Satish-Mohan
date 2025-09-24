@@ -33,15 +33,6 @@ export default function AdminBlogs() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
-  // Show loading while checking authentication
-  if (authLoading || !isAuthenticated) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-lg">Loading...</div>
-      </div>
-    );
-  }
-
   // Fetch blog posts
   const { data: blogPosts, isLoading: postsLoading } = useQuery<BlogPost[]>({
     queryKey: ["/api/blog-posts"],
@@ -176,6 +167,15 @@ export default function AdminBlogs() {
       deletePostMutation.mutate(post.id);
     }
   };
+
+  // Show loading while checking authentication (after all hooks are called)
+  if (authLoading || !isAuthenticated) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-lg">Loading...</div>
+      </div>
+    );
+  }
 
   return (
     <AdminLayout

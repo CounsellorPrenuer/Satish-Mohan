@@ -39,15 +39,6 @@ export default function AdminBookings() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
-  // Show loading while checking authentication
-  if (authLoading || !isAuthenticated) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-lg">Loading...</div>
-      </div>
-    );
-  }
-
   // Fetch statistics
   const { data: stats, isLoading: statsLoading } = useQuery<{
     totalBookings: number;
@@ -631,6 +622,15 @@ export default function AdminBookings() {
         return null;
     }
   };
+
+  // Show loading while checking authentication (after all hooks are called)
+  if (authLoading || !isAuthenticated) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-lg">Loading...</div>
+      </div>
+    );
+  }
 
   return (
     <AdminLayout
