@@ -45,7 +45,7 @@ export default function Navigation({ onBookingClick }: NavigationProps) {
             <img 
               src={logoImage} 
               alt="Career Clarity Logo" 
-              className="h-12 w-auto"
+              className="h-12 w-auto rounded-lg"
               data-testid="brand-logo"
             />
           </div>
