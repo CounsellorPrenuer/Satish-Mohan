@@ -74,64 +74,6 @@ export default function HeroSection({ onBookingClick }: HeroSectionProps) {
   }, []);
 
   return (
-    <>
-      <style jsx="true">{`
-        @keyframes rotate-slow {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-        
-        @keyframes rotate-medium {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(-360deg); }
-        }
-        
-        @keyframes rotate-fast {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-        
-        @keyframes compass-pulse {
-          0%, 100% { 
-            transform: translate(-50%, -50%) scale(1);
-            box-shadow: 0 0 30px rgba(139, 69, 19, 0.4);
-          }
-          50% { 
-            transform: translate(-50%, -50%) scale(1.08);
-            box-shadow: 0 0 50px rgba(139, 69, 19, 0.7);
-          }
-        }
-        
-        @keyframes needle-rotate {
-          0% { transform: translateX(-50%) rotate(0deg); }
-          25% { transform: translateX(-50%) rotate(90deg); }
-          50% { transform: translateX(-50%) rotate(180deg); }
-          75% { transform: translateX(-50%) rotate(270deg); }
-          100% { transform: translateX(-50%) rotate(360deg); }
-        }
-        
-        @keyframes float-up {
-          0%, 100% { transform: translateY(0) scale(1) rotate(0deg); }
-          33% { transform: translateY(-12px) scale(1.05) rotate(8deg); }
-          66% { transform: translateY(12px) scale(1) rotate(-8deg); }
-        }
-        
-        @keyframes float-down {
-          0%, 100% { transform: translateY(0) scale(1) rotate(0deg); }
-          33% { transform: translateY(12px) scale(1.05) rotate(-8deg); }
-          66% { transform: translateY(-12px) scale(1) rotate(8deg); }
-        }
-        
-        @keyframes bg-float-1 {
-          0%, 100% { transform: scale(1) rotate(0deg); }
-          50% { transform: scale(1.2) rotate(180deg); }
-        }
-        
-        @keyframes bg-float-2 {
-          0%, 100% { transform: scale(1) rotate(0deg); }
-          50% { transform: scale(1.15) rotate(-180deg); }
-        }
-      `}</style>
       
       <section id="home" className="pt-24 pb-24 sm:pb-24 lg:pb-20 sm:pt-24 lg:pt-24 min-h-screen flex items-center gradient-bg relative overflow-hidden">
         <div className="absolute inset-0 bg-black/10"></div>
@@ -217,6 +159,5 @@ export default function HeroSection({ onBookingClick }: HeroSectionProps) {
           </div>
         </div>
       </section>
-    </>
   );
 }
