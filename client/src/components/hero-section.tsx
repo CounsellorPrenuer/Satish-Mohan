@@ -75,7 +75,7 @@ export default function HeroSection({ onBookingClick }: HeroSectionProps) {
 
   return (
     <>
-      <style>{`
+      <style jsx="true">{`
         @keyframes rotate-slow {
           from { transform: rotate(0deg); }
           to { transform: rotate(360deg); }
@@ -136,13 +136,13 @@ export default function HeroSection({ onBookingClick }: HeroSectionProps) {
       <section id="home" className="pt-24 pb-24 sm:pb-24 lg:pb-20 sm:pt-24 lg:pt-24 min-h-screen flex items-center gradient-bg relative overflow-hidden">
         <div className="absolute inset-0 bg-black/10"></div>
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-8 relative z-10">
-          <div className="grid grid-cols-1 xl:grid-cols-2 gap-12 xl:gap-16 items-center">
-            <div className="text-white animate-fade-in-up order-2 xl:order-1 text-center xl:text-left">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            <div className="text-white animate-fade-in-up order-2 lg:order-1 text-center lg:text-left">
               <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 sm:mb-8 leading-tight tracking-tight" data-testid="hero-title">
                 Guiding Careers,
                 <span className="text-accent"> Inspiring Lives</span>
               </h1>
-              <p className="text-lg sm:text-xl md:text-2xl mb-8 sm:mb-10 text-white/90 leading-relaxed max-w-2xl mx-auto xl:mx-0" data-testid="hero-description">
+              <p className="text-lg sm:text-xl md:text-2xl mb-8 sm:mb-10 text-white/90 leading-relaxed max-w-2xl mx-auto lg:mx-0" data-testid="hero-description">
                 Discover clarity and purpose in your professional and personal journey with holistic career counseling, life coaching, and spiritual guidance.
               </p>
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
@@ -163,15 +163,10 @@ export default function HeroSection({ onBookingClick }: HeroSectionProps) {
               </div>
             </div>
             
-            <div ref={animationRef} className="relative w-full flex items-center justify-center min-h-[300px] sm:min-h-[400px] lg:min-h-[500px] order-1 xl:order-2 mb-8 xl:mb-0">
+            <div ref={animationRef} className="relative flex items-center justify-center min-h-[300px] sm:min-h-[400px] lg:min-h-[500px] order-1 lg:order-2 mb-8 lg:mb-0">
               {/* Anime.js Style Animation Container */}
               <div 
-                className="hero-animation-container relative w-[300px] h-[300px] sm:w-[350px] sm:h-[350px] lg:w-[400px] lg:h-[400px] flex items-center justify-center"
-                style={{
-                  position: 'relative',
-                  left: '50%',
-                  transform: 'translateX(-50%)'
-                }}
+                className="hero-animation-container relative w-[300px] h-[300px] sm:w-[350px] sm:h-[350px] lg:w-[400px] lg:h-[400px] flex items-center justify-center mx-auto"
                 data-testid="hero-animation"
               >
                 {/* Rotating Rings */}
