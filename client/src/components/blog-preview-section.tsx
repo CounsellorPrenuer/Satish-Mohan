@@ -93,18 +93,13 @@ export default function BlogPreviewSection() {
         </div>
 
         <div className="text-center mt-12">
-          <button 
-            onClick={() => {
-              const blogSection = document.getElementById('blog');
-              if (blogSection) {
-                blogSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-              }
-            }}
-            className="inline-block bg-primary text-primary-foreground px-8 py-3 rounded-lg font-semibold hover:bg-primary/90 transition-colors btn-primary cursor-pointer" 
+          <Link 
+            href="/blogs"
+            className="inline-block bg-primary text-primary-foreground px-8 py-3 rounded-lg font-semibold hover:bg-primary/90 transition-colors btn-primary" 
             data-testid="blog-view-all"
           >
             View All Articles
-          </button>
+          </Link>
         </div>
       </div>
     </section>
