@@ -111,13 +111,13 @@ export default function Footer({ onBookingClick }: FooterProps) {
             <h3 className="font-semibold text-lg mb-4">Admin Access</h3>
             <ul className="space-y-2 text-white/80">
               <li>
-                <Link href="/admin/bookings">
-                  <a className="hover:text-white transition-colors">Admin Dashboard</a>
+                <Link href="/admin/bookings" className="hover:text-white transition-colors">
+                  Admin Dashboard
                 </Link>
               </li>
               <li>
-                <Link href="/admin/blogs">
-                  <a className="hover:text-white transition-colors">Blog Management</a>
+                <Link href="/admin/blogs" className="hover:text-white transition-colors">
+                  Blog Management
                 </Link>
               </li>
             </ul>
