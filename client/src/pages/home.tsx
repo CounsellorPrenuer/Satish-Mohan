@@ -2,6 +2,7 @@ import Navigation from "@/components/navigation";
 import HeroSection from "@/components/hero-section";
 import ServicesSection from "@/components/services-section";
 import AboutSection from "@/components/about-section";
+import PartnershipSection from "@/components/partnership-section";
 import TestimonialsSection from "@/components/testimonials-section";
 import BlogPreviewSection from "@/components/blog-preview-section";
 import ContactSection from "@/components/contact-section";
@@ -31,6 +32,7 @@ export default function Home() {
       <HeroSection onBookingClick={openBookingModal} />
       <ServicesSection onServiceSelect={openBookingModal} />
       <AboutSection onBookingClick={openBookingModal} />
+      <PartnershipSection />
       <TestimonialsSection />
       <BlogPreviewSection />
       <ContactSection />

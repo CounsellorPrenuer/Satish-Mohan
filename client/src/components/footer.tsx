@@ -126,6 +126,8 @@ export default function Footer({ onBookingClick }: FooterProps) {
         
         <div className="border-t border-white/20 mt-12 pt-8 text-center">
           <p className="text-white/80">© 2024 Career Clarity by Satish. All rights reserved.</p>
+          <br />
+          <p className="text-white/70 text-sm" data-testid="text-partnership-mentoria">In partnership with Mentoria for enhanced career guidance services.</p>
         </div>
       </div>
     </footer>
