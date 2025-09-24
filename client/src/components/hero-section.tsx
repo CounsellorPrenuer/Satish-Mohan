@@ -166,7 +166,12 @@ export default function HeroSection({ onBookingClick }: HeroSectionProps) {
             <div ref={animationRef} className="relative w-full flex items-center justify-center min-h-[300px] sm:min-h-[400px] lg:min-h-[500px] order-1 xl:order-2 mb-8 xl:mb-0">
               {/* Anime.js Style Animation Container */}
               <div 
-                className="hero-animation-container relative w-[300px] h-[300px] sm:w-[350px] sm:h-[350px] lg:w-[400px] lg:h-[400px] flex items-center justify-center mx-auto"
+                className="hero-animation-container relative w-[300px] h-[300px] sm:w-[350px] sm:h-[350px] lg:w-[400px] lg:h-[400px] flex items-center justify-center"
+                style={{
+                  position: 'relative',
+                  left: '50%',
+                  transform: 'translateX(-50%)'
+                }}
                 data-testid="hero-animation"
               >
                 {/* Rotating Rings */}
