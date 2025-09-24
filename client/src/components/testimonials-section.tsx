@@ -4,7 +4,7 @@ const testimonials = [
     name: "Priya Sharma",
     role: "Product Manager, Tech Startup",
     content: "Satish helped me transition from engineering to product management. His holistic approach gave me the confidence to pursue my dreams.",
-    image: "https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=64&h=64"
+    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=64&h=64"
   },
   {
     id: 2,

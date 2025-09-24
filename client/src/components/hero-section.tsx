@@ -145,7 +145,11 @@ export default function HeroSection({ onBookingClick }: HeroSectionProps) {
               <p className="text-lg sm:text-xl md:text-2xl mb-8 sm:mb-10 text-white/90 leading-relaxed max-w-2xl mx-auto lg:mx-0" data-testid="hero-description">
                 Discover clarity and purpose in your professional and personal journey with holistic career counseling, life coaching, and spiritual guidance.
               </p>
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+              <div className="
+                flex flex-col sm:flex-row gap-3 sm:gap-4
+                items-center justify-center
+                lg:justify-start lg:items-start
+              ">
                 <button 
                   onClick={onBookingClick} 
                   className="bg-white text-primary px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg hover:bg-white/95 hover:shadow-xl transition-all duration-300 transform hover:scale-105 shadow-lg"
