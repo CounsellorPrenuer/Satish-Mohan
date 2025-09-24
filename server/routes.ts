@@ -1,4 +1,4 @@
-import type { Express } from "express";
+import type { Express, Request, Response, NextFunction } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { 
@@ -8,6 +8,7 @@ import {
   insertPaymentSchema 
 } from "@shared/schema";
 import Razorpay from "razorpay";
+import "./types"; // Import session type extensions
 
 // Initialize Razorpay
 const razorpay = new Razorpay({
@@ -15,7 +16,60 @@ const razorpay = new Razorpay({
   key_secret: process.env.RAZORPAY_KEY_SECRET || "rzp_test_secret",
 });
 
+// Authentication middleware for admin routes
+function requireAuth(req: Request, res: Response, next: NextFunction) {
+  if (req.session?.isAuthenticated) {
+    return next();
+  }
+  return res.status(401).json({ message: "Authentication required" });
+}
+
 export async function registerRoutes(app: Express): Promise<Server> {
+
+  // Authentication endpoints
+  app.post("/api/auth/login", async (req, res) => {
+    try {
+      const { username, password } = req.body;
+      
+      if (!username || !password) {
+        return res.status(400).json({ message: "Username and password required" });
+      }
+
+      // Check against environment variables
+      const adminUsername = process.env.ADMIN_USERNAME;
+      const adminPassword = process.env.ADMIN_PASSWORD;
+
+      if (!adminUsername || !adminPassword) {
+        return res.status(500).json({ message: "Admin credentials not configured" });
+      }
+
+      if (username === adminUsername && password === adminPassword) {
+        req.session.isAuthenticated = true;
+        req.session.adminId = username;
+        res.json({ success: true, message: "Login successful" });
+      } else {
+        res.status(401).json({ message: "Invalid credentials" });
+      }
+    } catch (error) {
+      res.status(500).json({ message: "Login failed", error });
+    }
+  });
+
+  app.post("/api/auth/logout", (req, res) => {
+    req.session.destroy((err) => {
+      if (err) {
+        return res.status(500).json({ message: "Logout failed" });
+      }
+      res.json({ success: true, message: "Logout successful" });
+    });
+  });
+
+  app.get("/api/auth/status", (req, res) => {
+    res.json({ 
+      isAuthenticated: !!req.session?.isAuthenticated,
+      adminId: req.session?.adminId || null
+    });
+  });
   
   // Statistics endpoint
   app.get("/api/stats", async (req, res) => {
