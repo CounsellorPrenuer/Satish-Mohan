@@ -1,4 +1,5 @@
 import { Link } from "wouter";
+import logoImage from "@assets/logo-clarity_1758707847750.png";
 
 interface FooterProps {
   onBookingClick: () => void;
@@ -17,11 +18,13 @@ export default function Footer({ onBookingClick }: FooterProps) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
-            <div className="flex items-center space-x-3 mb-6">
-              <div className="w-10 h-10 bg-gradient-to-r from-primary to-secondary rounded-lg flex items-center justify-center text-white font-bold text-lg">
-                S
-              </div>
-              <span className="font-bold text-xl">Career Clarity</span>
+            <div className="flex items-center mb-6">
+              <img 
+                src={logoImage} 
+                alt="Career Clarity Logo" 
+                className="h-16 w-auto rounded-lg"
+                data-testid="footer-logo"
+              />
             </div>
             <p className="text-white/80 leading-relaxed">
               Guiding careers, inspiring lives through holistic counseling and life coaching.
