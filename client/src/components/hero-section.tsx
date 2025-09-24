@@ -133,16 +133,16 @@ export default function HeroSection({ onBookingClick }: HeroSectionProps) {
         }
       `}</style>
       
-      <section id="home" className="pt-16 min-h-screen flex items-center gradient-bg relative overflow-hidden">
+      <section id="home" className="pt-20 sm:pt-24 lg:pt-16 min-h-screen flex items-center gradient-bg relative overflow-hidden">
         <div className="absolute inset-0 bg-black/10"></div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-            <div className="text-white animate-fade-in-up order-2 lg:order-1">
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 leading-tight" data-testid="hero-title">
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-8 relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            <div className="text-white animate-fade-in-up order-2 lg:order-1 text-center lg:text-left">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 sm:mb-8 leading-tight tracking-tight" data-testid="hero-title">
                 Guiding Careers,
                 <span className="text-accent"> Inspiring Lives</span>
               </h1>
-              <p className="text-base sm:text-lg md:text-xl mb-6 sm:mb-8 text-white/90 leading-relaxed" data-testid="hero-description">
+              <p className="text-lg sm:text-xl md:text-2xl mb-8 sm:mb-10 text-white/90 leading-relaxed max-w-2xl mx-auto lg:mx-0" data-testid="hero-description">
                 Discover clarity and purpose in your professional and personal journey with holistic career counseling, life coaching, and spiritual guidance.
               </p>
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">

@@ -13,9 +13,9 @@ export default function AboutSection({ onBookingClick }: AboutSectionProps) {
   ];
 
   return (
-    <section id="about" className="py-20 bg-background">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+    <section id="about" className="py-16 sm:py-24 lg:py-20 bg-background">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           <div>
             <img 
               src={profileImage} 
@@ -26,13 +26,13 @@ export default function AboutSection({ onBookingClick }: AboutSectionProps) {
           </div>
           
           <div>
-            <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-6" data-testid="about-title">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-8 sm:mb-10" data-testid="about-title">
               About Satish Mohan
             </h2>
-            <p className="text-lg text-muted-foreground mb-6 leading-relaxed" data-testid="about-description-1">
+            <p className="text-lg sm:text-xl text-muted-foreground mb-6 sm:mb-8 leading-relaxed" data-testid="about-description-1">
               Satish Mohan is a passionate career counsellor, life coach, and holistic guide dedicated to empowering individuals to discover clarity and purpose in their professional and personal lives.
             </p>
-            <p className="text-lg text-muted-foreground mb-8 leading-relaxed" data-testid="about-description-2">
+            <p className="text-lg sm:text-xl text-muted-foreground mb-8 sm:mb-10 leading-relaxed" data-testid="about-description-2">
               With extensive experience in career counselling, life coaching, training, meditation mentoring, tarot reading, and manifestation guidance, Satish blends practical advice with spiritual insight. He offers comprehensive support to clients seeking growth, direction, and lasting fulfillment.
             </p>
             
