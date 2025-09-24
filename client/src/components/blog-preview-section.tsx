@@ -38,15 +38,15 @@ export default function BlogPreviewSection() {
     <section id="blog" className="py-20 bg-muted/30">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-foreground mb-4" data-testid="blog-title">
+          <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4" data-testid="blog-title">
             Latest Insights
           </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto" data-testid="blog-description">
+          <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto" data-testid="blog-description">
             Discover valuable insights on career development, personal growth, and life transformation
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {featuredPosts.map((post) => (
             <article 
               key={post.id}

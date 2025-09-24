@@ -53,7 +53,7 @@ export default function BlogPostPage() {
   return (
     <div className="min-h-screen bg-background" data-testid="blog-post-page">
       {/* Header */}
-      <div className="bg-gradient-to-r from-primary to-secondary py-8">
+      <div className="bg-gradient-to-r from-primary to-secondary py-6 sm:py-8">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <Link 
             href="/" 
@@ -70,7 +70,7 @@ export default function BlogPostPage() {
               {post.category}
             </div>
             
-            <h1 className="text-4xl lg:text-5xl font-bold mb-4" data-testid="blog-title">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4" data-testid="blog-title">
               {post.title}
             </h1>
             
@@ -93,18 +93,18 @@ export default function BlogPostPage() {
       </div>
 
       {/* Content */}
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         {post.featuredImage && (
           <img 
             src={post.featuredImage} 
             alt={post.title} 
-            className="w-full h-64 lg:h-80 object-cover rounded-lg mb-8 shadow-lg"
+            className="w-full h-48 sm:h-64 lg:h-80 object-cover rounded-lg mb-6 sm:mb-8 shadow-lg"
             data-testid="blog-featured-image"
           />
         )}
 
         {post.excerpt && (
-          <div className="text-xl text-muted-foreground mb-8 p-6 bg-muted/30 rounded-lg border-l-4 border-primary" data-testid="blog-excerpt">
+          <div className="text-lg sm:text-xl text-muted-foreground mb-6 sm:mb-8 p-4 sm:p-6 bg-muted/30 rounded-lg border-l-4 border-primary" data-testid="blog-excerpt">
             {post.excerpt}
           </div>
         )}
@@ -116,10 +116,10 @@ export default function BlogPostPage() {
         />
         
         {/* Call to Action */}
-        <div className="mt-12 p-8 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-lg border border-primary/20">
+        <div className="mt-8 sm:mt-12 p-6 sm:p-8 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-lg border border-primary/20">
           <div className="text-center">
-            <h3 className="text-2xl font-bold text-foreground mb-4">Ready to Transform Your Career?</h3>
-            <p className="text-muted-foreground mb-6">
+            <h3 className="text-xl sm:text-2xl font-bold text-foreground mb-4">Ready to Transform Your Career?</h3>
+            <p className="text-sm sm:text-base text-muted-foreground mb-6">
               Get personalized guidance from Satish Mohan to accelerate your professional growth.
             </p>
             <Link 

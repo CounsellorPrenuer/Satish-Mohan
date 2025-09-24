@@ -56,17 +56,17 @@ export default function ContactSection() {
     <section id="contact" className="py-20 bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-foreground mb-4" data-testid="contact-title">
+          <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4" data-testid="contact-title">
             Get in Touch
           </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto" data-testid="contact-description">
+          <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto" data-testid="contact-description">
             Ready to begin your transformation journey? Let's connect and explore how we can help you achieve your goals.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
           <div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 mb-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 mb-8">
               <div className="bg-card rounded-xl p-6 shadow-lg" data-testid="contact-phone">
                 <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                   <Phone className="text-primary" size={20} />
@@ -85,7 +85,7 @@ export default function ContactSection() {
 
             <div className="bg-card rounded-xl p-6 shadow-lg mb-8">
               <h3 className="font-semibold text-lg mb-4">Follow on Social Media</h3>
-              <div className="flex space-x-4">
+              <div className="flex flex-wrap gap-3 sm:gap-4">
                 <a 
                   href="https://www.linkedin.com/in/satish-mohan-n-8560684" 
                   target="_blank" 
@@ -188,7 +188,7 @@ export default function ContactSection() {
                 />
                 <Button 
                   type="submit" 
-                  className="w-full btn-primary" 
+                  className="w-full bg-gradient-to-r from-primary to-secondary text-white py-3 px-6 rounded-lg font-semibold hover:from-primary/90 hover:to-secondary/90 transition-all duration-300 transform hover:scale-[1.02] shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100" 
                   disabled={contactMutation.isPending}
                   data-testid="button-send-message"
                 >

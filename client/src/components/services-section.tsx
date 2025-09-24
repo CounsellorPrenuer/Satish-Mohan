@@ -60,21 +60,21 @@ export default function ServicesSection({ onServiceSelect }: ServicesSectionProp
     <section id="services" className="py-20 bg-muted/30">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-foreground mb-4" data-testid="services-title">
+          <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4" data-testid="services-title">
             Comprehensive Services
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto" data-testid="services-description">
+          <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto" data-testid="services-description">
             Empowering your journey with personalized guidance across career, life, and spiritual development
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {services.map((service) => {
             const IconComponent = service.icon;
             return (
               <div 
                 key={service.id}
-                className="service-card bg-card rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 group cursor-pointer"
+                className="service-card bg-card rounded-xl p-6 sm:p-8 shadow-lg hover:shadow-xl transition-all duration-300 group cursor-pointer"
                 onClick={() => onServiceSelect(service.id)}
                 data-testid={`service-card-${service.id}`}
               >

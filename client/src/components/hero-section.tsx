@@ -14,13 +14,13 @@ export default function HeroSection({ onBookingClick }: HeroSectionProps) {
     <section id="home" className="pt-16 min-h-screen flex items-center gradient-bg relative overflow-hidden">
       <div className="absolute inset-0 bg-black/10"></div>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           <div className="text-white animate-fade-in-up">
-            <h1 className="text-5xl lg:text-6xl font-bold mb-6 leading-tight" data-testid="hero-title">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight" data-testid="hero-title">
               Guiding Careers,
               <span className="text-accent"> Inspiring Lives</span>
             </h1>
-            <p className="text-xl mb-8 text-white/90 leading-relaxed" data-testid="hero-description">
+            <p className="text-lg sm:text-xl mb-8 text-white/90 leading-relaxed" data-testid="hero-description">
               Discover clarity and purpose in your professional and personal journey with holistic career counseling, life coaching, and spiritual guidance.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
@@ -45,7 +45,7 @@ export default function HeroSection({ onBookingClick }: HeroSectionProps) {
             <img 
               src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&h=500" 
               alt="Satish Mohan - Career Counselor" 
-              className="rounded-2xl shadow-2xl w-full max-w-md mx-auto"
+              className="rounded-2xl shadow-2xl w-full max-w-sm sm:max-w-md mx-auto"
               data-testid="hero-image"
             />
             <div className="absolute -top-4 -right-4 w-24 h-24 bg-accent/20 rounded-full animate-bounce-gentle"></div>
