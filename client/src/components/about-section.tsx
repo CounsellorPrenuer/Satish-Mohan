@@ -1,3 +1,5 @@
+import profileImage from "@assets/profile_1758707452399.jpg";
+
 interface AboutSectionProps {
   onBookingClick: () => void;
 }
@@ -16,8 +18,8 @@ export default function AboutSection({ onBookingClick }: AboutSectionProps) {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
           <div>
             <img 
-              src="https://images.unsplash.com/photo-1551836022-deb4988cc6c0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=600" 
-              alt="Counseling session environment" 
+              src={profileImage} 
+              alt="Satish Mohan - Career Counselor and Life Coach" 
               className="rounded-2xl shadow-lg w-full"
               data-testid="about-image"
             />
