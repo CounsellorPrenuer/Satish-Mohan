@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { insertBlogPostSchema } from "@shared/schema";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import { useRequireAuth } from "@/hooks/use-auth";
 import AdminLayout from "@/components/admin/admin-layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -26,10 +27,20 @@ const categories = [
 ];
 
 export default function AdminBlogs() {
+  const { isAuthenticated, isLoading: authLoading } = useRequireAuth();
   const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const { toast } = useToast();
   const queryClient = useQueryClient();
+
+  // Show loading while checking authentication
+  if (authLoading || !isAuthenticated) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-lg">Loading...</div>
+      </div>
+    );
+  }
 
   // Fetch blog posts
   const { data: blogPosts, isLoading: postsLoading } = useQuery<BlogPost[]>({

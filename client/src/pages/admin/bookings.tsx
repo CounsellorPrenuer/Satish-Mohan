@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import { useRequireAuth } from "@/hooks/use-auth";
 import AdminLayout from "@/components/admin/admin-layout";
 import StatsCard from "@/components/admin/stats-card";
 import DataTable from "@/components/admin/data-table";
@@ -33,9 +34,19 @@ const paymentStatusColors = {
 };
 
 export default function AdminBookings() {
+  const { isAuthenticated, isLoading: authLoading } = useRequireAuth();
   const [activeTab, setActiveTab] = useState("overview");
   const { toast } = useToast();
   const queryClient = useQueryClient();
+
+  // Show loading while checking authentication
+  if (authLoading || !isAuthenticated) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-lg">Loading...</div>
+      </div>
+    );
+  }
 
   // Fetch statistics
   const { data: stats, isLoading: statsLoading } = useQuery<{
