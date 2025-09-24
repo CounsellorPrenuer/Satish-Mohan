@@ -162,7 +162,7 @@ export class DatabaseStorage implements IStorage {
         title: "Choosing the Right College Course",
         excerpt: "A comprehensive guide to selecting a college course that aligns with your interests, skills, and career aspirations.",
         content: "<p>Choosing the right college course is one of the most important decisions you'll make...</p>",
-        featuredImage: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400",
+        featuredImage: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400",
         category: "Education",
         published: true,
         featured: false

@@ -1,4 +1,5 @@
 import { Link } from "wouter";
+import { Instagram, Linkedin, Twitter, Youtube, Facebook } from "lucide-react";
 import logoImage from "@assets/logo-clarity_1758707847750.png";
 
 interface FooterProps {
@@ -26,9 +27,56 @@ export default function Footer({ onBookingClick }: FooterProps) {
                 data-testid="footer-logo"
               />
             </div>
-            <p className="text-white/80 leading-relaxed">
+            <p className="text-white/80 leading-relaxed mb-6">
               Guiding careers, inspiring lives through holistic counseling and life coaching.
             </p>
+            <div className="flex space-x-4">
+              <a 
+                href="https://linkedin.com/in/satishmohan" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors"
+                data-testid="social-linkedin"
+              >
+                <Linkedin size={20} />
+              </a>
+              <a 
+                href="https://instagram.com/careerclarity.satish" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors"
+                data-testid="social-instagram"
+              >
+                <Instagram size={20} />
+              </a>
+              <a 
+                href="https://twitter.com/careerclarity" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors"
+                data-testid="social-twitter"
+              >
+                <Twitter size={20} />
+              </a>
+              <a 
+                href="https://youtube.com/@careerclarity" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors"
+                data-testid="social-youtube"
+              >
+                <Youtube size={20} />
+              </a>
+              <a 
+                href="https://facebook.com/careerclarity.satish" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors"
+                data-testid="social-facebook"
+              >
+                <Facebook size={20} />
+              </a>
+            </div>
           </div>
           
           <div>

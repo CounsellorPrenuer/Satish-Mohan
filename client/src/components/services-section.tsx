@@ -4,6 +4,33 @@ interface ServicesSectionProps {
   onServiceSelect: (serviceType: string) => void;
 }
 
+const colorStyles = {
+  primary: {
+    iconBg: "bg-primary/10 hover:bg-primary/20",
+    iconColor: "text-primary",
+    titleHover: "group-hover:text-primary",
+    price: "text-primary",
+    button: "text-primary group-hover:text-primary/80",
+    gradient: "from-primary/5 to-primary/20"
+  },
+  secondary: {
+    iconBg: "bg-secondary/10 hover:bg-secondary/20",
+    iconColor: "text-secondary",
+    titleHover: "group-hover:text-secondary",
+    price: "text-secondary",
+    button: "text-secondary group-hover:text-secondary/80",
+    gradient: "from-secondary/5 to-secondary/20"
+  },
+  accent: {
+    iconBg: "bg-accent/10 hover:bg-accent/20",
+    iconColor: "text-accent",
+    titleHover: "group-hover:text-accent",
+    price: "text-accent",
+    button: "text-accent group-hover:text-accent/80",
+    gradient: "from-accent/5 to-accent/20"
+  }
+};
+
 const services = [
   {
     id: "career-guidance",
@@ -11,7 +38,8 @@ const services = [
     description: "Navigate your professional path with expert guidance tailored to your unique strengths and aspirations.",
     icon: Compass,
     color: "primary",
-    price: "₹2,500"
+    price: "₹2,500",
+    featured: true
   },
   {
     id: "life-coaching",
@@ -19,7 +47,8 @@ const services = [
     description: "Unlock your potential and create meaningful change in your personal and professional life.",
     icon: Heart,
     color: "secondary",
-    price: "₹3,000"
+    price: "₹3,000",
+    featured: true
   },
   {
     id: "meditation",
@@ -27,7 +56,8 @@ const services = [
     description: "Find inner peace and clarity through guided meditation and mindfulness practices.",
     icon: Leaf,
     color: "accent",
-    price: "₹1,500"
+    price: "₹1,500",
+    featured: false
   },
   {
     id: "workshops",
@@ -35,7 +65,8 @@ const services = [
     description: "Interactive group sessions designed to inspire and educate on career and life topics.",
     icon: Users,
     color: "primary",
-    price: "₹5,000"
+    price: "₹5,000",
+    featured: false
   },
   {
     id: "admission-guidance",
@@ -43,7 +74,8 @@ const services = [
     description: "Expert assistance for college and course selection to align with your career goals.",
     icon: GraduationCap,
     color: "secondary",
-    price: "₹2,000"
+    price: "₹2,000",
+    featured: true
   },
   {
     id: "hospitality-consulting",
@@ -51,7 +83,8 @@ const services = [
     description: "Strategic consulting for hospitality businesses and independent director services.",
     icon: Building,
     color: "accent",
-    price: "₹10,000"
+    price: "₹10,000",
+    featured: false
   }
 ];
 
@@ -71,29 +104,35 @@ export default function ServicesSection({ onServiceSelect }: ServicesSectionProp
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10 lg:gap-8">
           {services.map((service) => {
             const IconComponent = service.icon;
+            const styles = colorStyles[service.color as keyof typeof colorStyles];
             return (
               <div 
                 key={service.id}
-                className="service-card bg-card rounded-xl p-6 sm:p-8 shadow-lg hover:shadow-xl transition-all duration-300 group cursor-pointer"
+                className={`service-card relative bg-gradient-to-br ${styles.gradient} bg-card border border-border/50 rounded-2xl p-6 sm:p-8 shadow-lg hover:shadow-2xl transition-all duration-500 group cursor-pointer transform hover:-translate-y-2 ${service.featured ? 'ring-2 ring-primary/20' : ''}`}
                 onClick={() => onServiceSelect(service.id)}
                 data-testid={`service-card-${service.id}`}
               >
-                <div className={`w-16 h-16 bg-${service.color}/10 rounded-lg flex items-center justify-center mb-6 group-hover:bg-${service.color}/20 transition-colors`}>
-                  <IconComponent className={`text-2xl text-${service.color}`} size={24} />
+                {service.featured && (
+                  <div className="absolute -top-3 -right-3 bg-primary text-primary-foreground text-xs font-semibold px-3 py-1 rounded-full shadow-lg">
+                    Popular
+                  </div>
+                )}
+                <div className={`w-20 h-20 ${styles.iconBg} rounded-2xl flex items-center justify-center mb-6 transition-all duration-300 group-hover:scale-110 group-hover:rotate-3`}>
+                  <IconComponent className={`${styles.iconColor} transition-all duration-300`} size={28} />
                 </div>
-                <h3 className={`text-xl font-semibold mb-4 group-hover:text-${service.color} transition-colors`}>
+                <h3 className={`text-xl sm:text-2xl font-bold mb-4 ${styles.titleHover} transition-colors duration-300`}>
                   {service.title}
                 </h3>
-                <p className="text-muted-foreground mb-6 leading-relaxed">
+                <p className="text-muted-foreground mb-6 leading-relaxed text-sm sm:text-base">
                   {service.description}
                 </p>
-                <div className="flex items-center justify-between">
-                  <div className={`text-${service.color} font-semibold text-lg`}>
+                <div className="flex items-center justify-between pt-4 border-t border-border/30">
+                  <div className={`${styles.price} font-bold text-xl sm:text-2xl`}>
                     {service.price}
                   </div>
-                  <div className={`flex items-center text-${service.color} font-medium group-hover:text-${service.color}/80`}>
-                    Book Session 
-                    <svg className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className={`flex items-center ${styles.button} font-semibold text-sm group-hover:gap-2 transition-all duration-300`}>
+                    Book Now
+                    <svg className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>
                   </div>

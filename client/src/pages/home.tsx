@@ -32,10 +32,10 @@ export default function Home() {
       <HeroSection onBookingClick={openBookingModal} />
       <ServicesSection onServiceSelect={openBookingModal} />
       <AboutSection onBookingClick={openBookingModal} />
-      <PartnershipSection />
       <TestimonialsSection />
       <BlogPreviewSection />
       <ContactSection />
+      <PartnershipSection />
       <Footer onBookingClick={openBookingModal} />
       
       {isBookingModalOpen && (
