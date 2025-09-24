@@ -43,7 +43,7 @@ export default function HeroSection({ onBookingClick }: HeroSectionProps) {
           
           <div className="relative">
             <img 
-              src="@assets/profile_1758702098456.jpg" 
+              src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&h=500" 
               alt="Satish Mohan - Career Counselor" 
               className="rounded-2xl shadow-2xl w-full max-w-sm sm:max-w-md mx-auto"
               data-testid="hero-image"

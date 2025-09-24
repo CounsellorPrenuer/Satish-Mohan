@@ -18,12 +18,10 @@ export default function Footer({ onBookingClick }: FooterProps) {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
             <div className="flex items-center space-x-3 mb-6">
-              <img 
-                src="@assets/logo_1758702098453.png" 
-                alt="CareerMentoria Logo" 
-                className="w-10 h-10 object-contain bg-white rounded-lg p-2"
-              />
-              <span className="font-bold text-xl">CareerMentoria</span>
+              <div className="w-10 h-10 bg-gradient-to-r from-primary to-secondary rounded-lg flex items-center justify-center text-white font-bold text-lg">
+                S
+              </div>
+              <span className="font-bold text-xl">Career Clarity</span>
             </div>
             <p className="text-white/80 leading-relaxed">
               Guiding careers, inspiring lives through holistic counseling and life coaching.
@@ -124,7 +122,7 @@ export default function Footer({ onBookingClick }: FooterProps) {
         </div>
         
         <div className="border-t border-white/20 mt-12 pt-8 text-center">
-          <p className="text-white/80">© 2024 CareerMentoria by Satish. All rights reserved.</p>
+          <p className="text-white/80">© 2024 Career Clarity by Satish. All rights reserved.</p>
         </div>
       </div>
     </footer>

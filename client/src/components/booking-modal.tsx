@@ -326,7 +326,7 @@ export default function BookingModal({ isOpen, onClose, selectedService }: Booki
               </Button>
               <Button 
                 type="submit" 
-                className="flex-1 btn-primary" 
+                className="flex-1 bg-gradient-to-r from-primary to-secondary text-white py-3 px-6 rounded-lg font-semibold hover:from-primary/90 hover:to-secondary/90 transition-all duration-300 transform hover:scale-[1.02] shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100" 
                 disabled={bookingMutation.isPending}
                 data-testid="button-pay-razorpay"
               >

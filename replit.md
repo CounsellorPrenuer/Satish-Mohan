@@ -1,6 +1,6 @@
 # Overview
 
-CareerMentoria is a comprehensive career counseling and life coaching platform built for Satish Mohan, a professional career counselor and life coach. The application provides a complete solution for showcasing services, managing client bookings, handling payments, and content management. It features a modern landing page with service information, client testimonials, and blog content, alongside an admin dashboard for managing bookings, contact forms, and blog posts.
+Career Clarity is a comprehensive career counseling and life coaching platform built for Satish Mohan, a professional career counselor and life coach. The application provides a complete solution for showcasing services, managing client bookings, handling payments, and content management. It features a modern landing page with service information, client testimonials, and blog content, alongside an admin dashboard for managing bookings, contact forms, and blog posts.
 
 # User Preferences
 

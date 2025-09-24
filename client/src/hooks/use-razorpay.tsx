@@ -63,7 +63,7 @@ export function useRazorpay() {
         key: import.meta.env.VITE_RAZORPAY_KEY_ID || "rzp_test_key", // Use environment variable
         amount: order.amount,
         currency: order.currency,
-        name: "CareerMentoria by Satish",
+        name: "Career Clarity by Satish",
         description: "Career Counseling Session",
         order_id: order.id,
         prefill: {

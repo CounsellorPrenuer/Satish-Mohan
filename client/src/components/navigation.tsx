@@ -41,12 +41,10 @@ export default function Navigation({ onBookingClick }: NavigationProps) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center space-x-3">
-            <img 
-              src="@assets/logo_1758702098453.png" 
-              alt="CareerMentoria Logo" 
-              className="w-10 h-10 object-contain"
-            />
-            <span className="font-bold text-xl text-foreground">CareerMentoria</span>
+            <div className="w-10 h-10 bg-gradient-to-r from-primary to-secondary rounded-lg flex items-center justify-center text-white font-bold text-lg">
+              S
+            </div>
+            <span className="font-bold text-xl text-foreground">Career Clarity</span>
           </div>
           
           <div className="hidden md:flex items-center space-x-8">
