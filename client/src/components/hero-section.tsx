@@ -55,7 +55,7 @@ export default function HeroSection({ onBookingClick }: HeroSectionProps) {
       </div>
 
       {/* Floating testimonial card */}
-      <div className="absolute top-1/4 right-8 glass rounded-lg p-4 shadow-lg max-w-xs hidden lg:block testimonial-card z-1000">
+      <div className="absolute top-10 right-8 glass rounded-lg p-4 shadow-lg max-w-xs hidden lg:block testimonial-card z-10">
         <div className="flex text-accent mb-2">
           {[...Array(5)].map((_, i) => (
             <svg key={i} className="w-4 h-4 fill-current" viewBox="0 0 24 24">
