@@ -75,7 +75,7 @@ export default function HeroSection({ onBookingClick }: HeroSectionProps) {
 
   return (
     <>
-      <style jsx="true">{`
+      <style>{`
         @keyframes rotate-slow {
           from { transform: rotate(0deg); }
           to { transform: rotate(360deg); }

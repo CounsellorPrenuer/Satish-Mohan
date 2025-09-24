@@ -1,4 +1,5 @@
 import profileImage from "@assets/profile_1758707452399.jpg";
+import { Users, Calendar, Trophy, TrendingUp } from "lucide-react";
 
 interface AboutSectionProps {
   onBookingClick: () => void;
@@ -6,10 +7,38 @@ interface AboutSectionProps {
 
 export default function AboutSection({ onBookingClick }: AboutSectionProps) {
   const stats = [
-    { value: "500+", label: "Clients Guided" },
-    { value: "10+", label: "Years Experience" },
-    { value: "50+", label: "Workshops" },
-    { value: "98%", label: "Success Rate" }
+    { 
+      value: "500+", 
+      label: "Clients Guided", 
+      icon: Users,
+      color: "text-primary",
+      bgColor: "bg-primary/10",
+      description: "Lives Transformed"
+    },
+    { 
+      value: "10+", 
+      label: "Years Experience", 
+      icon: Calendar,
+      color: "text-secondary",
+      bgColor: "bg-secondary/10",
+      description: "Professional Expertise"
+    },
+    { 
+      value: "50+", 
+      label: "Workshops", 
+      icon: Trophy,
+      color: "text-accent",
+      bgColor: "bg-accent/10",
+      description: "Interactive Sessions"
+    },
+    { 
+      value: "98%", 
+      label: "Success Rate", 
+      icon: TrendingUp,
+      color: "text-primary",
+      bgColor: "bg-primary/10",
+      description: "Client Satisfaction"
+    }
   ];
 
   return (
@@ -36,13 +65,30 @@ export default function AboutSection({ onBookingClick }: AboutSectionProps) {
               With extensive experience in career counselling, life coaching, training, meditation mentoring, tarot reading, and manifestation guidance, Satish blends practical advice with spiritual insight. He offers comprehensive support to clients seeking growth, direction, and lasting fulfillment.
             </p>
             
-            <div className="grid grid-cols-2 gap-4 sm:gap-6 mb-8">
-              {stats.map((stat, index) => (
-                <div key={index} className="text-center stat-card" data-testid={`stat-${index}`}>
-                  <div className="text-2xl sm:text-3xl font-bold text-primary mb-2">{stat.value}</div>
-                  <div className="text-sm sm:text-base text-muted-foreground">{stat.label}</div>
-                </div>
-              ))}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 mb-12">
+              {stats.map((stat, index) => {
+                const IconComponent = stat.icon;
+                return (
+                  <div 
+                    key={index} 
+                    className="stat-card bg-gradient-to-br from-background to-muted/30 border border-border/50 rounded-2xl p-6 text-center shadow-lg hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2 group" 
+                    data-testid={`stat-${index}`}
+                  >
+                    <div className={`w-16 h-16 ${stat.bgColor} rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                      <IconComponent className={`${stat.color} group-hover:scale-110 transition-transform duration-300`} size={28} />
+                    </div>
+                    <div className={`text-3xl sm:text-4xl font-bold ${stat.color} mb-3 group-hover:scale-105 transition-transform duration-300`}>
+                      {stat.value}
+                    </div>
+                    <div className="text-base sm:text-lg font-semibold text-foreground mb-2">
+                      {stat.label}
+                    </div>
+                    <div className="text-sm text-muted-foreground">
+                      {stat.description}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
 
             <button 
