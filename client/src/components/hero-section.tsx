@@ -163,7 +163,7 @@ export default function HeroSection({ onBookingClick }: HeroSectionProps) {
               </div>
             </div>
             
-            <div ref={animationRef} className="relative flex items-center justify-center min-h-[300px] sm:min-h-[400px] lg:min-h-[500px] order-1 lg:order-2 mb-8 lg:mb-0">
+            <div ref={animationRef} className="relative flex items-center justify-center min-h-[300px] sm:min-h-[400px] lg:min-h-[500px] order-1 lg:order-2 mb-8 lg:mb-0 mx-auto md:mx-auto lg:mx-0">
               {/* Anime.js Style Animation Container */}
               <div 
                 className="hero-animation-container relative w-[300px] h-[300px] sm:w-[350px] sm:h-[350px] lg:w-[400px] lg:h-[400px] flex items-center justify-center mx-auto"
