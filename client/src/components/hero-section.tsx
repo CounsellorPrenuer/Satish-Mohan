@@ -149,16 +149,9 @@ export default function HeroSection({ onBookingClick }: HeroSectionProps) {
                 </svg>
               </motion.div>
             </motion.div>
-            
-            {/* Enhanced Floating Elements */}
-            <div className="absolute -top-4 -right-4 w-24 h-24 bg-accent/20 rounded-full animate-bounce-gentle"></div>
-            <div className="absolute -bottom-4 -left-4 w-16 h-16 bg-white/20 rounded-full animate-bounce-gentle float"></div>
           </div>
         </div>
-      </div>
-
-      {/* Floating testimonial card */}
-      
+      </div>      
     </section>
   );
 }
