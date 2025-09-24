@@ -9,7 +9,7 @@ export default function BlogPreviewSection() {
 
   if (isLoading) {
     return (
-      <section id="blog" className="py-20 bg-muted/30">
+      <section id="blog" className="pt-20 bg-muted/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-foreground mb-4">Latest Insights</h2>
@@ -93,13 +93,18 @@ export default function BlogPreviewSection() {
         </div>
 
         <div className="text-center mt-12">
-          <Link 
-            href="/"
-            className="inline-block bg-primary text-primary-foreground px-8 py-3 rounded-lg font-semibold hover:bg-primary/90 transition-colors btn-primary" 
+          <button 
+            onClick={() => {
+              const blogSection = document.getElementById('blog');
+              if (blogSection) {
+                blogSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }
+            }}
+            className="inline-block bg-primary text-primary-foreground px-8 py-3 rounded-lg font-semibold hover:bg-primary/90 transition-colors btn-primary cursor-pointer" 
             data-testid="blog-view-all"
           >
             View All Articles
-          </Link>
+          </button>
         </div>
       </div>
     </section>
