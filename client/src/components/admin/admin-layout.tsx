@@ -1,6 +1,9 @@
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Download, LogOut } from "lucide-react";
+import { apiRequest } from "@/lib/queryClient";
+import { useToast } from "@/hooks/use-toast";
 
 interface Tab {
   id: string;
@@ -31,6 +34,38 @@ export default function AdminLayout({
   headerActions,
   children,
 }: AdminLayoutProps) {
+  const [, setLocation] = useLocation();
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+
+  // Logout mutation
+  const logoutMutation = useMutation({
+    mutationFn: async () => {
+      const response = await apiRequest("POST", "/api/auth/logout", {});
+      return response.json();
+    },
+    onSuccess: () => {
+      toast({
+        title: "Logged out successfully",
+        description: "You have been logged out of the admin dashboard.",
+      });
+      // Invalidate auth status to refresh the authentication state
+      queryClient.invalidateQueries({ queryKey: ["/api/auth/status"] });
+      // Redirect to login page
+      setLocation("/admin/login");
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Logout failed",
+        description: error.message || "Failed to logout. Please try again.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const handleLogout = () => {
+    logoutMutation.mutate();
+  };
   return (
     <div className="min-h-screen bg-background">
       {/* Admin Header */}
@@ -68,9 +103,14 @@ export default function AdminLayout({
                   {exportLoading ? "Exporting..." : "Export All Data"}
                 </Button>
               )}
-              <Button variant="outline" data-testid="admin-logout">
+              <Button 
+                variant="outline" 
+                onClick={handleLogout}
+                disabled={logoutMutation.isPending}
+                data-testid="admin-logout"
+              >
                 <LogOut className="w-4 h-4 mr-2" />
-                Logout
+                {logoutMutation.isPending ? "Logging out..." : "Logout"}
               </Button>
             </div>
           </div>
