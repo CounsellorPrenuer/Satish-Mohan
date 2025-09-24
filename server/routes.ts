@@ -71,8 +71,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     });
   });
   
-  // Statistics endpoint
-  app.get("/api/stats", async (req, res) => {
+  // Statistics endpoint (admin only)
+  app.get("/api/stats", requireAuth, async (req, res) => {
     try {
       const stats = await storage.getStats();
       res.json(stats);
@@ -82,7 +82,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Bookings endpoints
-  app.get("/api/bookings", async (req, res) => {
+  app.get("/api/bookings", requireAuth, async (req, res) => {
     try {
       const bookings = await storage.getAllBookings();
       res.json(bookings);
@@ -101,7 +101,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.put("/api/bookings/:id", async (req, res) => {
+  app.put("/api/bookings/:id", requireAuth, async (req, res) => {
     try {
       const { id } = req.params;
       const updates = req.body;
@@ -117,7 +117,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.delete("/api/bookings/:id", async (req, res) => {
+  app.delete("/api/bookings/:id", requireAuth, async (req, res) => {
     try {
       const { id } = req.params;
       const deleted = await storage.deleteBooking(id);
@@ -133,7 +133,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Contact forms endpoints
-  app.get("/api/contact-forms", async (req, res) => {
+  app.get("/api/contact-forms", requireAuth, async (req, res) => {
     try {
       const forms = await storage.getAllContactForms();
       res.json(forms);
@@ -152,7 +152,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.put("/api/contact-forms/:id", async (req, res) => {
+  app.put("/api/contact-forms/:id", requireAuth, async (req, res) => {
     try {
       const { id } = req.params;
       const updates = req.body;
@@ -196,7 +196,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/blog-posts", async (req, res) => {
+  app.post("/api/blog-posts", requireAuth, async (req, res) => {
     try {
       const validatedData = insertBlogPostSchema.parse(req.body);
       const post = await storage.createBlogPost(validatedData);
@@ -206,7 +206,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.put("/api/blog-posts/:id", async (req, res) => {
+  app.put("/api/blog-posts/:id", requireAuth, async (req, res) => {
     try {
       const { id } = req.params;
       const updates = req.body;
@@ -222,7 +222,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.delete("/api/blog-posts/:id", async (req, res) => {
+  app.delete("/api/blog-posts/:id", requireAuth, async (req, res) => {
     try {
       const { id } = req.params;
       const deleted = await storage.deleteBlogPost(id);
@@ -238,7 +238,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Payments endpoints
-  app.get("/api/payments", async (req, res) => {
+  app.get("/api/payments", requireAuth, async (req, res) => {
     try {
       const payments = await storage.getAllPayments();
       res.json(payments);
