@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "wouter";
+import logoImage from "@assets/logo-clarity_1758707307653.png";
 
 interface NavigationProps {
   onBookingClick: () => void;
@@ -40,11 +41,13 @@ export default function Navigation({ onBookingClick }: NavigationProps) {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-gradient-to-r from-primary to-secondary rounded-lg flex items-center justify-center text-white font-bold text-lg">
-              S
-            </div>
-            <span className="font-bold text-xl text-foreground">Career Clarity</span>
+          <div className="flex items-center">
+            <img 
+              src={logoImage} 
+              alt="Career Clarity Logo" 
+              className="h-12 w-auto"
+              data-testid="brand-logo"
+            />
           </div>
           
           <div className="hidden md:flex items-center space-x-8">
