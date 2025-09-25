@@ -40,7 +40,7 @@ export default function Navigation({ onBookingClick }: NavigationProps) {
       data-testid="main-navigation"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16 md:h-18">
+        <div className="flex justify-between items-center h-16 md:h-20">
           {/* Logo */}
           <div className="flex items-center flex-shrink-0">
             <img 
@@ -99,10 +99,12 @@ export default function Navigation({ onBookingClick }: NavigationProps) {
 
           {/* Mobile & Tablet Menu Button */}
           <button 
-            className="lg:hidden flex items-center justify-center w-10 h-10 md:w-11 md:h-11 rounded-xl bg-gray-100 hover:bg-gray-200 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary/20 shadow-sm" 
+            className="lg:hidden flex items-center justify-center w-11 h-11 md:w-12 md:h-12 rounded-xl bg-gray-100 hover:bg-gray-200 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary/20 shadow-sm" 
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             data-testid="mobile-menu-toggle"
             aria-label="Toggle mobile menu"
+            aria-expanded={isMobileMenuOpen}
+            aria-controls="mobile-menu"
           >
             <svg className="w-5 h-5 md:w-6 md:h-6 text-gray-700 transition-all duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path 
@@ -126,7 +128,12 @@ export default function Navigation({ onBookingClick }: NavigationProps) {
           />
           
           {/* Mobile & Tablet Menu */}
-          <div className="lg:hidden fixed top-16 md:top-18 left-0 right-0 bg-white shadow-2xl border-t border-gray-100 z-50 animate-slide-down" data-testid="mobile-menu">
+          <div 
+            id="mobile-menu" 
+            className="lg:hidden fixed top-16 md:top-20 left-0 right-0 bg-white shadow-2xl border-t border-gray-100 z-50 animate-slide-down" 
+            data-testid="mobile-menu"
+            style={{ transformOrigin: 'top' }}
+          >
             <div className="max-w-md mx-auto px-6 py-6 md:py-8">
               {/* Navigation Links */}
               <div className="space-y-1 mb-6 md:mb-8">
@@ -185,7 +192,7 @@ export default function Navigation({ onBookingClick }: NavigationProps) {
               {/* CTA Button */}
               <button 
                 onClick={handleBookingClick} 
-                className="w-full bg-gradient-to-r from-primary to-secondary text-white py-3 md:py-4 px-6 rounded-xl font-semibold text-base md:text-lg hover:from-primary/90 hover:to-secondary/90 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-[1.02] flex items-center justify-center"
+                className="w-full bg-gradient-to-r from-primary to-secondary text-white py-4 px-6 rounded-xl font-semibold text-lg hover:from-primary/90 hover:to-secondary/90 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-[1.02] flex items-center justify-center"
                 data-testid="mobile-nav-book-session"
               >
                 <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
