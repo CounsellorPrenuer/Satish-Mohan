@@ -1,209 +1,346 @@
 import { useState, useEffect } from "react";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
+import { Moon, Sun, Menu, X, Home, Building2, User, BookOpen, Mail, Calendar } from "lucide-react";
 import logoImage from "@assets/logo_1758786484720.jpeg";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from "@/components/ui/navigation-menu";
+import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 interface NavigationProps {
   onBookingClick: () => void;
 }
 
+const navigationItems = [
+  { id: 'home', label: 'Home', icon: Home },
+  { id: 'services', label: 'Services', icon: Building2 },
+  { id: 'about', label: 'About', icon: User },
+  { id: 'blog', label: 'Blog', icon: BookOpen },
+  { id: 'contact', label: 'Contact', icon: Mail },
+];
+
+const services = [
+  { title: 'Career Counseling', description: 'Personalized career guidance' },
+  { title: 'Life Coaching', description: 'Transform your personal journey' },
+  { title: 'Spiritual Guidance', description: 'Discover your inner path' },
+];
+
 export default function Navigation({ onBookingClick }: NavigationProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState('home');
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [location] = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 100);
+      
+      // Update active section based on scroll position
+      const sections = ['home', 'services', 'about', 'blog', 'contact'];
+      const sectionElements = sections.map(id => document.getElementById(id));
+      
+      for (let i = sectionElements.length - 1; i >= 0; i--) {
+        const element = sectionElements[i];
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          if (rect.top <= 100) {
+            setActiveSection(sections[i]);
+            break;
+          }
+        }
+      }
     };
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    // Initialize theme from localStorage or system preference
+    const theme = localStorage.getItem('theme') || 
+      (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    setIsDarkMode(theme === 'dark');
+    document.documentElement.classList.toggle('dark', theme === 'dark');
+  }, []);
+
+  const toggleTheme = () => {
+    const newTheme = isDarkMode ? 'light' : 'dark';
+    setIsDarkMode(!isDarkMode);
+    localStorage.setItem('theme', newTheme);
+    document.documentElement.classList.toggle('dark', newTheme === 'dark');
+  };
+
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
+      setActiveSection(sectionId);
     }
-    setIsMobileMenuOpen(false); // Close mobile menu after navigation
+    setIsMobileMenuOpen(false);
   };
 
   const handleBookingClick = () => {
     onBookingClick();
-    setIsMobileMenuOpen(false); // Close mobile menu after booking
+    setIsMobileMenuOpen(false);
   };
+
+  const NavLink = ({ item, isActive }: { item: typeof navigationItems[0], isActive: boolean }) => (
+    <div
+      onClick={() => scrollToSection(item.id)}
+      className={cn(
+        "relative px-4 py-2 text-sm font-medium transition-all duration-300 nav-link-hover cursor-pointer",
+        isActive 
+          ? "text-primary nav-link-active" 
+          : "text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary"
+      )}
+      data-testid={`nav-${item.id}`}
+    >
+      {item.label}
+    </div>
+  );
 
   return (
     <nav 
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? "bg-white/95 backdrop-blur-lg shadow-lg" : "bg-white/90 backdrop-blur-md"
-      }`}
+      className={cn(
+        "fixed top-0 left-0 right-0 z-50 nav-height-transition nav-slide-in",
+        isScrolled 
+          ? "h-16 glass dark:glass-dark shadow-xl border-b border-white/20 dark:border-gray-800/20" 
+          : "h-20 bg-white/60 dark:bg-gray-900/60 backdrop-blur-md border-b border-transparent"
+      )}
       data-testid="main-navigation"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16 md:h-20">
-          {/* Logo */}
-          <div className="flex items-center flex-shrink-0">
-            <img 
-              src={logoImage} 
-              alt="Innervea Logo" 
-              className="h-10 sm:h-12 w-auto rounded-lg"
-              data-testid="brand-logo"
-            />
+      <div className="max-w-7xl mx-auto px-6 h-full">
+        <div className="flex items-center justify-between h-full">
+          {/* Logo & Brand */}
+          <div className="flex items-center space-x-3 flex-shrink-0">
+            <div className="relative group">
+              <img 
+                src={logoImage} 
+                alt="Innervea Logo" 
+                className={cn(
+                  "w-auto rounded-xl transition-all duration-300 shadow-lg group-hover:shadow-xl",
+                  isScrolled ? "h-8" : "h-10"
+                )}
+                data-testid="brand-logo"
+              />
+            </div>
+            <div className="hidden sm:block">
+              <h1 className={cn(
+                "font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent transition-all duration-300",
+                isScrolled ? "text-lg" : "text-xl"
+              )}>
+                Innervea
+              </h1>
+              <p className="text-xs text-gray-600 dark:text-gray-400 -mt-1">Transform Within</p>
+            </div>
           </div>
           
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-4 xl:space-x-6">
-            <button 
-              onClick={() => scrollToSection("home")} 
-              className="text-gray-700 hover:text-primary transition-colors font-medium text-sm xl:text-base"
-              data-testid="nav-home"
-            >
-              Home
-            </button>
-            <button 
-              onClick={() => scrollToSection("services")} 
-              className="text-gray-700 hover:text-primary transition-colors font-medium text-sm xl:text-base"
-              data-testid="nav-services"
-            >
-              Services
-            </button>
-            <button 
-              onClick={() => scrollToSection("about")} 
-              className="text-gray-700 hover:text-primary transition-colors font-medium text-sm xl:text-base"
-              data-testid="nav-about"
-            >
-              About
-            </button>
-            <button 
-              onClick={() => scrollToSection("blog")} 
-              className="text-gray-700 hover:text-primary transition-colors font-medium text-sm xl:text-base"
-              data-testid="nav-blog"
-            >
-              Blog
-            </button>
-            <button 
-              onClick={() => scrollToSection("contact")} 
-              className="text-gray-700 hover:text-primary transition-colors font-medium text-sm xl:text-base"
-              data-testid="nav-contact"
-            >
-              Contact
-            </button>
-            <button 
-              onClick={handleBookingClick} 
-              className="bg-gradient-to-r from-primary to-secondary text-white px-4 xl:px-6 py-2 xl:py-2.5 rounded-lg hover:from-primary/90 hover:to-secondary/90 transition-all duration-300 font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 text-sm xl:text-base"
-              data-testid="nav-book-session"
-            >
-              Book Session
-            </button>
+          <div className="hidden lg:flex items-center">
+            <NavigationMenu>
+              <NavigationMenuList className="gap-1">
+                {navigationItems.slice(0, 4).map((item) => (
+                  <NavigationMenuItem key={item.id}>
+                    {item.id === 'services' ? (
+                      <>
+                        <NavigationMenuTrigger className={cn(
+                          "bg-transparent hover:bg-gray-100/50 dark:hover:bg-gray-800/50",
+                          "relative px-4 py-2 text-sm font-medium transition-all duration-300 nav-link-hover",
+                          activeSection === item.id 
+                            ? "text-primary nav-link-active" 
+                            : "text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary"
+                        )}>
+                          {item.label}
+                        </NavigationMenuTrigger>
+                        <NavigationMenuContent>
+                          <div className="grid gap-3 p-6 w-[400px]">
+                            <div className="row-span-3">
+                              <NavigationMenuLink asChild>
+                                <div className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-primary/50 to-secondary/50 p-6 no-underline outline-none focus:shadow-md">
+                                  <Building2 className="h-6 w-6 text-white" />
+                                  <div className="mb-2 mt-4 text-lg font-medium text-white">
+                                    Our Services
+                                  </div>
+                                  <p className="text-sm leading-tight text-white/90">
+                                    Comprehensive coaching for personal and professional growth
+                                  </p>
+                                </div>
+                              </NavigationMenuLink>
+                            </div>
+                            {services.map((service) => (
+                              <NavigationMenuLink key={service.title} asChild>
+                                <button
+                                  onClick={() => scrollToSection('services')}
+                                  className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground text-left"
+                                >
+                                  <div className="text-sm font-medium leading-none">{service.title}</div>
+                                  <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                                    {service.description}
+                                  </p>
+                                </button>
+                              </NavigationMenuLink>
+                            ))}
+                          </div>
+                        </NavigationMenuContent>
+                      </>
+                    ) : (
+                      <NavigationMenuLink asChild>
+                        <button
+                          onClick={() => scrollToSection(item.id)}
+                          className={cn(
+                            "relative px-4 py-2 text-sm font-medium transition-all duration-300 nav-link-hover",
+                            activeSection === item.id 
+                              ? "text-primary nav-link-active" 
+                              : "text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary"
+                          )}
+                          data-testid={`nav-${item.id}`}
+                        >
+                          {item.label}
+                        </button>
+                      </NavigationMenuLink>
+                    )}
+                  </NavigationMenuItem>
+                ))}
+                <NavigationMenuItem>
+                  <NavigationMenuLink asChild>
+                    <button
+                      onClick={() => scrollToSection(navigationItems[4].id)}
+                      className={cn(
+                        "relative px-4 py-2 text-sm font-medium transition-all duration-300 nav-link-hover",
+                        activeSection === navigationItems[4].id 
+                          ? "text-primary nav-link-active" 
+                          : "text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary"
+                      )}
+                      data-testid={`nav-${navigationItems[4].id}`}
+                    >
+                      {navigationItems[4].label}
+                    </button>
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+              </NavigationMenuList>
+            </NavigationMenu>
           </div>
 
-          {/* Mobile & Tablet Menu Button */}
-          <button 
-            className="lg:hidden flex items-center justify-center w-11 h-11 md:w-12 md:h-12 rounded-xl bg-gray-100 hover:bg-gray-200 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary/20 shadow-sm" 
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            data-testid="mobile-menu-toggle"
-            aria-label="Toggle mobile menu"
-            aria-expanded={isMobileMenuOpen}
-            aria-controls="mobile-menu"
-          >
-            <svg className="w-5 h-5 md:w-6 md:h-6 text-gray-700 transition-all duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path 
-                strokeLinecap="round" 
-                strokeLinejoin="round" 
-                strokeWidth={2.5} 
-                d={isMobileMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} 
-              />
-            </svg>
-          </button>
+          {/* Desktop Actions */}
+          <div className="hidden lg:flex items-center space-x-4">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={toggleTheme}
+              className="w-9 h-9 rounded-full"
+              data-testid="theme-toggle"
+            >
+              {isDarkMode ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+            </Button>
+            
+            <Button
+              variant="ghost"
+              onClick={() => scrollToSection('contact')}
+              className="text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary"
+              data-testid="nav-contact-button"
+            >
+              <Mail className="w-4 h-4 mr-2" />
+              Contact
+            </Button>
+            
+            <Button 
+              onClick={handleBookingClick}
+              className={cn(
+                "bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90",
+                "text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300",
+                "transform hover:scale-105 rounded-full",
+                isScrolled ? "px-4 py-2 text-sm" : "px-6 py-2.5 text-base"
+              )}
+              data-testid="nav-book-session"
+            >
+              <Calendar className="w-4 h-4 mr-2" />
+              Book Session
+            </Button>
+          </div>
+
+          {/* Mobile Menu */}
+          <div className="lg:hidden flex items-center space-x-2">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={toggleTheme}
+              className="w-9 h-9 rounded-full"
+              data-testid="mobile-theme-toggle"
+            >
+              {isDarkMode ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+            </Button>
+            
+            <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+              <SheetTrigger asChild>
+                <Button 
+                  variant="ghost"
+                  size="sm"
+                  className="lg:hidden w-10 h-10 rounded-xl"
+                  data-testid="mobile-menu-toggle"
+                  aria-label="Toggle mobile menu"
+                >
+                  {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="top" className="w-full border-b-0">
+                <SheetHeader>
+                  <SheetTitle className="text-left font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                    Navigation
+                  </SheetTitle>
+                </SheetHeader>
+                <div className="mt-6 space-y-6">
+                  {/* Navigation Links */}
+                  <div className="space-y-1">
+                    {navigationItems.map((item) => {
+                      const Icon = item.icon;
+                      return (
+                        <button
+                          key={item.id}
+                          onClick={() => scrollToSection(item.id)}
+                          className={cn(
+                            "flex items-center w-full px-4 py-3 text-left rounded-xl transition-all duration-200",
+                            activeSection === item.id
+                              ? "bg-primary/10 text-primary border border-primary/20"
+                              : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+                          )}
+                          data-testid={`mobile-nav-${item.id}`}
+                        >
+                          <Icon className="w-5 h-5 mr-4" />
+                          <div>
+                            <div className="font-medium">{item.label}</div>
+                            {item.id === 'services' && (
+                              <div className="text-sm text-gray-500 dark:text-gray-400">Career • Life • Spiritual</div>
+                            )}
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                  
+                  {/* CTA Button */}
+                  <Button 
+                    onClick={handleBookingClick}
+                    className="w-full bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white font-semibold py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]"
+                    data-testid="mobile-nav-book-session"
+                  >
+                    <Calendar className="w-5 h-5 mr-3" />
+                    Book Your Session
+                  </Button>
+                </div>
+              </SheetContent>
+            </Sheet>
+          </div>
         </div>
       </div>
 
-      {/* Mobile Menu Overlay */}
-      {isMobileMenuOpen && (
-        <>
-          {/* Backdrop */}
-          <div 
-            className="lg:hidden fixed inset-0 bg-black/20 backdrop-blur-sm z-40"
-            onClick={() => setIsMobileMenuOpen(false)}
-          />
-          
-          {/* Mobile & Tablet Menu */}
-          <div 
-            id="mobile-menu" 
-            className="lg:hidden fixed top-16 md:top-20 left-0 right-0 bg-white shadow-2xl border-t border-gray-100 z-50 animate-slide-down" 
-            data-testid="mobile-menu"
-            style={{ transformOrigin: 'top' }}
-          >
-            <div className="max-w-md mx-auto px-6 py-6 md:py-8">
-              {/* Navigation Links */}
-              <div className="space-y-1 mb-6 md:mb-8">
-                <button 
-                  onClick={() => scrollToSection("home")} 
-                  className="flex items-center w-full py-3 md:py-4 px-4 text-left text-gray-700 hover:text-primary hover:bg-primary/5 rounded-xl transition-all duration-200 font-medium text-base md:text-lg"
-                  data-testid="mobile-nav-home"
-                >
-                  <svg className="w-5 h-5 mr-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                  </svg>
-                  Home
-                </button>
-                <button 
-                  onClick={() => scrollToSection("services")} 
-                  className="flex items-center w-full py-3 md:py-4 px-4 text-left text-gray-700 hover:text-primary hover:bg-primary/5 rounded-xl transition-all duration-200 font-medium text-base md:text-lg"
-                  data-testid="mobile-nav-services"
-                >
-                  <svg className="w-5 h-5 mr-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                  </svg>
-                  Services
-                </button>
-                <button 
-                  onClick={() => scrollToSection("about")} 
-                  className="flex items-center w-full py-3 md:py-4 px-4 text-left text-gray-700 hover:text-primary hover:bg-primary/5 rounded-xl transition-all duration-200 font-medium text-base md:text-lg"
-                  data-testid="mobile-nav-about"
-                >
-                  <svg className="w-5 h-5 mr-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                  </svg>
-                  About
-                </button>
-                <button 
-                  onClick={() => scrollToSection("blog")} 
-                  className="flex items-center w-full py-3 md:py-4 px-4 text-left text-gray-700 hover:text-primary hover:bg-primary/5 rounded-xl transition-all duration-200 font-medium text-base md:text-lg"
-                  data-testid="mobile-nav-blog"
-                >
-                  <svg className="w-5 h-5 mr-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                  </svg>
-                  Blog
-                </button>
-                <button 
-                  onClick={() => scrollToSection("contact")} 
-                  className="flex items-center w-full py-3 md:py-4 px-4 text-left text-gray-700 hover:text-primary hover:bg-primary/5 rounded-xl transition-all duration-200 font-medium text-base md:text-lg"
-                  data-testid="mobile-nav-contact"
-                >
-                  <svg className="w-5 h-5 mr-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 7.89a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                  </svg>
-                  Contact
-                </button>
-              </div>
-              
-              {/* CTA Button */}
-              <button 
-                onClick={handleBookingClick} 
-                className="w-full bg-gradient-to-r from-primary to-secondary text-white py-4 px-6 rounded-xl font-semibold text-lg hover:from-primary/90 hover:to-secondary/90 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-[1.02] flex items-center justify-center"
-                data-testid="mobile-nav-book-session"
-              >
-                <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
-                Book Session
-              </button>
-            </div>
-          </div>
-        </>
-      )}
     </nav>
   );
 }

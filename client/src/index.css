@@ -184,6 +184,88 @@
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
+/* Glass morphism utilities */
+.glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.glass-dark {
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Navbar specific animations */
+@keyframes nav-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes nav-height-shrink {
+  from {
+    height: 5rem;
+  }
+  to {
+    height: 4rem;
+  }
+}
+
+.nav-slide-in {
+  animation: nav-slide-in 0.3s ease-out;
+}
+
+.nav-height-transition {
+  transition: height 0.3s ease-in-out, backdrop-filter 0.3s ease-in-out;
+}
+
+/* Active state gradient underline */
+.nav-link-active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(135deg, hsl(217, 91%, 42%) 0%, hsl(158, 64%, 39%) 100%);
+  border-radius: 1px;
+  animation: gradient-expand 0.3s ease-out;
+}
+
+@keyframes gradient-expand {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* Hover underline effect */
+.nav-link-hover::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  right: 50%;
+  height: 2px;
+  background: linear-gradient(135deg, hsl(217, 91%, 42%) 0%, hsl(158, 64%, 39%) 100%);
+  border-radius: 1px;
+  transition: left 0.3s ease, right 0.3s ease;
+}
+
+.nav-link-hover:hover::after {
+  left: 0;
+  right: 0;
+}
+
 /* Scrollbar styling */
 ::-webkit-scrollbar {
   width: 8px;
