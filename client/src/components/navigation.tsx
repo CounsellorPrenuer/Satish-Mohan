@@ -40,7 +40,7 @@ export default function Navigation({ onBookingClick }: NavigationProps) {
       data-testid="main-navigation"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16 sm:h-18">
+        <div className="flex justify-between items-center h-16 md:h-18">
           {/* Logo */}
           <div className="flex items-center flex-shrink-0">
             <img 
@@ -52,7 +52,7 @@ export default function Navigation({ onBookingClick }: NavigationProps) {
           </div>
           
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-6 xl:space-x-8">
+          <div className="hidden lg:flex items-center space-x-4 xl:space-x-6">
             <button 
               onClick={() => scrollToSection("home")} 
               className="text-gray-700 hover:text-primary transition-colors font-medium text-sm xl:text-base"
@@ -97,14 +97,14 @@ export default function Navigation({ onBookingClick }: NavigationProps) {
             </button>
           </div>
 
-          {/* Mobile Menu Button */}
+          {/* Mobile & Tablet Menu Button */}
           <button 
-            className="lg:hidden flex items-center justify-center w-10 h-10 rounded-xl bg-gray-100 hover:bg-gray-200 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/20" 
+            className="lg:hidden flex items-center justify-center w-10 h-10 md:w-11 md:h-11 rounded-xl bg-gray-100 hover:bg-gray-200 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary/20 shadow-sm" 
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             data-testid="mobile-menu-toggle"
             aria-label="Toggle mobile menu"
           >
-            <svg className="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 md:w-6 md:h-6 text-gray-700 transition-all duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path 
                 strokeLinecap="round" 
                 strokeLinejoin="round" 
@@ -125,14 +125,14 @@ export default function Navigation({ onBookingClick }: NavigationProps) {
             onClick={() => setIsMobileMenuOpen(false)}
           />
           
-          {/* Mobile Menu */}
-          <div className="lg:hidden fixed top-16 sm:top-18 left-0 right-0 bg-white shadow-2xl border-t border-gray-100 z-50" data-testid="mobile-menu">
-            <div className="max-w-sm mx-auto px-6 py-8">
+          {/* Mobile & Tablet Menu */}
+          <div className="lg:hidden fixed top-16 md:top-18 left-0 right-0 bg-white shadow-2xl border-t border-gray-100 z-50 animate-slide-down" data-testid="mobile-menu">
+            <div className="max-w-md mx-auto px-6 py-6 md:py-8">
               {/* Navigation Links */}
-              <div className="space-y-1 mb-8">
+              <div className="space-y-1 mb-6 md:mb-8">
                 <button 
                   onClick={() => scrollToSection("home")} 
-                  className="flex items-center w-full py-4 px-4 text-left text-gray-700 hover:text-primary hover:bg-primary/5 rounded-xl transition-all duration-200 font-medium text-lg"
+                  className="flex items-center w-full py-3 md:py-4 px-4 text-left text-gray-700 hover:text-primary hover:bg-primary/5 rounded-xl transition-all duration-200 font-medium text-base md:text-lg"
                   data-testid="mobile-nav-home"
                 >
                   <svg className="w-5 h-5 mr-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -142,7 +142,7 @@ export default function Navigation({ onBookingClick }: NavigationProps) {
                 </button>
                 <button 
                   onClick={() => scrollToSection("services")} 
-                  className="flex items-center w-full py-4 px-4 text-left text-gray-700 hover:text-primary hover:bg-primary/5 rounded-xl transition-all duration-200 font-medium text-lg"
+                  className="flex items-center w-full py-3 md:py-4 px-4 text-left text-gray-700 hover:text-primary hover:bg-primary/5 rounded-xl transition-all duration-200 font-medium text-base md:text-lg"
                   data-testid="mobile-nav-services"
                 >
                   <svg className="w-5 h-5 mr-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -152,7 +152,7 @@ export default function Navigation({ onBookingClick }: NavigationProps) {
                 </button>
                 <button 
                   onClick={() => scrollToSection("about")} 
-                  className="flex items-center w-full py-4 px-4 text-left text-gray-700 hover:text-primary hover:bg-primary/5 rounded-xl transition-all duration-200 font-medium text-lg"
+                  className="flex items-center w-full py-3 md:py-4 px-4 text-left text-gray-700 hover:text-primary hover:bg-primary/5 rounded-xl transition-all duration-200 font-medium text-base md:text-lg"
                   data-testid="mobile-nav-about"
                 >
                   <svg className="w-5 h-5 mr-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -162,7 +162,7 @@ export default function Navigation({ onBookingClick }: NavigationProps) {
                 </button>
                 <button 
                   onClick={() => scrollToSection("blog")} 
-                  className="flex items-center w-full py-4 px-4 text-left text-gray-700 hover:text-primary hover:bg-primary/5 rounded-xl transition-all duration-200 font-medium text-lg"
+                  className="flex items-center w-full py-3 md:py-4 px-4 text-left text-gray-700 hover:text-primary hover:bg-primary/5 rounded-xl transition-all duration-200 font-medium text-base md:text-lg"
                   data-testid="mobile-nav-blog"
                 >
                   <svg className="w-5 h-5 mr-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -172,7 +172,7 @@ export default function Navigation({ onBookingClick }: NavigationProps) {
                 </button>
                 <button 
                   onClick={() => scrollToSection("contact")} 
-                  className="flex items-center w-full py-4 px-4 text-left text-gray-700 hover:text-primary hover:bg-primary/5 rounded-xl transition-all duration-200 font-medium text-lg"
+                  className="flex items-center w-full py-3 md:py-4 px-4 text-left text-gray-700 hover:text-primary hover:bg-primary/5 rounded-xl transition-all duration-200 font-medium text-base md:text-lg"
                   data-testid="mobile-nav-contact"
                 >
                   <svg className="w-5 h-5 mr-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -185,7 +185,7 @@ export default function Navigation({ onBookingClick }: NavigationProps) {
               {/* CTA Button */}
               <button 
                 onClick={handleBookingClick} 
-                className="w-full bg-gradient-to-r from-primary to-secondary text-white py-4 px-6 rounded-xl font-semibold text-lg hover:from-primary/90 hover:to-secondary/90 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-[1.02] flex items-center justify-center"
+                className="w-full bg-gradient-to-r from-primary to-secondary text-white py-3 md:py-4 px-6 rounded-xl font-semibold text-base md:text-lg hover:from-primary/90 hover:to-secondary/90 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-[1.02] flex items-center justify-center"
                 data-testid="mobile-nav-book-session"
               >
                 <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
