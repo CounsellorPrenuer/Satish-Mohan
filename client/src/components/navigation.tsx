@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
-import { Moon, Sun, Menu, X, Home, Building2, User, BookOpen, Mail, Calendar } from "lucide-react";
+import { Menu, X, Home, Building2, User, BookOpen, Mail, Calendar } from "lucide-react";
 import logoImage from "@assets/logo_1758786484720.jpeg";
 import {
   NavigationMenu,
@@ -36,7 +36,6 @@ export default function Navigation({ onBookingClick }: NavigationProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
-  const [isDarkMode, setIsDarkMode] = useState(false);
   const [location] = useLocation();
 
   useEffect(() => {
@@ -64,19 +63,10 @@ export default function Navigation({ onBookingClick }: NavigationProps) {
   }, []);
 
   useEffect(() => {
-    // Initialize theme from localStorage or system preference
-    const theme = localStorage.getItem('theme') || 
-      (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-    setIsDarkMode(theme === 'dark');
-    document.documentElement.classList.toggle('dark', theme === 'dark');
+    // Ensure light mode only
+    document.documentElement.classList.remove('dark');
+    localStorage.setItem('theme', 'light');
   }, []);
-
-  const toggleTheme = () => {
-    const newTheme = isDarkMode ? 'light' : 'dark';
-    setIsDarkMode(!isDarkMode);
-    localStorage.setItem('theme', newTheme);
-    document.documentElement.classList.toggle('dark', newTheme === 'dark');
-  };
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -112,8 +102,8 @@ export default function Navigation({ onBookingClick }: NavigationProps) {
       className={cn(
         "fixed top-0 left-0 right-0 z-50 nav-height-transition nav-slide-in",
         isScrolled 
-          ? "h-16 glass dark:glass-dark shadow-xl border-b border-white/20 dark:border-gray-800/20" 
-          : "h-20 bg-white/60 dark:bg-gray-900/60 backdrop-blur-md border-b border-transparent"
+          ? "h-16 glass shadow-xl border-b border-white/20" 
+          : "h-20 bg-white/60 backdrop-blur-md border-b border-transparent"
       )}
       data-testid="main-navigation"
     >
@@ -139,7 +129,7 @@ export default function Navigation({ onBookingClick }: NavigationProps) {
               )}>
                 Innervea
               </h1>
-              <p className="text-xs text-gray-600 dark:text-gray-400 -mt-1">Transform Within</p>
+              <p className="text-xs text-gray-600 -mt-1">Transform Within</p>
             </div>
           </div>
           
@@ -152,11 +142,11 @@ export default function Navigation({ onBookingClick }: NavigationProps) {
                     {item.id === 'services' ? (
                       <>
                         <NavigationMenuTrigger className={cn(
-                          "bg-transparent hover:bg-gray-100/50 dark:hover:bg-gray-800/50",
+                          "bg-transparent hover:bg-gray-100/50",
                           "relative px-4 py-2 text-sm font-medium transition-all duration-300 nav-link-hover",
                           activeSection === item.id 
                             ? "text-primary nav-link-active" 
-                            : "text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary"
+                            : "text-gray-700 hover:text-primary"
                         )}>
                           {item.label}
                         </NavigationMenuTrigger>
@@ -217,7 +207,7 @@ export default function Navigation({ onBookingClick }: NavigationProps) {
                         "relative px-4 py-2 text-sm font-medium transition-all duration-300 nav-link-hover",
                         activeSection === navigationItems[4].id 
                           ? "text-primary nav-link-active" 
-                          : "text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary"
+                          : "text-gray-700 hover:text-primary"
                       )}
                       data-testid={`nav-${navigationItems[4].id}`}
                     >
@@ -233,18 +223,8 @@ export default function Navigation({ onBookingClick }: NavigationProps) {
           <div className="hidden lg:flex items-center space-x-4">
             <Button
               variant="ghost"
-              size="sm"
-              onClick={toggleTheme}
-              className="w-9 h-9 rounded-full"
-              data-testid="theme-toggle"
-            >
-              {isDarkMode ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-            </Button>
-            
-            <Button
-              variant="ghost"
               onClick={() => scrollToSection('contact')}
-              className="text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary"
+              className="text-gray-700 hover:text-primary"
               data-testid="nav-contact-button"
             >
               <Mail className="w-4 h-4 mr-2" />
@@ -267,17 +247,7 @@ export default function Navigation({ onBookingClick }: NavigationProps) {
           </div>
 
           {/* Mobile Menu */}
-          <div className="lg:hidden flex items-center space-x-2">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={toggleTheme}
-              className="w-9 h-9 rounded-full"
-              data-testid="mobile-theme-toggle"
-            >
-              {isDarkMode ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-            </Button>
-            
+          <div className="lg:hidden flex items-center">
             <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
               <SheetTrigger asChild>
                 <Button 
@@ -309,7 +279,7 @@ export default function Navigation({ onBookingClick }: NavigationProps) {
                             "flex items-center w-full px-4 py-3 text-left rounded-xl transition-all duration-200",
                             activeSection === item.id
                               ? "bg-primary/10 text-primary border border-primary/20"
-                              : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+                              : "text-gray-700 hover:bg-gray-100"
                           )}
                           data-testid={`mobile-nav-${item.id}`}
                         >
@@ -317,7 +287,7 @@ export default function Navigation({ onBookingClick }: NavigationProps) {
                           <div>
                             <div className="font-medium">{item.label}</div>
                             {item.id === 'services' && (
-                              <div className="text-sm text-gray-500 dark:text-gray-400">Career • Life • Spiritual</div>
+                              <div className="text-sm text-gray-500">Career • Life • Spiritual</div>
                             )}
                           </div>
                         </button>
