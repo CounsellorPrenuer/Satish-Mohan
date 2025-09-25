@@ -9,7 +9,7 @@ export default function PartnershipSection() {
             <span className="text-primary">Career Discovery Platform</span>
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-4xl mx-auto leading-relaxed px-4">
-            Every Career Clarity consultation includes lifetime access to Mentoria: India's most trusted platform for 
+            Every Innervea consultation includes lifetime access to Mentoria: India's most trusted platform for 
             career discovery, mentorship, and lifelong upskilling.
           </p>
         </div>

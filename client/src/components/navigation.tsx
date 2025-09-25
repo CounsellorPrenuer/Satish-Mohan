@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "wouter";
-import logoImage from "@assets/logo-clarity_1758707529304.png";
+import logoImage from "@assets/logo_1758786484720.jpeg";
 
 interface NavigationProps {
   onBookingClick: () => void;
@@ -45,7 +45,7 @@ export default function Navigation({ onBookingClick }: NavigationProps) {
           <div className="flex items-center flex-shrink-0">
             <img 
               src={logoImage} 
-              alt="Career Clarity Logo" 
+              alt="Innervea Logo" 
               className="h-10 sm:h-12 w-auto rounded-lg"
               data-testid="brand-logo"
             />

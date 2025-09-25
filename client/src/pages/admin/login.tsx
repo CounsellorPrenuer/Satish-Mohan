@@ -80,7 +80,7 @@ export default function AdminLogin() {
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold text-center">Admin Login</CardTitle>
           <CardDescription className="text-center">
-            Access the Career Clarity admin dashboard
+            Access the Innervea admin dashboard
           </CardDescription>
         </CardHeader>
         <CardContent>
