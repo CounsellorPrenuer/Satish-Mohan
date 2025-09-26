@@ -15,11 +15,7 @@ export default function Footer({ onBookingClick }: FooterProps) {
   };
 
   return (
-    <footer className="bg-gradient-to-br from-foreground via-foreground to-foreground/95 text-white py-16 relative overflow-hidden">
-      {/* Background decoration */}
-      <div className="absolute inset-0 bg-primary/20"></div>
-      
-      
+    <footer className="bg-foreground text-white py-16 relative overflow-hidden">     
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 lg:gap-12">
           <div className="md:col-span-1">
