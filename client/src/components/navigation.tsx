@@ -177,16 +177,6 @@ export default function Navigation({ onBookingClick }: NavigationProps) {
 
           {/* Desktop Actions */}
           <div className="hidden lg:flex items-center space-x-4">
-            <Button
-              variant="ghost"
-              onClick={() => scrollToSection('contact')}
-              className="text-gray-700 hover:text-primary"
-              data-testid="nav-contact-button"
-            >
-              <Mail className="w-4 h-4 mr-2" />
-              Contact
-            </Button>
-            
             <Button 
               onClick={handleBookingClick}
               className={cn(
