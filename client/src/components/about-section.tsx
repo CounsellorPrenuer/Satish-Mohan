@@ -56,13 +56,13 @@ export default function AboutSection({ onBookingClick }: AboutSectionProps) {
           
           <div>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-8 sm:mb-10" data-testid="about-title">
-              About Satish Mohan
+              The Innervea Story
             </h2>
             <p className="text-lg sm:text-xl text-muted-foreground mb-6 sm:mb-8 leading-relaxed" data-testid="about-description-1">
-              Satish Mohan is a passionate career counsellor, life coach, and holistic guide dedicated to empowering individuals to discover clarity and purpose in their professional and personal lives.
+              In today's fast-changing world, many feel torn between ambition, personal fulfillment, and inner peace. Innervea brings together "inner" – our authentic self – and "vea" from the Latin via, meaning "path." It reflects our purpose: guiding people on the path within to unlock clarity and direction.
             </p>
             <p className="text-lg sm:text-xl text-muted-foreground mb-8 sm:mb-10 leading-relaxed" data-testid="about-description-2">
-              With extensive experience in career counselling, life coaching, training, meditation mentoring, tarot reading, and manifestation guidance, Satish blends practical advice with spiritual insight. He offers comprehensive support to clients seeking growth, direction, and lasting fulfillment.
+              At Innervea, we believe that a fulfilling life is built on three pillars: Career Counselling, Life Coaching, and Meditation. Together, these create a holistic approach that blends professional direction with personal well-being. We don't just focus on success as the world defines it – we help people align their careers and lives with who they truly are.
             </p>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 mb-12">
