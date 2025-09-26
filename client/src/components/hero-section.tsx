@@ -139,11 +139,11 @@ export default function HeroSection({ onBookingClick }: HeroSectionProps) {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             <div className="text-white animate-fade-in-up order-2 lg:order-1 text-center lg:text-left">
               <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 sm:mb-8 leading-tight tracking-tight" data-testid="hero-title">
-                The Path
-                <span className="text-accent"> Within</span>
+                The Path Within to
+                <span className="text-accent"> Purpose & Growth</span>
               </h1>
               <p className="text-lg sm:text-xl md:text-2xl mb-8 sm:mb-10 text-white/90 leading-relaxed max-w-2xl mx-auto lg:mx-0" data-testid="hero-description">
-                Find clarity. Find purpose. Find yourself.
+                Discover the career that truly fits your strengths. Break barriers, cultivate confidence. Quiet the mind, gain clarity. Transform from confusion to direction, from self-doubt to self-belief.
               </p>
               <div className="
                 flex flex-col sm:flex-row gap-3 sm:gap-4
