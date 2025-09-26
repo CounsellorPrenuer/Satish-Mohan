@@ -15,167 +15,200 @@ export default function Footer({ onBookingClick }: FooterProps) {
   };
 
   return (
-    <footer className="bg-foreground text-white py-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div>
+    <footer className="bg-gradient-to-br from-foreground via-foreground to-foreground/95 text-white py-16 relative overflow-hidden">
+      {/* Background decoration */}
+      <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-secondary/5"></div>
+      <div className="absolute top-0 left-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl -translate-x-48 -translate-y-48"></div>
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-secondary/5 rounded-full blur-3xl translate-x-48 translate-y-48"></div>
+      
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 lg:gap-12">
+          <div className="md:col-span-1">
             <div className="flex items-center mb-6">
               <img 
                 src={logoImage} 
                 alt="Innervea Logo" 
-                className="h-16 w-auto rounded-lg"
+                className="h-16 w-auto rounded-xl shadow-lg border border-white/10"
                 data-testid="footer-logo"
               />
             </div>
-            <p className="text-white/80 leading-relaxed mb-6">
-              Empowering transformation through innovative coaching and holistic guidance.
+            <h4 className="text-xl font-semibold mb-3 bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent">
+              Innervea
+            </h4>
+            <p className="text-white/75 leading-relaxed mb-6 text-sm">
+              Empowering transformation through innovative coaching and holistic guidance. The path within to purpose and growth.
             </p>
-            <div className="flex space-x-4">
+            <div className="flex space-x-3">
               <a 
                 href="https://linkedin.com/company/innervea" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors"
+                className="group w-11 h-11 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-gradient-to-r hover:from-primary/20 hover:to-secondary/20 transition-all duration-300 transform hover:scale-110 hover:shadow-lg border border-white/10 hover:border-white/20"
                 data-testid="social-linkedin"
               >
-                <Linkedin size={20} />
+                <Linkedin size={18} className="group-hover:text-white transition-colors" />
               </a>
               <a 
                 href="https://instagram.com/innervea" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors"
+                className="group w-11 h-11 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-gradient-to-r hover:from-primary/20 hover:to-secondary/20 transition-all duration-300 transform hover:scale-110 hover:shadow-lg border border-white/10 hover:border-white/20"
                 data-testid="social-instagram"
               >
-                <Instagram size={20} />
+                <Instagram size={18} className="group-hover:text-white transition-colors" />
               </a>
               <a 
                 href="https://twitter.com/innervea" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors"
+                className="group w-11 h-11 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-gradient-to-r hover:from-primary/20 hover:to-secondary/20 transition-all duration-300 transform hover:scale-110 hover:shadow-lg border border-white/10 hover:border-white/20"
                 data-testid="social-twitter"
               >
-                <Twitter size={20} />
+                <Twitter size={18} className="group-hover:text-white transition-colors" />
               </a>
               <a 
                 href="https://youtube.com/@innervea" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors"
+                className="group w-11 h-11 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-gradient-to-r hover:from-primary/20 hover:to-secondary/20 transition-all duration-300 transform hover:scale-110 hover:shadow-lg border border-white/10 hover:border-white/20"
                 data-testid="social-youtube"
               >
-                <Youtube size={20} />
+                <Youtube size={18} className="group-hover:text-white transition-colors" />
               </a>
               <a 
                 href="https://facebook.com/innervea" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors"
+                className="group w-11 h-11 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-gradient-to-r hover:from-primary/20 hover:to-secondary/20 transition-all duration-300 transform hover:scale-110 hover:shadow-lg border border-white/10 hover:border-white/20"
                 data-testid="social-facebook"
               >
-                <Facebook size={20} />
+                <Facebook size={18} className="group-hover:text-white transition-colors" />
               </a>
             </div>
           </div>
           
           <div>
-            <h3 className="font-semibold text-lg mb-4">Services</h3>
-            <ul className="space-y-2 text-white/80">
+            <h3 className="font-bold text-lg mb-6 text-white/90 relative">
+              <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Services</span>
+              <div className="absolute bottom-0 left-0 w-8 h-0.5 bg-gradient-to-r from-primary to-secondary rounded-full"></div>
+            </h3>
+            <ul className="space-y-3">
               <li>
                 <button 
                   onClick={() => scrollToSection("services")} 
-                  className="hover:text-white transition-colors"
+                  className="group text-white/70 hover:text-white transition-all duration-300 text-sm flex items-center space-x-2"
                 >
-                  Career Guidance
+                  <span className="w-1.5 h-1.5 bg-white/40 rounded-full group-hover:bg-primary transition-colors"></span>
+                  <span>Career Guidance</span>
                 </button>
               </li>
               <li>
                 <button 
                   onClick={() => scrollToSection("services")} 
-                  className="hover:text-white transition-colors"
+                  className="group text-white/70 hover:text-white transition-all duration-300 text-sm flex items-center space-x-2"
                 >
-                  Life Coaching
+                  <span className="w-1.5 h-1.5 bg-white/40 rounded-full group-hover:bg-primary transition-colors"></span>
+                  <span>Life Coaching</span>
                 </button>
               </li>
               <li>
                 <button 
                   onClick={() => scrollToSection("services")} 
-                  className="hover:text-white transition-colors"
+                  className="group text-white/70 hover:text-white transition-all duration-300 text-sm flex items-center space-x-2"
                 >
-                  Meditation
+                  <span className="w-1.5 h-1.5 bg-white/40 rounded-full group-hover:bg-primary transition-colors"></span>
+                  <span>Meditation</span>
                 </button>
               </li>
               <li>
                 <button 
                   onClick={() => scrollToSection("services")} 
-                  className="hover:text-white transition-colors"
+                  className="group text-white/70 hover:text-white transition-all duration-300 text-sm flex items-center space-x-2"
                 >
-                  Workshops
+                  <span className="w-1.5 h-1.5 bg-white/40 rounded-full group-hover:bg-primary transition-colors"></span>
+                  <span>Workshops</span>
                 </button>
               </li>
             </ul>
           </div>
           
           <div>
-            <h3 className="font-semibold text-lg mb-4">Quick Links</h3>
-            <ul className="space-y-2 text-white/80">
+            <h3 className="font-bold text-lg mb-6 text-white/90 relative">
+              <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Quick Links</span>
+              <div className="absolute bottom-0 left-0 w-8 h-0.5 bg-gradient-to-r from-primary to-secondary rounded-full"></div>
+            </h3>
+            <ul className="space-y-3">
               <li>
                 <button 
                   onClick={() => scrollToSection("about")} 
-                  className="hover:text-white transition-colors"
+                  className="group text-white/70 hover:text-white transition-all duration-300 text-sm flex items-center space-x-2"
                 >
-                  About
+                  <span className="w-1.5 h-1.5 bg-white/40 rounded-full group-hover:bg-secondary transition-colors"></span>
+                  <span>About</span>
                 </button>
               </li>
               <li>
                 <button 
                   onClick={() => scrollToSection("blog")} 
-                  className="hover:text-white transition-colors"
+                  className="group text-white/70 hover:text-white transition-all duration-300 text-sm flex items-center space-x-2"
                 >
-                  Blog
+                  <span className="w-1.5 h-1.5 bg-white/40 rounded-full group-hover:bg-secondary transition-colors"></span>
+                  <span>Blog</span>
                 </button>
               </li>
               <li>
                 <button 
                   onClick={() => scrollToSection("contact")} 
-                  className="hover:text-white transition-colors"
+                  className="group text-white/70 hover:text-white transition-all duration-300 text-sm flex items-center space-x-2"
                 >
-                  Contact
+                  <span className="w-1.5 h-1.5 bg-white/40 rounded-full group-hover:bg-secondary transition-colors"></span>
+                  <span>Contact</span>
                 </button>
               </li>
               <li>
                 <button 
                   onClick={onBookingClick} 
-                  className="hover:text-white transition-colors"
+                  className="group text-white/70 hover:text-white transition-all duration-300 text-sm flex items-center space-x-2 font-medium"
                 >
-                  Book Session
+                  <span className="w-1.5 h-1.5 bg-white/40 rounded-full group-hover:bg-accent transition-colors"></span>
+                  <span>Book Session</span>
                 </button>
               </li>
             </ul>
           </div>
           
           <div>
-            <h3 className="font-semibold text-lg mb-4">Admin Access</h3>
-            <ul className="space-y-2 text-white/80">
+            <h3 className="font-bold text-lg mb-6 text-white/90 relative">
+              <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Admin Access</span>
+              <div className="absolute bottom-0 left-0 w-8 h-0.5 bg-gradient-to-r from-primary to-secondary rounded-full"></div>
+            </h3>
+            <ul className="space-y-3">
               <li>
-                <Link href="/admin/bookings" className="hover:text-white transition-colors">
-                  Admin Dashboard
+                <Link href="/admin/bookings" className="group text-white/70 hover:text-white transition-all duration-300 text-sm flex items-center space-x-2">
+                  <span className="w-1.5 h-1.5 bg-white/40 rounded-full group-hover:bg-accent transition-colors"></span>
+                  <span>Admin Dashboard</span>
                 </Link>
               </li>
               <li>
-                <Link href="/admin/blogs" className="hover:text-white transition-colors">
-                  Blog Management
+                <Link href="/admin/blogs" className="group text-white/70 hover:text-white transition-all duration-300 text-sm flex items-center space-x-2">
+                  <span className="w-1.5 h-1.5 bg-white/40 rounded-full group-hover:bg-accent transition-colors"></span>
+                  <span>Blog Management</span>
                 </Link>
               </li>
             </ul>
           </div>
         </div>
         
-        <div className="border-t border-white/20 mt-12 pt-8 text-center">
-          <p className="text-white/80">© 2024 Innervea. All rights reserved.</p>
-          <br />
-          <p className="text-white/70 text-sm" data-testid="text-partnership-mentoria">In partnership with Mentoria for enhanced career guidance services.</p>
+        <div className="relative mt-16 pt-8">
+          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-32 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent"></div>
+          <div className="text-center space-y-4">
+            <p className="text-white/70 text-sm font-medium">
+              © 2024 <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold">Innervea</span>. All rights reserved.
+            </p>
+            <p className="text-white/60 text-xs max-w-md mx-auto leading-relaxed" data-testid="text-partnership-mentoria">
+              In partnership with <span className="text-white/80 font-medium">Mentoria</span> for enhanced career guidance services.
+            </p>
+          </div>
         </div>
       </div>
     </footer>
