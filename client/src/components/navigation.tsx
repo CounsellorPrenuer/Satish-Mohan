@@ -139,64 +139,20 @@ export default function Navigation({ onBookingClick }: NavigationProps) {
               <NavigationMenuList className="gap-1">
                 {navigationItems.slice(0, 4).map((item) => (
                   <NavigationMenuItem key={item.id}>
-                    {item.id === 'services' ? (
-                      <>
-                        <NavigationMenuTrigger className={cn(
-                          "bg-transparent hover:bg-gray-100/50",
+                    <NavigationMenuLink asChild>
+                      <button
+                        onClick={() => scrollToSection(item.id)}
+                        className={cn(
                           "relative px-4 py-2 text-sm font-medium transition-all duration-300 nav-link-hover",
                           activeSection === item.id 
                             ? "text-primary nav-link-active" 
-                            : "text-gray-700 hover:text-primary"
-                        )}>
-                          {item.label}
-                        </NavigationMenuTrigger>
-                        <NavigationMenuContent>
-                          <div className="grid gap-3 p-6 w-[400px]">
-                            <div className="row-span-3">
-                              <NavigationMenuLink asChild>
-                                <div className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-primary/50 to-secondary/50 p-6 no-underline outline-none focus:shadow-md">
-                                  <Building2 className="h-6 w-6 text-white" />
-                                  <div className="mb-2 mt-4 text-lg font-medium text-white">
-                                    Our Services
-                                  </div>
-                                  <p className="text-sm leading-tight text-white/90">
-                                    Comprehensive coaching for personal and professional growth
-                                  </p>
-                                </div>
-                              </NavigationMenuLink>
-                            </div>
-                            {services.map((service) => (
-                              <NavigationMenuLink key={service.title} asChild>
-                                <button
-                                  onClick={() => scrollToSection('services')}
-                                  className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground text-left"
-                                >
-                                  <div className="text-sm font-medium leading-none">{service.title}</div>
-                                  <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                                    {service.description}
-                                  </p>
-                                </button>
-                              </NavigationMenuLink>
-                            ))}
-                          </div>
-                        </NavigationMenuContent>
-                      </>
-                    ) : (
-                      <NavigationMenuLink asChild>
-                        <button
-                          onClick={() => scrollToSection(item.id)}
-                          className={cn(
-                            "relative px-4 py-2 text-sm font-medium transition-all duration-300 nav-link-hover",
-                            activeSection === item.id 
-                              ? "text-primary nav-link-active" 
-                              : "text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary"
-                          )}
-                          data-testid={`nav-${item.id}`}
-                        >
-                          {item.label}
-                        </button>
-                      </NavigationMenuLink>
-                    )}
+                            : "text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary"
+                        )}
+                        data-testid={`nav-${item.id}`}
+                      >
+                        {item.label}
+                      </button>
+                    </NavigationMenuLink>
                   </NavigationMenuItem>
                 ))}
                 <NavigationMenuItem>
