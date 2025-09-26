@@ -97,7 +97,7 @@ export default function ServicesSection({ onServiceSelect }: ServicesSectionProp
             Comprehensive Services
           </h2>
           <p className="text-lg sm:text-xl lg:text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed px-4" data-testid="services-description">
-            Empowering your journey with personalized guidance across career, life, and spiritual development
+            Where clarity meets action, and calm meets ambition. Discover, transform, and align your path with personalized guidance
           </p>
         </div>
 

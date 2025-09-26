@@ -143,7 +143,7 @@ export default function HeroSection({ onBookingClick }: HeroSectionProps) {
                 <span className="text-accent"> Purpose & Growth</span>
               </h1>
               <p className="text-lg sm:text-xl md:text-2xl mb-8 sm:mb-10 text-white/90 leading-relaxed max-w-2xl mx-auto lg:mx-0" data-testid="hero-description">
-                Discover the career that truly fits your strengths. Break barriers, cultivate confidence. Quiet the mind, gain clarity. Transform from confusion to direction, from self-doubt to self-belief.
+                In life, many of us chase success, yet feel lost. Careers stall, purpose feels distant, and the mind never rests. Innervea was created to change that. Transform from confusion to clarity, from self-doubt to self-belief, from restless striving to purposeful living.
               </p>
               <div className="
                 flex flex-col sm:flex-row gap-3 sm:gap-4

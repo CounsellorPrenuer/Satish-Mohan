@@ -59,10 +59,10 @@ export default function AboutSection({ onBookingClick }: AboutSectionProps) {
               The Innervea Story
             </h2>
             <p className="text-lg sm:text-xl text-muted-foreground mb-6 sm:mb-8 leading-relaxed" data-testid="about-description-1">
-              In today's fast-changing world, many feel torn between ambition, personal fulfillment, and inner peace. Innervea brings together "inner" – our authentic self – and "vea" from the Latin via, meaning "path." It reflects our purpose: guiding people on the path within to unlock clarity and direction.
+              The name itself is a promise: "inner" – your authentic self, and "vea" – the path. Innervea is the path within. It is where clarity meets action, and calm meets ambition. In today's fast-changing world, many feel torn between ambition, personal fulfillment, and inner peace.
             </p>
             <p className="text-lg sm:text-xl text-muted-foreground mb-8 sm:mb-10 leading-relaxed" data-testid="about-description-2">
-              At Innervea, we believe that a fulfilling life is built on three pillars: Career Counselling, Life Coaching, and Meditation. Together, these create a holistic approach that blends professional direction with personal well-being. We don't just focus on success as the world defines it – we help people align their careers and lives with who they truly are.
+              We don't just guide you — we help you transform. Through our unique blend of Career Counselling, Life Coaching, and Meditation, we help you discover the career that truly fits your strengths, break barriers and cultivate confidence, and quiet the mind to gain clarity. With Innervea, success is not just measured in achievements, but in alignment — when your career, your life, and your inner self move together in harmony.
             </p>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 mb-12">
