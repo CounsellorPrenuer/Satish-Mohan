@@ -90,7 +90,7 @@ export default function ContactSection() {
                   href="https://www.linkedin.com/in/satish-mohan-n-8560684" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-colors"
+                  className="w-12 h-12 bg-blue-600/10 rounded-lg flex items-center justify-center text-blue-600 hover:bg-blue-600 hover:text-white transition-colors"
                   data-testid="social-linkedin"
                 >
                   <Linkedin size={20} />
@@ -99,7 +99,7 @@ export default function ContactSection() {
                   href="https://www.instagram.com/innervea_25?igsh=MTV4eXBtcnB5cnhoNw==" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center text-accent hover:bg-accent hover:text-white transition-colors"
+                  className="w-12 h-12 bg-pink-500/10 rounded-lg flex items-center justify-center text-pink-500 hover:bg-pink-500 hover:text-white transition-colors"
                   data-testid="social-instagram"
                 >
                   <Instagram size={20} />
@@ -108,7 +108,7 @@ export default function ContactSection() {
                   href="https://www.facebook.com/Innervea" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="w-12 h-12 bg-secondary/10 rounded-lg flex items-center justify-center text-secondary hover:bg-secondary hover:text-white transition-colors"
+                  className="w-12 h-12 bg-blue-600/10 rounded-lg flex items-center justify-center text-blue-600 hover:bg-blue-600 hover:text-white transition-colors"
                   data-testid="social-facebook"
                 >
                   <Facebook size={20} />
@@ -117,7 +117,7 @@ export default function ContactSection() {
                   href="https://x.com/NSatishMohan1?t=8bmTYDscXDNrjgCi1th_lA&s=09" 
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-12 h-12 bg-foreground/10 rounded-lg flex items-center justify-center text-foreground hover:bg-foreground hover:text-white transition-colors"
+                  className="w-12 h-12 bg-sky-500/10 rounded-lg flex items-center justify-center text-sky-500 hover:bg-sky-500 hover:text-white transition-colors"
                   data-testid="social-twitter"
                 >
                   <Twitter size={20} />
