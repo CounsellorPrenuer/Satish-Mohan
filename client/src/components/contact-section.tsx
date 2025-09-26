@@ -72,14 +72,14 @@ export default function ContactSection() {
                   <Phone className="text-primary" size={20} />
                 </div>
                 <h3 className="font-semibold text-lg mb-2">Phone</h3>
-                <p className="text-muted-foreground">+91 9891834909</p>
+                <p className="text-muted-foreground">+91-7011845614</p>
               </div>
               <div className="bg-card rounded-xl p-6 shadow-lg" data-testid="contact-email">
                 <div className="w-12 h-12 bg-secondary/10 rounded-lg flex items-center justify-center mb-4">
                   <Mail className="text-secondary" size={20} />
                 </div>
                 <h3 className="font-semibold text-lg mb-2">Email</h3>
-                <p className="text-muted-foreground">nsatish.mohan@gmail.com</p>
+                <p className="text-muted-foreground">innervea@gmail.com</p>
               </div>
             </div>
 
@@ -96,7 +96,7 @@ export default function ContactSection() {
                   <Linkedin size={20} />
                 </a>
                 <a 
-                  href="https://www.instagram.com/divineaura_2020" 
+                  href="https://www.instagram.com/innervea_25?igsh=MTV4eXBtcnB5cnhoNw==" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center text-accent hover:bg-accent hover:text-white transition-colors"
@@ -105,14 +105,18 @@ export default function ContactSection() {
                   <Instagram size={20} />
                 </a>
                 <a 
-                  href="#" 
+                  href="https://www.facebook.com/Innervea" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
                   className="w-12 h-12 bg-secondary/10 rounded-lg flex items-center justify-center text-secondary hover:bg-secondary hover:text-white transition-colors"
                   data-testid="social-facebook"
                 >
                   <Facebook size={20} />
                 </a>
                 <a 
-                  href="#" 
+                  href="https://x.com/NSatishMohan1?t=8bmTYDscXDNrjgCi1th_lA&s=09" 
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="w-12 h-12 bg-foreground/10 rounded-lg flex items-center justify-center text-foreground hover:bg-foreground hover:text-white transition-colors"
                   data-testid="social-twitter"
                 >

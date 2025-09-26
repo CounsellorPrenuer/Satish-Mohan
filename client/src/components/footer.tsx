@@ -44,7 +44,7 @@ export default function Footer({ onBookingClick }: FooterProps) {
                 <Linkedin size={18} className="group-hover:text-white transition-colors" />
               </a>
               <a 
-                href="https://instagram.com/innervea" 
+                href="https://www.instagram.com/innervea_25?igsh=MTV4eXBtcnB5cnhoNw==" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="group w-11 h-11 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-gradient-to-r hover:from-primary/20 hover:to-secondary/20 transition-all duration-300 transform hover:scale-110 hover:shadow-lg border border-white/10 hover:border-white/20"
@@ -53,7 +53,7 @@ export default function Footer({ onBookingClick }: FooterProps) {
                 <Instagram size={18} className="group-hover:text-white transition-colors" />
               </a>
               <a 
-                href="https://twitter.com/innervea" 
+                href="https://x.com/NSatishMohan1?t=8bmTYDscXDNrjgCi1th_lA&s=09" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="group w-11 h-11 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-gradient-to-r hover:from-primary/20 hover:to-secondary/20 transition-all duration-300 transform hover:scale-110 hover:shadow-lg border border-white/10 hover:border-white/20"
@@ -62,7 +62,7 @@ export default function Footer({ onBookingClick }: FooterProps) {
                 <Twitter size={18} className="group-hover:text-white transition-colors" />
               </a>
               <a 
-                href="https://youtube.com/@innervea" 
+                href="https://youtube.com/@innervea?si=VNwZh4esoDIsxKWF" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="group w-11 h-11 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-gradient-to-r hover:from-primary/20 hover:to-secondary/20 transition-all duration-300 transform hover:scale-110 hover:shadow-lg border border-white/10 hover:border-white/20"
@@ -71,7 +71,7 @@ export default function Footer({ onBookingClick }: FooterProps) {
                 <Youtube size={18} className="group-hover:text-white transition-colors" />
               </a>
               <a 
-                href="https://facebook.com/innervea" 
+                href="https://www.facebook.com/Innervea" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="group w-11 h-11 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-gradient-to-r hover:from-primary/20 hover:to-secondary/20 transition-all duration-300 transform hover:scale-110 hover:shadow-lg border border-white/10 hover:border-white/20"
