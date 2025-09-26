@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Phone, Mail, Linkedin, Instagram, Facebook, Twitter } from "lucide-react";
+import { Phone, Mail, Linkedin, Instagram, Facebook, Twitter, Youtube } from "lucide-react";
 import type { InsertContactForm } from "@shared/schema";
 
 export default function ContactSection() {
@@ -121,6 +121,15 @@ export default function ContactSection() {
                   data-testid="social-twitter"
                 >
                   <Twitter size={20} />
+                </a>
+                <a 
+                  href="https://youtube.com/@innervea?si=VNwZh4esoDIsxKWF" 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-12 h-12 bg-red-500/10 rounded-lg flex items-center justify-center text-red-500 hover:bg-red-500 hover:text-white transition-colors"
+                  data-testid="social-youtube"
+                >
+                  <Youtube size={20} />
                 </a>
               </div>
             </div>
