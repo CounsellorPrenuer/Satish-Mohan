@@ -45,13 +45,16 @@ export default function AboutSection({ onBookingClick }: AboutSectionProps) {
     <section id="about" className="py-16 sm:py-24 lg:py-20 bg-background">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          <div>
+          <div className="flex flex-col items-center">
             <img 
               src={profileImage} 
               alt="Satish Mohan - Career Counselor and Life Coach" 
-              className="rounded-2xl shadow-lg w-full"
+              className="rounded-2xl shadow-lg w-64 h-64 object-cover"
               data-testid="about-image"
             />
+            <p className="mt-4 text-center text-muted-foreground text-sm max-w-xs">
+              Over 10 years of experience guiding individuals toward personal and professional transformation
+            </p>
           </div>
           
           <div>

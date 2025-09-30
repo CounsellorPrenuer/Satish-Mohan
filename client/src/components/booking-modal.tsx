@@ -26,10 +26,8 @@ interface BookingModalProps {
 const services = [
   { id: "career-guidance", name: "Career Guidance", price: 2500 },
   { id: "life-coaching", name: "Life Coaching", price: 3000 },
-  { id: "meditation", name: "Meditation Session", price: 1500 },
-  { id: "workshops", name: "Workshop Registration", price: 5000 },
+  { id: "meditation", name: "Meditation Session", price: 997 },
   { id: "admission-guidance", name: "Admission Guidance", price: 2000 },
-  { id: "hospitality-consulting", name: "Hospitality Consulting", price: 10000 },
 ];
 
 const timeSlots = [

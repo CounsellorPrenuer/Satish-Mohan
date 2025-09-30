@@ -56,7 +56,7 @@ const services = [
     description: "Find inner peace and clarity through guided meditation and mindfulness practices.",
     icon: Leaf,
     color: "accent",
-    price: "₹1,500",
+    price: "₹997",
     featured: false
   },
   {
@@ -65,8 +65,9 @@ const services = [
     description: "Interactive group sessions designed to inspire and educate on career and life topics.",
     icon: Users,
     color: "primary",
-    price: "₹5,000",
-    featured: false
+    price: "Contact for Details",
+    featured: false,
+    isQueryForm: true
   },
   {
     id: "admission-guidance",
@@ -83,8 +84,9 @@ const services = [
     description: "Strategic consulting for hospitality businesses and independent director services.",
     icon: Building,
     color: "accent",
-    price: "₹10,000",
-    featured: false
+    price: "Contact for Details",
+    featured: false,
+    isQueryForm: true
   }
 ];
 
@@ -131,7 +133,7 @@ export default function ServicesSection({ onServiceSelect }: ServicesSectionProp
                     {service.price}
                   </div>
                   <div className={`flex items-center ${styles.button} font-semibold text-sm group-hover:gap-2 transition-all duration-300`}>
-                    Book Now
+                    {(service as any).isQueryForm ? 'Send Query' : 'Book Now'}
                     <svg className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>

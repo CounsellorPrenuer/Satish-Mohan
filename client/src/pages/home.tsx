@@ -8,21 +8,42 @@ import BlogPreviewSection from "@/components/blog-preview-section";
 import ContactSection from "@/components/contact-section";
 import Footer from "@/components/footer";
 import BookingModal from "@/components/booking-modal";
+import ServiceQueryModal from "@/components/service-query-modal";
 import { useState } from "react";
+
+// Services that require query forms instead of direct booking
+const queryServices = ["workshops", "hospitality-consulting"];
+const serviceNames: Record<string, string> = {
+  "workshops": "Workshops & Seminars",
+  "hospitality-consulting": "Hospitality Consulting"
+};
 
 export default function Home() {
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
+  const [isQueryModalOpen, setIsQueryModalOpen] = useState(false);
   const [selectedService, setSelectedService] = useState<string | null>(null);
 
   const openBookingModal = (serviceType?: string) => {
     if (serviceType) {
       setSelectedService(serviceType);
+      // Check if this service requires a query form
+      if (queryServices.includes(serviceType)) {
+        setIsQueryModalOpen(true);
+      } else {
+        setIsBookingModalOpen(true);
+      }
+    } else {
+      setIsBookingModalOpen(true);
     }
-    setIsBookingModalOpen(true);
   };
 
   const closeBookingModal = () => {
     setIsBookingModalOpen(false);
+    setSelectedService(null);
+  };
+
+  const closeQueryModal = () => {
+    setIsQueryModalOpen(false);
     setSelectedService(null);
   };
 
@@ -43,6 +64,14 @@ export default function Home() {
           isOpen={isBookingModalOpen} 
           onClose={closeBookingModal}
           selectedService={selectedService}
+        />
+      )}
+      
+      {isQueryModalOpen && selectedService && (
+        <ServiceQueryModal
+          isOpen={isQueryModalOpen}
+          onClose={closeQueryModal}
+          serviceTitle={serviceNames[selectedService] || "Service"}
         />
       )}
     </div>
