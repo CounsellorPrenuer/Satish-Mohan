@@ -74,7 +74,7 @@ const services = [
 
 export default function ServicesSection({ onServiceSelect }: ServicesSectionProps) {
   return (
-    <section id="services" className="py-16 sm:py-24 lg:py-20 bg-muted/30">
+    <section id="services" className="py-16 sm:py-24 lg:py-20 bg-background border-t border-border/40">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-8">
         <div className="text-center mb-12 sm:mb-16 lg:mb-20">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground mb-6 sm:mb-8" data-testid="services-title">

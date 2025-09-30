@@ -42,7 +42,7 @@ export default function AboutSection({ onBookingClick }: AboutSectionProps) {
   ];
 
   return (
-    <section id="about" className="py-16 sm:py-24 lg:py-20 bg-background">
+    <section id="about" className="py-16 sm:py-24 lg:py-20 bg-background border-t border-border/40">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           <div className="flex flex-col items-center">

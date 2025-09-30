@@ -131,7 +131,7 @@ export default function PricingTierSection({ onPackageSelect }: PricingTierSecti
   const currentPackage = packages[selectedCategory];
 
   return (
-    <section className="py-16 sm:py-24 lg:py-20 bg-background">
+    <section className="py-16 sm:py-24 lg:py-20 bg-muted/30 border-t border-border/40">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-8">
         {/* Category Selector Tabs */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">

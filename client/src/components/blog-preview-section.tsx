@@ -9,7 +9,7 @@ export default function BlogPreviewSection() {
 
   if (isLoading) {
     return (
-      <section id="blog" className="pt-20 bg-muted/30">
+      <section id="blog" className="pt-20 bg-muted/30 border-t border-border/40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-extrabold text-foreground mb-4">Latest Insights</h2>
@@ -35,7 +35,7 @@ export default function BlogPreviewSection() {
   const featuredPosts = blogPosts?.slice(0, 3) || [];
 
   return (
-    <section id="blog" className="py-20 bg-muted/30">
+    <section id="blog" className="py-20 bg-muted/30 border-t border-border/40">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-3xl sm:text-4xl font-extrabold text-foreground mb-4" data-testid="blog-title">
