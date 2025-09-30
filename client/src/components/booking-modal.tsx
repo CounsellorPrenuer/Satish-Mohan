@@ -32,10 +32,18 @@ const services = [
 
 // Package to service mapping
 const packageMapping: Record<string, { serviceId: string; price: number; name: string }> = {
-  "freshers-ascend": { serviceId: "career-guidance", price: 6499, name: "Career Guidance - Ascend (Freshers)" },
-  "freshers-ascend-plus": { serviceId: "career-guidance", price: 10599, name: "Career Guidance - Ascend Plus (Freshers)" },
-  "middle-ascend": { serviceId: "career-guidance", price: 6499, name: "Career Guidance - Ascend (Middle Management)" },
-  "middle-ascend-plus": { serviceId: "career-guidance", price: 10599, name: "Career Guidance - Ascend Plus (Middle Management)" },
+  // 8-9 Students
+  "8-9-discover": { serviceId: "career-guidance", price: 5500, name: "Discover - 8-9 Students" },
+  "8-9-discover-plus": { serviceId: "career-guidance", price: 15000, name: "Discover plus+ - 8-9 Students" },
+  // 10-12 Students
+  "10-12-achieve-online": { serviceId: "career-guidance", price: 5999, name: "Achieve Online - 10-12 Students" },
+  "10-12-achieve-plus": { serviceId: "career-guidance", price: 10599, name: "Achieve Plus+ - 10-12 Students" },
+  // College Graduates
+  "graduates-ascend-online": { serviceId: "career-guidance", price: 6499, name: "Ascend Online - College Graduates" },
+  "graduates-ascend-plus": { serviceId: "career-guidance", price: 10599, name: "Ascend Plus+ - College Graduates" },
+  // Working Professionals
+  "professionals-ascend-online": { serviceId: "career-guidance", price: 6499, name: "Ascend Online - Working Professionals" },
+  "professionals-ascend-plus": { serviceId: "career-guidance", price: 10599, name: "Ascend Plus+ - Working Professionals" },
 };
 
 const timeSlots = [
