@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Check } from "lucide-react";
+import { Check, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -7,12 +7,17 @@ interface PricingTierSectionProps {
   onPackageSelect: (packageId: string) => void;
 }
 
+interface Feature {
+  text: string;
+  included: boolean;
+}
+
 interface PackagePlan {
   id: string;
   name: string;
   price: string;
   for: string;
-  features: string[];
+  features: Feature[];
   buttonText: string;
   highlighted?: boolean;
 }
@@ -28,105 +33,188 @@ interface PackageContent {
 
 const categories = [
   {
-    id: "freshers",
-    title: "Freshers",
-    subtitle: "Strategic career foundation & professional readiness",
+    id: "8-9-students",
+    title: "8-9 STUDENTS",
+    subtitle: "Early career exploration & foundation building",
   },
   {
-    id: "middle-management",
-    title: "Middle Management",
-    subtitle: "Leadership development & strategic advancement",
+    id: "10-12-students",
+    title: "10-12 STUDENTS",
+    subtitle: "Strategic career planning & college preparation",
   },
   {
-    id: "senior-professionals",
-    title: "Senior Professionals",
-    subtitle: "Executive transformation & C-suite positioning",
+    id: "college-graduates",
+    title: "COLLEGE GRADUATES",
+    subtitle: "Career launch & professional positioning",
+  },
+  {
+    id: "working-professionals",
+    title: "WORKING PROFESSIONALS",
+    subtitle: "Career growth & strategic advancement",
   },
 ];
 
 const packages: Record<string, PackageContent> = {
-  freshers: {
-    heading: "Packages for Freshers",
-    subheading: "Strategic career foundation & professional readiness",
+  "8-9-students": {
+    heading: "Packages for 8-9 Students",
+    subheading: "Early career exploration & foundation building",
     plans: [
       {
-        id: "freshers-ascend",
-        name: "Ascend",
-        price: "₹6,499",
-        for: "For College Graduates",
+        id: "8-9-discover",
+        name: "Discover",
+        price: "₹5,500",
+        for: "Standard Package",
         features: [
-          "Psychometric assessment to measure your interests, personality and abilities",
-          "1 career coaching session for specialisation/job selection",
-          "Lifetime access to Knowledge Gateway",
-          "Pre-recorded webinars by industry experts",
+          { text: "Psychometric assessment to measure your interests", included: true },
+          { text: "1 career counselling session with Mentoria's expert career coaches", included: true },
+          { text: "Lifetime access to Knowledge Gateway", included: true },
+          { text: "Invites to live webinars by industry experts", included: true },
+          { text: "Customized reports after each session with education pathways", included: false },
+          { text: "Guidance on studying abroad", included: false },
+          { text: "CV building during internship/graduation", included: false },
         ],
-        buttonText: "Choose Ascend",
+        buttonText: "BUY NOW",
       },
       {
-        id: "freshers-ascend-plus",
-        name: "Ascend Plus",
-        price: "₹10,599",
-        for: "For College Graduates",
+        id: "8-9-discover-plus",
+        name: "Discover plus+",
+        price: "₹15,000",
+        for: "Premium Package",
         features: [
-          "Psychometric assessment to measure your interests, personality and abilities",
-          "3 career coaching sessions",
-          "Lifetime access to Knowledge Gateway",
-          "Guidance on Masters' admissions in India and abroad",
-          "CV reviews during internships/graduation",
-          "Guidance until you get into the job you love",
-          "Career helpline access",
+          { text: "Psychometric assessments to measure your interests, personality and abilities", included: true },
+          { text: "8 career counselling sessions (1 every year) with Mentoria's expert career coaches until graduation", included: true },
+          { text: "Lifetime access to Knowledge Gateway", included: true },
+          { text: "Invites to live webinars by industry experts", included: true },
+          { text: "Customized reports after each session with education pathways", included: true },
+          { text: "Guidance on studying abroad", included: true },
+          { text: "CV building during internship/graduation", included: true },
         ],
-        buttonText: "Choose Ascend Plus",
+        buttonText: "BUY NOW",
         highlighted: true,
       },
     ],
   },
-  "middle-management": {
-    heading: "Packages for Middle Management",
-    subheading: "Leadership development & strategic advancement",
+  "10-12-students": {
+    heading: "Packages for 10-12 Students",
+    subheading: "Strategic career planning & college preparation",
     plans: [
       {
-        id: "middle-ascend",
-        name: "Ascend",
-        price: "₹6,499",
-        for: "For Working Professionals",
+        id: "10-12-achieve-online",
+        name: "Achieve Online",
+        price: "₹5,999",
+        for: "Standard Package",
         features: [
-          "Psychometric assessment to measure your interests, personality and abilities",
-          "1 career coaching session focused on career transition, growth and upskilling",
-          "Lifetime access to Knowledge Gateway",
-          "Pre-recorded webinars by industry experts",
+          { text: "Psychometric assessment to measure your interests, personality and abilities", included: true },
+          { text: "1 career counselling session", included: true },
+          { text: "Lifetime access to Knowledge Gateway", included: true },
+          { text: "Pre-recorded webinars by industry experts", included: true },
+          { text: "Customized reports after each session with education pathways", included: false },
+          { text: "Guidance on studying abroad", included: false },
+          { text: "CV reviews during internship/graduation", included: false },
         ],
-        buttonText: "Choose Ascend",
+        buttonText: "BUY NOW",
       },
       {
-        id: "middle-ascend-plus",
-        name: "Ascend Plus",
+        id: "10-12-achieve-plus",
+        name: "Achieve Plus+",
         price: "₹10,599",
-        for: "For Working Professionals",
+        for: "Premium Package",
         features: [
-          "Psychometric assessment to measure your interests, personality and abilities",
-          "3 career coaching sessions",
-          "Lifetime access to Knowledge Gateway",
-          "CV reviews and Interview Prep",
-          "Guidance until you get into the job you love",
-          "Career helpline access",
+          { text: "Psychometric assessment to measure your interests, personality and abilities", included: true },
+          { text: "4 career counselling sessions", included: true },
+          { text: "Lifetime access to Knowledge Gateway", included: true },
+          { text: "Attend live webinars by industry experts", included: true },
+          { text: "Customized reports after each session with education pathways", included: true },
+          { text: "Guidance on studying abroad", included: true },
+          { text: "CV reviews during internship/graduation", included: true },
         ],
-        buttonText: "Choose Ascend Plus",
+        buttonText: "BUY NOW",
         highlighted: true,
       },
     ],
   },
-  "senior-professionals": {
-    heading: "Packages for Senior Professionals",
-    subheading: "Executive transformation & C-suite positioning",
-    comingSoon: true,
-    message: "We're preparing specialized packages for senior professionals.",
-    buttonText: "Get Notified When Available",
+  "college-graduates": {
+    heading: "Packages for College Graduates",
+    subheading: "Career launch & professional positioning",
+    plans: [
+      {
+        id: "graduates-ascend-online",
+        name: "Ascend Online",
+        price: "₹6,499",
+        for: "Standard Package",
+        features: [
+          { text: "Psychometric assessment to measure your interests, personality and abilities", included: true },
+          { text: "1 career counselling session", included: true },
+          { text: "Lifetime access to Knowledge Gateway", included: true },
+          { text: "Pre-recorded webinars by industry experts", included: true },
+          { text: "Customized reports after each session with information on certificate/online courses", included: false },
+          { text: "Guidance on studying abroad", included: false },
+          { text: "CV reviews for job application", included: false },
+        ],
+        buttonText: "BUY NOW",
+      },
+      {
+        id: "graduates-ascend-plus",
+        name: "Ascend Plus+",
+        price: "₹10,599",
+        for: "Premium Package",
+        features: [
+          { text: "Psychometric assessment to measure your interests, personality and abilities", included: true },
+          { text: "3 career counselling sessions", included: true },
+          { text: "Lifetime access to Knowledge Gateway", included: true },
+          { text: "Attend live webinars by industry experts", included: true },
+          { text: "Customized reports after each session with information on certificate/online courses", included: true },
+          { text: "Guidance on studying abroad", included: true },
+          { text: "CV reviews for job application", included: true },
+        ],
+        buttonText: "BUY NOW",
+        highlighted: true,
+      },
+    ],
+  },
+  "working-professionals": {
+    heading: "Packages for Working Professionals",
+    subheading: "Career growth & strategic advancement",
+    plans: [
+      {
+        id: "professionals-ascend-online",
+        name: "Ascend Online",
+        price: "₹6,499",
+        for: "Standard Package",
+        features: [
+          { text: "Psychometric assessment to measure your interests, personality and abilities", included: true },
+          { text: "1 career counselling session", included: true },
+          { text: "Lifetime access to Knowledge Gateway", included: true },
+          { text: "Pre-recorded webinars by industry experts", included: true },
+          { text: "Customized reports after each session with information on certificate/online courses", included: false },
+          { text: "Guidance on studying abroad", included: false },
+          { text: "CV reviews for job application", included: false },
+        ],
+        buttonText: "BUY NOW",
+      },
+      {
+        id: "professionals-ascend-plus",
+        name: "Ascend Plus+",
+        price: "₹10,599",
+        for: "Premium Package",
+        features: [
+          { text: "Psychometric assessment to measure your interests, personality and abilities", included: true },
+          { text: "2 career counselling sessions", included: true },
+          { text: "Lifetime access to Knowledge Gateway", included: true },
+          { text: "Attend live webinars by industry experts", included: true },
+          { text: "Customized reports after each session with information on certificate/online courses", included: true },
+          { text: "Guidance on studying abroad", included: true },
+          { text: "CV reviews for job application", included: true },
+        ],
+        buttonText: "BUY NOW",
+        highlighted: true,
+      },
+    ],
   },
 };
 
 export default function PricingTierSection({ onPackageSelect }: PricingTierSectionProps) {
-  const [selectedCategory, setSelectedCategory] = useState<string>("freshers");
+  const [selectedCategory, setSelectedCategory] = useState<string>("8-9-students");
 
   const currentPackage = packages[selectedCategory];
 
@@ -134,7 +222,7 @@ export default function PricingTierSection({ onPackageSelect }: PricingTierSecti
     <section className="py-16 sm:py-24 lg:py-20 bg-muted/30 border-t border-border/40">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-8">
         {/* Category Selector Tabs */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
           {categories.map((category) => (
             <button
               key={category.id}
@@ -212,8 +300,17 @@ export default function PricingTierSection({ onPackageSelect }: PricingTierSecti
                 <ul className="space-y-4 mb-8">
                   {plan.features.map((feature, index) => (
                     <li key={index} className="flex items-start gap-3">
-                      <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                      <span className="text-sm text-muted-foreground">{feature}</span>
+                      {feature.included ? (
+                        <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                      ) : (
+                        <X className="w-5 h-5 text-muted-foreground/40 flex-shrink-0 mt-0.5" />
+                      )}
+                      <span className={cn(
+                        "text-sm",
+                        feature.included ? "text-muted-foreground" : "text-muted-foreground/60 line-through"
+                      )}>
+                        {feature.text}
+                      </span>
                     </li>
                   ))}
                 </ul>
