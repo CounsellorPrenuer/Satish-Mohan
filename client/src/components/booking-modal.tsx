@@ -30,6 +30,14 @@ const services = [
   { id: "admission-guidance", name: "Admission Guidance", price: 2000 },
 ];
 
+// Package to service mapping
+const packageMapping: Record<string, { serviceId: string; price: number; name: string }> = {
+  "freshers-ascend": { serviceId: "career-guidance", price: 6499, name: "Career Guidance - Ascend (Freshers)" },
+  "freshers-ascend-plus": { serviceId: "career-guidance", price: 10599, name: "Career Guidance - Ascend Plus (Freshers)" },
+  "middle-ascend": { serviceId: "career-guidance", price: 6499, name: "Career Guidance - Ascend (Middle Management)" },
+  "middle-ascend-plus": { serviceId: "career-guidance", price: 10599, name: "Career Guidance - Ascend Plus (Middle Management)" },
+};
+
 const timeSlots = [
   "10:00 AM - 11:00 AM",
   "11:30 AM - 12:30 PM",
@@ -39,7 +47,13 @@ const timeSlots = [
 ];
 
 export default function BookingModal({ isOpen, onClose, selectedService }: BookingModalProps) {
-  const [selectedServiceId, setSelectedServiceId] = useState(selectedService || "career-guidance");
+  // Check if selectedService is a package ID or a regular service ID
+  const packageInfo = selectedService ? packageMapping[selectedService] : null;
+  const initialServiceId = packageInfo ? packageInfo.serviceId : (selectedService || "career-guidance");
+  const initialPrice = packageInfo ? packageInfo.price : (services.find(s => s.id === selectedService)?.price || 2500);
+  
+  const [selectedServiceId, setSelectedServiceId] = useState(initialServiceId);
+  const [selectedPackageId, setSelectedPackageId] = useState(packageInfo ? selectedService : null);
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const { initializePayment } = useRazorpay();
@@ -50,17 +64,19 @@ export default function BookingModal({ isOpen, onClose, selectedService }: Booki
       fullName: "",
       email: "",
       phone: "",
-      serviceType: selectedService || "career-guidance",
+      serviceType: initialServiceId,
       sessionType: "online",
       preferredDate: "",
       preferredTime: "",
       description: "",
-      amount: "2500",
+      amount: initialPrice.toString(),
       status: "pending",
     },
   });
 
-  const selectedServiceData = services.find(s => s.id === selectedServiceId);
+  const selectedServiceData = packageInfo 
+    ? { id: packageInfo.serviceId, name: packageInfo.name, price: packageInfo.price }
+    : services.find(s => s.id === selectedServiceId);
 
   const bookingMutation = useMutation({
     mutationFn: async (data: InsertBooking) => {
@@ -99,10 +115,11 @@ export default function BookingModal({ isOpen, onClose, selectedService }: Booki
   });
 
   const onSubmit = (data: InsertBooking) => {
-    const serviceData = services.find(s => s.id === data.serviceType);
+    // Use package pricing if available, otherwise use regular service pricing
+    const price = packageInfo?.price || services.find(s => s.id === data.serviceType)?.price || 2500;
     const bookingData = {
       ...data,
-      amount: serviceData?.price.toString() || "2500",
+      amount: price.toString(),
     };
     bookingMutation.mutate(bookingData);
   };
@@ -165,26 +182,38 @@ export default function BookingModal({ isOpen, onClose, selectedService }: Booki
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Service Type</FormLabel>
-                    <Select 
-                      onValueChange={(value) => {
-                        field.onChange(value);
-                        setSelectedServiceId(value);
-                      }} 
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger data-testid="select-service">
-                          <SelectValue placeholder="Select a service" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {services.map((service) => (
-                          <SelectItem key={service.id} value={service.id}>
-                            {service.name} - ₹{service.price}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    {packageInfo ? (
+                      <div className="relative">
+                        <Input 
+                          value={packageInfo.name}
+                          disabled
+                          className="bg-muted"
+                          data-testid="input-package-name"
+                        />
+                        <p className="text-sm text-muted-foreground mt-1">Package pre-selected</p>
+                      </div>
+                    ) : (
+                      <Select 
+                        onValueChange={(value) => {
+                          field.onChange(value);
+                          setSelectedServiceId(value);
+                        }} 
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger data-testid="select-service">
+                            <SelectValue placeholder="Select a service" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {services.map((service) => (
+                            <SelectItem key={service.id} value={service.id}>
+                              {service.name} - ₹{service.price}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    )}
                     <FormMessage />
                   </FormItem>
                 )}
