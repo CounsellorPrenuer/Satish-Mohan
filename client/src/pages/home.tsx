@@ -8,6 +8,7 @@ import TestimonialsSection from "@/components/testimonials-section";
 import BlogPreviewSection from "@/components/blog-preview-section";
 import ContactSection from "@/components/contact-section";
 import Footer from "@/components/footer";
+import FreeCallModal from "@/components/free-call-modal";
 import BookingModal from "@/components/booking-modal";
 import ServiceQueryModal from "@/components/service-query-modal";
 import { useState } from "react";
@@ -20,6 +21,7 @@ const serviceNames: Record<string, string> = {
 };
 
 export default function Home() {
+  const [isFreeCallModalOpen, setIsFreeCallModalOpen] = useState(false);
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
   const [isQueryModalOpen, setIsQueryModalOpen] = useState(false);
   const [selectedService, setSelectedService] = useState<string | null>(null);
@@ -31,11 +33,17 @@ export default function Home() {
       if (queryServices.includes(serviceType)) {
         setIsQueryModalOpen(true);
       } else {
+        // Open booking modal for paid services
         setIsBookingModalOpen(true);
       }
     } else {
-      setIsBookingModalOpen(true);
+      // No service type means it's a "Book a Free Call" button
+      setIsFreeCallModalOpen(true);
     }
+  };
+
+  const closeFreeCallModal = () => {
+    setIsFreeCallModalOpen(false);
   };
 
   const closeBookingModal = () => {
@@ -61,6 +69,13 @@ export default function Home() {
       <PartnershipSection />
       <Footer onBookingClick={openBookingModal} />
       
+      {isFreeCallModalOpen && (
+        <FreeCallModal 
+          isOpen={isFreeCallModalOpen} 
+          onClose={closeFreeCallModal}
+        />
+      )}
+
       {isBookingModalOpen && (
         <BookingModal 
           isOpen={isBookingModalOpen} 
