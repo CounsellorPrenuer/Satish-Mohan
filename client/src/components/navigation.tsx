@@ -129,7 +129,6 @@ export default function Navigation({ onBookingClick }: NavigationProps) {
               )}>
                 Innervea
               </h1>
-              <p className="text-xs text-gray-600 -mt-1">Transform Within</p>
             </div>
           </div>
           
