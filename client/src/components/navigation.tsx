@@ -187,7 +187,7 @@ export default function Navigation({ onBookingClick }: NavigationProps) {
               data-testid="nav-book-session"
             >
               <Calendar className="w-4 h-4 mr-2" />
-              Book Session
+              Book a Free Call
             </Button>
           </div>
 
@@ -247,7 +247,7 @@ export default function Navigation({ onBookingClick }: NavigationProps) {
                     data-testid="mobile-nav-book-session"
                   >
                     <Calendar className="w-5 h-5 mr-3" />
-                    Book Your Session
+                    Book a Free Call
                   </Button>
                 </div>
               </SheetContent>

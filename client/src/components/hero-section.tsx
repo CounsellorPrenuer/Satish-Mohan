@@ -155,7 +155,7 @@ export default function HeroSection({ onBookingClick }: HeroSectionProps) {
                   className="bg-white text-primary px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg hover:bg-white/95 hover:shadow-xl transition-all duration-300 transform hover:scale-105 shadow-lg"
                   data-testid="hero-start-journey"
                 >
-                  Start Your Journey
+                  Career Discovery Call
                 </button>
                 <button 
                   onClick={scrollToServices}

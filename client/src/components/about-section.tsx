@@ -99,7 +99,7 @@ export default function AboutSection({ onBookingClick }: AboutSectionProps) {
               className="bg-primary text-primary-foreground px-8 py-3 rounded-lg font-semibold hover:bg-primary/90 transition-colors btn-primary"
               data-testid="about-book-consultation"
             >
-              Book a Consultation
+              Book a Free Call
             </button>
           </div>
         </div>
