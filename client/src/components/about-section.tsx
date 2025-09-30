@@ -2,7 +2,7 @@ import profileImage from "@assets/profile_1758707452399.jpg";
 import { Users, Calendar, Trophy, TrendingUp } from "lucide-react";
 
 interface AboutSectionProps {
-  onBookingClick: () => void;
+  onBookingClick: (serviceType?: string) => void;
 }
 
 export default function AboutSection({ onBookingClick }: AboutSectionProps) {

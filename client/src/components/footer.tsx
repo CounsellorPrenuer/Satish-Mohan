@@ -3,7 +3,7 @@ import { Instagram, Linkedin, Twitter, Youtube, Facebook } from "lucide-react";
 import logoImage from "@assets/logo_1758786484720.jpeg";
 
 interface FooterProps {
-  onBookingClick: () => void;
+  onBookingClick: (serviceType?: string) => void;
 }
 
 export default function Footer({ onBookingClick }: FooterProps) {

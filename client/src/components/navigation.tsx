@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 interface NavigationProps {
-  onBookingClick: () => void;
+  onBookingClick: (serviceType?: string) => void;
 }
 
 const navigationItems = [

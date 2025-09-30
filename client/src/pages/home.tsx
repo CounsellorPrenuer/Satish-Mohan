@@ -27,18 +27,19 @@ export default function Home() {
   const [selectedService, setSelectedService] = useState<string | null>(null);
 
   const openBookingModal = (serviceType?: string) => {
-    if (serviceType) {
-      setSelectedService(serviceType);
-      // Check if this service requires a query form
-      if (queryServices.includes(serviceType)) {
-        setIsQueryModalOpen(true);
-      } else {
-        // Open booking modal for paid services
-        setIsBookingModalOpen(true);
-      }
-    } else {
-      // No service type means it's a "Book a Free Call" button
+    // Handle empty string or undefined as "no service" - open Free Call Modal
+    if (!serviceType || typeof serviceType !== 'string' || serviceType.trim() === '') {
       setIsFreeCallModalOpen(true);
+      return;
+    }
+    
+    setSelectedService(serviceType);
+    // Check if this service requires a query form
+    if (queryServices.includes(serviceType)) {
+      setIsQueryModalOpen(true);
+    } else {
+      // Open booking modal for paid services
+      setIsBookingModalOpen(true);
     }
   };
 

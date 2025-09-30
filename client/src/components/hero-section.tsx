@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 
 interface HeroSectionProps {
-  onBookingClick: () => void;
+  onBookingClick: (serviceType?: string) => void;
 }
 
 export default function HeroSection({ onBookingClick }: HeroSectionProps) {
