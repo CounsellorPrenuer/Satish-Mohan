@@ -56,7 +56,7 @@ export default function ContactSection() {
     <section id="contact" className="py-16 sm:py-24 lg:py-20 bg-background">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4" data-testid="contact-title">
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-foreground mb-4" data-testid="contact-title">
             Get in Touch
           </h2>
           <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto" data-testid="contact-description">

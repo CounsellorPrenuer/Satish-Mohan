@@ -27,7 +27,7 @@ export default function TestimonialsSection() {
     <section className="py-16 sm:py-24 lg:py-20 gradient-bg">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4" data-testid="testimonials-title">
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-4" data-testid="testimonials-title">
             What Clients Say
           </h2>
           <p className="text-lg sm:text-xl text-white/90 max-w-2xl mx-auto" data-testid="testimonials-description">

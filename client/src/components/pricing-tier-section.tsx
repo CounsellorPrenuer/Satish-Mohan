@@ -148,7 +148,7 @@ export default function PricingTierSection({ onPackageSelect }: PricingTierSecti
               data-testid={`category-${category.id}`}
             >
               <h3 className={cn(
-                "text-xl font-bold mb-2 transition-colors",
+                "text-xl font-extrabold mb-2 transition-colors",
                 selectedCategory === category.id ? "text-primary" : "text-foreground"
               )}>
                 {category.title}
@@ -160,7 +160,7 @@ export default function PricingTierSection({ onPackageSelect }: PricingTierSecti
 
         {/* Dynamic Content Area */}
         <div className="text-center mb-12">
-          <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4" data-testid="pricing-heading">
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-foreground mb-4" data-testid="pricing-heading">
             {currentPackage.heading}
           </h2>
           <p className="text-lg text-muted-foreground" data-testid="pricing-subheading">
@@ -204,7 +204,7 @@ export default function PricingTierSection({ onPackageSelect }: PricingTierSecti
                 )}
                 
                 <div className="text-center mb-6">
-                  <h3 className="text-2xl font-bold text-foreground mb-2">{plan.name}</h3>
+                  <h3 className="text-2xl font-extrabold text-foreground mb-2">{plan.name}</h3>
                   <p className="text-sm text-muted-foreground mb-4">{plan.for}</p>
                   <div className="text-4xl font-bold text-primary mb-2">{plan.price}</div>
                 </div>

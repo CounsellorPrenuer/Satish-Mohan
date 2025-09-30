@@ -58,7 +58,7 @@ export default function AboutSection({ onBookingClick }: AboutSectionProps) {
           </div>
           
           <div>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-8 sm:mb-10" data-testid="about-title">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground mb-8 sm:mb-10" data-testid="about-title">
               The Innervea Story
             </h2>
             <p className="text-lg sm:text-xl text-muted-foreground mb-6 sm:mb-8 leading-relaxed" data-testid="about-description-1">

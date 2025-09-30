@@ -138,7 +138,7 @@ export default function HeroSection({ onBookingClick }: HeroSectionProps) {
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             <div className="text-white animate-fade-in-up order-2 lg:order-1 text-center lg:text-left">
-              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 sm:mb-8 leading-tight tracking-tight" data-testid="hero-title">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold mb-6 sm:mb-8 leading-tight tracking-tight" data-testid="hero-title">
                 The Path Within to
                 <span className="text-accent"> Purpose & Growth</span>
               </h1>
