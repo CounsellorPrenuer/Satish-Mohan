@@ -131,29 +131,40 @@ export default function PricingTierSection({ onPackageSelect }: PricingTierSecti
   const currentPackage = packages[selectedCategory];
 
   return (
-    <section className="py-16 sm:py-24 lg:py-20 bg-muted/30 border-t border-border/40">
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-8">
+    <section className="relative py-16 sm:py-24 lg:py-20 bg-muted/30 border-t border-border/40 overflow-hidden">
+      {/* Decorative background */}
+      <div className="absolute inset-0 opacity-5">
+        <div className="absolute top-20 right-10 w-96 h-96 bg-primary rounded-full blur-3xl"></div>
+        <div className="absolute bottom-10 left-10 w-80 h-80 bg-secondary rounded-full blur-3xl"></div>
+      </div>
+      <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-8">
         {/* Category Selector Tabs */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
           {categories.map((category) => (
             <button
               key={category.id}
               onClick={() => setSelectedCategory(category.id)}
               className={cn(
-                "p-6 rounded-2xl border-2 transition-all duration-300 text-left",
+                "relative p-8 rounded-3xl border-2 transition-all duration-500 text-left group overflow-hidden",
                 selectedCategory === category.id
-                  ? "border-primary bg-primary/5 shadow-lg"
-                  : "border-border bg-card hover:border-primary/50 hover:shadow-md"
+                  ? "border-primary bg-gradient-to-br from-primary/10 to-primary/5 shadow-2xl scale-105"
+                  : "border-border/30 bg-card hover:border-primary/40 hover:shadow-xl hover:scale-102"
               )}
               data-testid={`category-${category.id}`}
             >
+              {selectedCategory === category.id && (
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent"></div>
+              )}
               <h3 className={cn(
-                "text-xl font-extrabold mb-2 transition-colors",
-                selectedCategory === category.id ? "text-primary" : "text-foreground"
+                "relative text-2xl font-extrabold mb-3 transition-all duration-300",
+                selectedCategory === category.id ? "text-primary" : "text-foreground group-hover:text-primary"
               )}>
                 {category.title}
               </h3>
-              <p className="text-sm text-muted-foreground">{category.subtitle}</p>
+              <p className="relative text-base text-muted-foreground">{category.subtitle}</p>
+              {selectedCategory === category.id && (
+                <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-primary to-secondary"></div>
+              )}
             </button>
           ))}
         </div>
@@ -184,55 +195,6 @@ export default function PricingTierSection({ onPackageSelect }: PricingTierSecti
             </div>
           </div>
         ) : (
-          /* Pricing Plans */
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-            {currentPackage.plans?.map((plan) => (
-              <div
-                key={plan.id}
-                className={cn(
-                  "relative bg-card rounded-2xl p-8 border transition-all duration-300",
-                  plan.highlighted
-                    ? "border-primary shadow-2xl scale-105"
-                    : "border-border shadow-lg hover:shadow-xl"
-                )}
-                data-testid={`plan-${plan.id}`}
-              >
-                {plan.highlighted && (
-                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-primary to-secondary text-white px-6 py-1 rounded-full text-sm font-semibold">
-                    Most Popular
-                  </div>
-                )}
-                
-                <div className="text-center mb-6">
-                  <h3 className="text-2xl font-extrabold text-foreground mb-2">{plan.name}</h3>
-                  <p className="text-sm text-muted-foreground mb-4">{plan.for}</p>
-                  <div className="text-4xl font-bold text-primary mb-2">{plan.price}</div>
-                </div>
-
-                <ul className="space-y-4 mb-8">
-                  {plan.features.map((feature, index) => (
-                    <li key={index} className="flex items-start gap-3">
-                      <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                      <span className="text-sm text-muted-foreground">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                <Button
-                  onClick={() => onPackageSelect(plan.id)}
-                  className={cn(
-                    "w-full py-6 rounded-lg font-semibold transition-all duration-300",
-                    plan.highlighted
-                      ? "bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white"
-                      : "bg-primary hover:bg-primary/90 text-primary-foreground"
-                  )}
-                  data-testid={`button-${plan.id}`}
-                >
-                  {plan.buttonText}
-                </Button>
-              </div>
-            ))}
-          </div>
         )}
       </div>
     </section>

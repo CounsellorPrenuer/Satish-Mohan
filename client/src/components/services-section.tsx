@@ -6,28 +6,34 @@ interface ServicesSectionProps {
 
 const colorStyles = {
   primary: {
-    iconBg: "bg-primary/10 hover:bg-primary/20",
+    iconBg: "bg-gradient-to-br from-primary/20 to-primary/10 hover:from-primary/30 hover:to-primary/20",
     iconColor: "text-primary",
     titleHover: "group-hover:text-primary",
     price: "text-primary",
     button: "text-primary group-hover:text-primary/80",
-    gradient: "from-primary/5 to-primary/20"
+    gradient: "from-primary/10 via-primary/5 to-transparent",
+    accent: "bg-primary/5",
+    glow: "group-hover:shadow-primary/20"
   },
   secondary: {
-    iconBg: "bg-secondary/10 hover:bg-secondary/20",
+    iconBg: "bg-gradient-to-br from-secondary/20 to-secondary/10 hover:from-secondary/30 hover:to-secondary/20",
     iconColor: "text-secondary",
     titleHover: "group-hover:text-secondary",
     price: "text-secondary",
     button: "text-secondary group-hover:text-secondary/80",
-    gradient: "from-secondary/5 to-secondary/20"
+    gradient: "from-secondary/10 via-secondary/5 to-transparent",
+    accent: "bg-secondary/5",
+    glow: "group-hover:shadow-secondary/20"
   },
   accent: {
-    iconBg: "bg-accent/10 hover:bg-accent/20",
+    iconBg: "bg-gradient-to-br from-accent/20 to-accent/10 hover:from-accent/30 hover:to-accent/20",
     iconColor: "text-accent",
     titleHover: "group-hover:text-accent",
     price: "text-accent",
     button: "text-accent group-hover:text-accent/80",
-    gradient: "from-accent/5 to-accent/20"
+    gradient: "from-accent/10 via-accent/5 to-transparent",
+    accent: "bg-accent/5",
+    glow: "group-hover:shadow-accent/20"
   }
 };
 
@@ -74,8 +80,14 @@ const services = [
 
 export default function ServicesSection({ onServiceSelect }: ServicesSectionProps) {
   return (
-    <section id="services" className="py-16 sm:py-24 lg:py-20 bg-background border-t border-border/40">
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-8">
+    <section id="services" className="relative py-16 sm:py-24 lg:py-20 bg-background border-t border-border/40 overflow-hidden">
+      {/* Decorative background patterns */}
+      <div className="absolute inset-0 opacity-5">
+        <div className="absolute top-10 left-10 w-72 h-72 bg-primary rounded-full blur-3xl"></div>
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-secondary rounded-full blur-3xl"></div>
+        <div className="absolute top-1/2 left-1/3 w-64 h-64 bg-accent rounded-full blur-3xl"></div>
+      </div>
+      <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-8">
         <div className="text-center mb-12 sm:mb-16 lg:mb-20">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground mb-6 sm:mb-8" data-testid="services-title">
             Comprehensive Services
@@ -92,32 +104,36 @@ export default function ServicesSection({ onServiceSelect }: ServicesSectionProp
             return (
               <div 
                 key={service.id}
-                className={`service-card relative bg-gradient-to-br ${styles.gradient} bg-card border border-border/50 rounded-2xl p-6 sm:p-8 shadow-lg hover:shadow-2xl transition-all duration-500 group cursor-pointer transform hover:-translate-y-2 ${service.featured ? 'ring-2 ring-primary/20' : ''}`}
+                className={`service-card relative overflow-hidden bg-gradient-to-br ${styles.gradient} bg-card border-2 border-border/30 hover:border-${service.color}/30 rounded-3xl p-8 sm:p-10 shadow-xl hover:shadow-2xl ${styles.glow} transition-all duration-500 group cursor-pointer transform hover:-translate-y-3 hover:scale-[1.02] ${service.featured ? 'ring-2 ring-primary/30' : ''}`}
                 onClick={() => onServiceSelect(service.id)}
                 data-testid={`service-card-${service.id}`}
               >
+                {/* Decorative background shape */}
+                <div className={`absolute -top-10 -right-10 w-32 h-32 ${styles.accent} rounded-full blur-3xl opacity-50 group-hover:opacity-70 transition-opacity duration-500`}></div>
+                <div className={`absolute -bottom-10 -left-10 w-32 h-32 ${styles.accent} rounded-full blur-3xl opacity-40 group-hover:opacity-60 transition-opacity duration-500`}></div>
+                
                 {service.featured && (
-                  <div className="absolute -top-3 -right-3 bg-primary text-primary-foreground text-xs font-semibold px-3 py-1 rounded-full shadow-lg">
-                    Popular
+                  <div className="absolute -top-3 -right-3 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground text-xs font-bold px-4 py-1.5 rounded-full shadow-lg animate-pulse">
+                    ⭐ Popular
                   </div>
                 )}
-                <div className={`w-20 h-20 ${styles.iconBg} rounded-2xl flex items-center justify-center mb-6 transition-all duration-300 group-hover:scale-110 group-hover:rotate-3`}>
-                  <IconComponent className={`${styles.iconColor} transition-all duration-300`} size={28} />
+                <div className={`relative w-24 h-24 ${styles.iconBg} rounded-3xl flex items-center justify-center mb-6 transition-all duration-500 group-hover:scale-110 group-hover:rotate-6 shadow-lg`}>
+                  <IconComponent className={`${styles.iconColor} transition-all duration-500 group-hover:scale-110`} size={32} />
                 </div>
-                <h3 className={`text-xl sm:text-2xl font-extrabold mb-4 ${styles.titleHover} transition-colors duration-300`}>
+                <h3 className={`relative text-2xl sm:text-3xl font-extrabold mb-4 ${styles.titleHover} transition-colors duration-300`}>
                   {service.title}
                 </h3>
-                <p className="text-muted-foreground mb-6 leading-relaxed text-sm sm:text-base">
+                <p className="relative text-muted-foreground/90 mb-8 leading-relaxed text-base">
                   {service.description}
                 </p>
-                <div className="flex items-center justify-between pt-4 border-t border-border/30">
-                  <div className={`${styles.price} font-bold text-xl sm:text-2xl`}>
+                <div className="relative flex items-center justify-between pt-6 border-t-2 border-border/20 group-hover:border-${service.color}/20 transition-colors duration-300">
+                  <div className={`${styles.price} font-extrabold text-2xl sm:text-3xl drop-shadow-sm`}>
                     {service.price}
                   </div>
-                  <div className={`flex items-center ${styles.button} font-semibold text-sm group-hover:gap-2 transition-all duration-300`}>
-                    {(service as any).isQueryForm ? 'Send Query' : 'Book Now'}
-                    <svg className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  <div className={`flex items-center gap-2 ${styles.button} font-bold text-sm group-hover:gap-3 transition-all duration-300`}>
+                    <span>{(service as any).isQueryForm ? 'Send Query' : 'Book Now'}</span>
+                    <svg className="w-6 h-6 group-hover:translate-x-2 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                     </svg>
                   </div>
                 </div>
