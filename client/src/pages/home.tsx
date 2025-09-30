@@ -33,6 +33,12 @@ export default function Home() {
       return;
     }
     
+    // Handle notification requests (e.g., "senior-professionals-notify")
+    if (serviceType.includes('notify')) {
+      setIsFreeCallModalOpen(true);
+      return;
+    }
+    
     setSelectedService(serviceType);
     // Check if this service requires a query form
     if (queryServices.includes(serviceType)) {
