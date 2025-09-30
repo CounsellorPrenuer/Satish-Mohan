@@ -24,8 +24,10 @@ interface BookingModalProps {
 }
 
 const services = [
+  { id: "career-guidance", name: "Career Guidance", price: 2500 },
   { id: "life-coaching", name: "Life Coaching", price: 3000 },
   { id: "meditation", name: "Meditation Session", price: 997 },
+  { id: "admission-guidance", name: "Admission Guidance", price: 2000 },
 ];
 
 const timeSlots = [
@@ -37,7 +39,7 @@ const timeSlots = [
 ];
 
 export default function BookingModal({ isOpen, onClose, selectedService }: BookingModalProps) {
-  const [selectedServiceId, setSelectedServiceId] = useState(selectedService || "life-coaching");
+  const [selectedServiceId, setSelectedServiceId] = useState(selectedService || "career-guidance");
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const { initializePayment } = useRazorpay();
@@ -48,12 +50,12 @@ export default function BookingModal({ isOpen, onClose, selectedService }: Booki
       fullName: "",
       email: "",
       phone: "",
-      serviceType: selectedService || "life-coaching",
+      serviceType: selectedService || "career-guidance",
       sessionType: "online",
       preferredDate: "",
       preferredTime: "",
       description: "",
-      amount: "3000",
+      amount: "2500",
       status: "pending",
     },
   });

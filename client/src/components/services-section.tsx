@@ -1,4 +1,4 @@
-import { Heart, Leaf, Users, Building } from "lucide-react";
+import { Compass, Heart, Leaf, Users, GraduationCap, Building } from "lucide-react";
 
 interface ServicesSectionProps {
   onServiceSelect: (serviceType: string) => void;
@@ -33,13 +33,22 @@ const colorStyles = {
 
 const services = [
   {
+    id: "career-guidance",
+    title: "Career Guidance",
+    description: "Navigate your professional path with expert guidance tailored to your unique strengths and aspirations.",
+    icon: Compass,
+    color: "primary",
+    price: "₹2,500",
+    featured: true
+  },
+  {
     id: "life-coaching",
     title: "Life Coaching",
     description: "Unlock your potential and create meaningful change in your personal and professional life.",
     icon: Heart,
     color: "secondary",
     price: "₹3,000",
-    featured: false
+    featured: true
   },
   {
     id: "meditation",
@@ -59,6 +68,15 @@ const services = [
     price: "Contact for Details",
     featured: false,
     isQueryForm: true
+  },
+  {
+    id: "admission-guidance",
+    title: "Admission Guidance",
+    description: "Expert assistance for college and course selection to align with your career goals.",
+    icon: GraduationCap,
+    color: "secondary",
+    price: "₹2,000",
+    featured: true
   },
   {
     id: "hospitality-consulting",

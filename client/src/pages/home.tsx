@@ -1,6 +1,7 @@
 import Navigation from "@/components/navigation";
 import HeroSection from "@/components/hero-section";
 import ServicesSection from "@/components/services-section";
+import PricingTierSection from "@/components/pricing-tier-section";
 import AboutSection from "@/components/about-section";
 import PartnershipSection from "@/components/partnership-section";
 import TestimonialsSection from "@/components/testimonials-section";
@@ -52,6 +53,7 @@ export default function Home() {
       <Navigation onBookingClick={openBookingModal} />
       <HeroSection onBookingClick={openBookingModal} />
       <ServicesSection onServiceSelect={openBookingModal} />
+      <PricingTierSection onPackageSelect={openBookingModal} />
       <AboutSection onBookingClick={openBookingModal} />
       <TestimonialsSection />
       <BlogPreviewSection />
