@@ -85,7 +85,7 @@ export default function ServicesSection({ onServiceSelect }: ServicesSectionProp
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10 lg:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8 sm:gap-10 lg:gap-8">
           {services.map((service) => {
             const IconComponent = service.icon;
             const styles = colorStyles[service.color as keyof typeof colorStyles];
