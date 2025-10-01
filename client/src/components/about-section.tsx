@@ -61,8 +61,11 @@ export default function AboutSection({ onBookingClick }: AboutSectionProps) {
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground mb-8 sm:mb-10" data-testid="about-title">
               The Innervea Story
             </h2>
-            <p className="text-lg sm:text-xl text-muted-foreground mb-8 sm:mb-10 leading-relaxed" data-testid="about-description">
-              Innervea is the path within — where clarity meets action. Through Career Counselling, Life Coaching, and Meditation, we help you discover your true potential and achieve success measured not just in achievements, but in alignment of career, life, and inner self.
+            <p className="text-lg sm:text-xl text-muted-foreground mb-6 sm:mb-8 leading-relaxed" data-testid="about-description-1">
+              The name itself is a promise: "inner" – your authentic self, and "vea" – the path. Innervea is the path within. It is where clarity meets action, and calm meets ambition. In today's fast-changing world, many feel torn between ambition, personal fulfillment, and inner peace.
+            </p>
+            <p className="text-lg sm:text-xl text-muted-foreground mb-8 sm:mb-10 leading-relaxed" data-testid="about-description-2">
+              We don't just guide you — we help you transform. Through our unique blend of Career Counselling, Life Coaching, and Meditation, we help you discover the career that truly fits your strengths, break barriers and cultivate confidence, and quiet the mind to gain clarity. With Innervea, success is not just measured in achievements, but in alignment — when your career, your life, and your inner self move together in harmony.
             </p>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 mb-12">
@@ -92,7 +95,7 @@ export default function AboutSection({ onBookingClick }: AboutSectionProps) {
             </div>
 
             <button 
-              onClick={() => onBookingClick()} 
+              onClick={onBookingClick} 
               className="bg-primary text-primary-foreground px-8 py-3 rounded-lg font-semibold hover:bg-primary/90 transition-colors btn-primary"
               data-testid="about-book-consultation"
             >
