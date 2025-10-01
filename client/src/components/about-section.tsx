@@ -68,22 +68,22 @@ export default function AboutSection({ onBookingClick }: AboutSectionProps) {
               We don't just guide you — we help you transform. Through our unique blend of Career Counselling, Life Coaching, and Meditation, we help you discover the career that truly fits your strengths, break barriers and cultivate confidence, and quiet the mind to gain clarity. With Innervea, success is not just measured in achievements, but in alignment — when your career, your life, and your inner self move together in harmony.
             </p>
             
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 mb-12">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 lg:gap-6 mb-12">
               {stats.map((stat, index) => {
                 const IconComponent = stat.icon;
                 return (
                   <div 
                     key={index} 
-                    className="stat-card bg-gradient-to-br from-background to-muted/30 border border-border/50 rounded-2xl p-6 text-center shadow-lg hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2 group" 
+                    className="stat-card bg-gradient-to-br from-background to-muted/30 border border-border/50 rounded-2xl p-6 lg:p-5 text-center shadow-lg hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2 group" 
                     data-testid={`stat-${index}`}
                   >
-                    <div className={`w-16 h-16 ${stat.bgColor} rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300`}>
-                      <IconComponent className={`${stat.color} group-hover:scale-110 transition-transform duration-300`} size={28} />
+                    <div className={`w-16 h-16 lg:w-14 lg:h-14 ${stat.bgColor} rounded-2xl flex items-center justify-center mx-auto mb-4 lg:mb-3 group-hover:scale-110 transition-transform duration-300`}>
+                      <IconComponent className={`${stat.color} group-hover:scale-110 transition-transform duration-300 w-7 h-7 lg:w-6 lg:h-6`} />
                     </div>
-                    <div className={`text-3xl sm:text-4xl font-bold ${stat.color} mb-3 group-hover:scale-105 transition-transform duration-300`}>
+                    <div className={`text-3xl sm:text-4xl lg:text-3xl font-bold ${stat.color} mb-3 lg:mb-2 group-hover:scale-105 transition-transform duration-300`}>
                       {stat.value}
                     </div>
-                    <div className="text-base sm:text-lg font-semibold text-foreground mb-2">
+                    <div className="text-base sm:text-lg lg:text-base font-semibold text-foreground mb-2 lg:mb-1">
                       {stat.label}
                     </div>
                     <div className="text-sm text-muted-foreground">
@@ -95,7 +95,7 @@ export default function AboutSection({ onBookingClick }: AboutSectionProps) {
             </div>
 
             <button 
-              onClick={onBookingClick} 
+              onClick={() => onBookingClick()} 
               className="bg-primary text-primary-foreground px-8 py-3 rounded-lg font-semibold hover:bg-primary/90 transition-colors btn-primary"
               data-testid="about-book-consultation"
             >
