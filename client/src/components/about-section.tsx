@@ -62,7 +62,7 @@ export default function AboutSection({ onBookingClick }: AboutSectionProps) {
               The Innervea Story
             </h2>
             <p className="text-lg sm:text-xl text-muted-foreground mb-8 sm:mb-10 leading-relaxed" data-testid="about-description">
-              The name itself is a promise: "inner" – your authentic self, and "vea" – the path. Innervea is the path within. It is where clarity meets action, and calm meets ambition. In today's fast-changing world, many feel torn between ambition, personal fulfillment, and inner peace. We don't just guide you — we help you transform. Through our unique blend of Career Counselling, Life Coaching, and Meditation, we help you discover the career that truly fits your strengths, break barriers and cultivate confidence, and quiet the mind to gain clarity. With Innervea, success is not just measured in achievements, but in alignment — when your career, your life, and your inner self move together in harmony.
+              Innervea is the path within — where clarity meets action. Through Career Counselling, Life Coaching, and Meditation, we help you discover your true potential and achieve success measured not just in achievements, but in alignment of career, life, and inner self.
             </p>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 mb-12">
