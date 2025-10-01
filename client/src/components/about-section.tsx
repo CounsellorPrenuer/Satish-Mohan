@@ -45,23 +45,14 @@ export default function AboutSection({ onBookingClick }: AboutSectionProps) {
     <section id="about" className="py-16 sm:py-24 lg:py-20 bg-background border-t border-border/40">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          <div className="flex flex-col items-center relative">
-            {/* Decorative background blob - only visible on desktop */}
-            <div className="absolute inset-0 hidden lg:flex items-center justify-center pointer-events-none" aria-hidden="true">
-              <div className="w-96 h-96 bg-gradient-to-br from-primary/20 via-secondary/15 to-accent/10 rounded-full blur-3xl opacity-50 motion-safe:animate-pulse"></div>
-            </div>
-            
-            {/* Profile image with relative positioning to stay above background */}
-            <div className="relative z-10">
-              <img 
-                src={profileImage} 
-                alt="Satish Mohan - Career Counselor and Life Coach" 
-                className="rounded-2xl shadow-lg w-64 h-64 object-cover"
-                data-testid="about-image"
-              />
-            </div>
-            
-            <p className="mt-4 text-center text-muted-foreground text-sm max-w-xs relative z-10">
+          <div className="flex flex-col items-center">
+            <img 
+              src={profileImage} 
+              alt="Satish Mohan - Career Counselor and Life Coach" 
+              className="rounded-2xl shadow-lg w-64 h-64 object-cover"
+              data-testid="about-image"
+            />
+            <p className="mt-4 text-center text-muted-foreground text-sm max-w-xs">
               Over 10 years of experience guiding individuals toward personal and professional transformation
             </p>
           </div>
