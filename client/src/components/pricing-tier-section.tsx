@@ -34,12 +34,20 @@ interface PackageContent {
 const categories = [
   {
     id: "8-9-students",
-    title: "8-9 STUDENTS",
+    title: (
+      <>
+        8<sup className="text-xs">th</sup>-9<sup className="text-xs">th</sup> STUDENTS
+      </>
+    ),
     subtitle: "Early career exploration & foundation building",
   },
   {
     id: "10-12-students",
-    title: "10-12 STUDENTS",
+    title: (
+      <>
+        10<sup className="text-xs">th</sup>-12<sup className="text-xs">th</sup> STUDENTS
+      </>
+    ),
     subtitle: "Strategic career planning & college preparation",
   },
   {
@@ -56,7 +64,7 @@ const categories = [
 
 const packages: Record<string, PackageContent> = {
   "8-9-students": {
-    heading: "Packages for 8-9 Students",
+    heading: "Packages for 8th-9th Students",
     subheading: "Early career exploration & foundation building",
     plans: [
       {
@@ -95,7 +103,7 @@ const packages: Record<string, PackageContent> = {
     ],
   },
   "10-12-students": {
-    heading: "Packages for 10-12 Students",
+    heading: "Packages for 10th-12th Students",
     subheading: "Strategic career planning & college preparation",
     plans: [
       {
