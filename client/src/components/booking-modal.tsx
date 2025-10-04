@@ -136,7 +136,9 @@ export default function BookingModal({ isOpen, onClose, selectedService }: Booki
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto" data-testid="booking-modal">
         <DialogHeader>
-          <DialogTitle className="text-3xl font-bold text-foreground">Book Your Session</DialogTitle>
+          <DialogTitle className="text-3xl font-bold text-foreground">
+            {packageInfo ? "Purchase Package" : "Book Your Session"}
+          </DialogTitle>
         </DialogHeader>
 
         <Form {...form}>
