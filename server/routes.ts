@@ -95,6 +95,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const validatedData = insertBookingSchema.parse(req.body);
       const booking = await storage.createBooking(validatedData);
+      
+      // Automatically create a lead from this booking (non-blocking)
+      try {
+        await storage.createLeadDownload({
+          name: booking.fullName,
+          email: booking.email,
+          phone: booking.phone || undefined,
+          source: "booking",
+          sourceId: booking.id,
+        });
+      } catch (leadError) {
+        // Log error but don't fail the booking
+        console.error("Failed to create lead from booking:", leadError);
+      }
+      
       res.status(201).json(booking);
     } catch (error) {
       res.status(400).json({ message: "Invalid booking data", error });
@@ -146,6 +161,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const validatedData = insertContactFormSchema.parse(req.body);
       const form = await storage.createContactForm(validatedData);
+      
+      // Automatically create a lead from this contact form (non-blocking)
+      try {
+        await storage.createLeadDownload({
+          name: form.name,
+          email: form.email,
+          source: "contact",
+          sourceId: form.id,
+        });
+      } catch (leadError) {
+        // Log error but don't fail the contact form submission
+        console.error("Failed to create lead from contact form:", leadError);
+      }
+      
       res.status(201).json(form);
     } catch (error) {
       res.status(400).json({ message: "Invalid contact form data", error });
@@ -273,12 +302,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Verify payment signature (simplified for demo)
       // In production, use crypto.createHmac to verify the signature
       
-      // Create payment record
+      // Get the booking to retrieve the actual amount
+      const booking = await storage.getBooking(booking_id);
+      if (!booking) {
+        return res.status(404).json({ message: "Booking not found" });
+      }
+      
+      // Create payment record with actual booking amount
       const paymentData = {
         bookingId: booking_id,
         razorpayPaymentId: razorpay_payment_id,
         razorpayOrderId: razorpay_order_id,
-        amount: "0", // Will be updated with actual amount
+        amount: booking.amount,
         currency: "INR",
         status: "success",
         paymentMethod: "razorpay"
@@ -292,6 +327,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
         paymentStatus: "paid",
         status: "confirmed"
       });
+
+      // Automatically create a lead from this payment (non-blocking)
+      try {
+        await storage.createLeadDownload({
+          name: booking.fullName,
+          email: booking.email,
+          phone: booking.phone || undefined,
+          source: "payment",
+          sourceId: payment.id,
+        });
+      } catch (leadError) {
+        // Log error but don't fail the payment
+        console.error("Failed to create lead from payment:", leadError);
+      }
 
       res.json({ success: true, payment });
     } catch (error) {

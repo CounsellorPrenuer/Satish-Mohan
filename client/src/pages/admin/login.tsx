@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -40,9 +40,11 @@ export default function AdminLogin() {
   });
 
   // Redirect if already authenticated
-  if (authStatus?.isAuthenticated) {
-    setLocation("/admin/bookings");
-  }
+  useEffect(() => {
+    if (authStatus?.isAuthenticated) {
+      setLocation("/admin/bookings");
+    }
+  }, [authStatus?.isAuthenticated, setLocation]);
 
   const loginMutation = useMutation({
     mutationFn: async (data: LoginForm) => {

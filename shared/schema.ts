@@ -58,12 +58,16 @@ export const blogPosts = pgTable("blog_posts", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
-// Lead downloads table (for tracking blog engagement)
+// Lead downloads table (for tracking all leads - bookings, payments, contacts, downloads)
 export const leadDownloads = pgTable("lead_downloads", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  name: text("name"), // Full name of the lead
   email: text("email").notNull(),
-  downloadType: text("download_type").notNull(), // blog, guide, etc.
-  resourceId: text("resource_id"),
+  phone: text("phone"), // Phone number
+  source: text("source").notNull(), // booking, payment, contact, download
+  sourceId: text("source_id"), // ID of the booking/payment/contact/resource
+  downloadType: text("download_type"), // blog, guide, etc. (for downloads)
+  resourceId: text("resource_id"), // Resource ID (for downloads)
   createdAt: timestamp("created_at").defaultNow(),
 });
 

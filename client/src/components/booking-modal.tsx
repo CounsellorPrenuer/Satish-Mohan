@@ -12,7 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { X } from "lucide-react";
 import { useRazorpay } from "@/hooks/use-razorpay";
 import type { InsertBooking } from "@shared/schema";
@@ -139,6 +139,11 @@ export default function BookingModal({ isOpen, onClose, selectedService }: Booki
           <DialogTitle className="text-3xl font-bold text-foreground">
             {packageInfo ? "Purchase Package" : "Book Your Session"}
           </DialogTitle>
+          <DialogDescription>
+            {packageInfo 
+              ? "Complete your details to purchase the coaching package." 
+              : "Fill in your details to schedule your coaching session."}
+          </DialogDescription>
         </DialogHeader>
 
         <Form {...form}>

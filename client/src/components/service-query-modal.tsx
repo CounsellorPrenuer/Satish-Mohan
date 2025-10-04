@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { insertContactFormSchema, type InsertContactForm } from "@shared/schema";
 
 interface ServiceQueryModalProps {
@@ -64,9 +64,9 @@ export default function ServiceQueryModal({ isOpen, onClose, serviceTitle }: Ser
           <DialogTitle className="text-3xl font-bold text-foreground">
             {serviceTitle} - Send Query
           </DialogTitle>
-          <p className="text-muted-foreground mt-2">
+          <DialogDescription>
             Please fill in your details and we'll get back to you with more information.
-          </p>
+          </DialogDescription>
         </DialogHeader>
 
         <Form {...form}>

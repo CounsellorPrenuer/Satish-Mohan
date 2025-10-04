@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Check, X, Phone, Clock } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -98,7 +98,9 @@ export default function FreeCallModal({ isOpen, onClose }: FreeCallModalProps) {
                 </div>
                 <div>
                   <DialogTitle className="text-2xl font-bold text-foreground">Free Discovery Call</DialogTitle>
-                  <p className="text-sm text-muted-foreground mt-1">✓ Trusted by 3,725+ professionals</p>
+                  <DialogDescription className="text-sm text-muted-foreground mt-1">
+                    ✓ Trusted by 3,725+ professionals
+                  </DialogDescription>
                 </div>
               </div>
             </div>
