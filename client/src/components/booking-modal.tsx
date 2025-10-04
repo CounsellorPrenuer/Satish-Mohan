@@ -230,91 +230,95 @@ export default function BookingModal({ isOpen, onClose, selectedService }: Booki
               />
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              <FormField
-                control={form.control}
-                name="preferredDate"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Preferred Date</FormLabel>
-                    <FormControl>
-                      <Input 
-                        type="date" 
-                        {...field} 
-                        min={new Date().toISOString().split('T')[0]}
-                        data-testid="input-date"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="preferredTime"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Preferred Time</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger data-testid="select-time">
-                          <SelectValue placeholder="Select time slot" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {timeSlots.map((slot) => (
-                          <SelectItem key={slot} value={slot}>
-                            {slot}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+            {!packageInfo && (
+              <>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <FormField
+                    control={form.control}
+                    name="preferredDate"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Preferred Date</FormLabel>
+                        <FormControl>
+                          <Input 
+                            type="date" 
+                            {...field} 
+                            min={new Date().toISOString().split('T')[0]}
+                            data-testid="input-date"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="preferredTime"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Preferred Time</FormLabel>
+                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <FormControl>
+                            <SelectTrigger data-testid="select-time">
+                              <SelectValue placeholder="Select time slot" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {timeSlots.map((slot) => (
+                              <SelectItem key={slot} value={slot}>
+                                {slot}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
 
-            <FormField
-              control={form.control}
-              name="sessionType"
-              render={({ field }) => (
-                <FormItem className="space-y-3">
-                  <FormLabel>Session Type</FormLabel>
-                  <FormControl>
-                    <RadioGroup
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                      className="grid grid-cols-1 sm:grid-cols-3 gap-4"
-                      data-testid="radio-session-type"
-                    >
-                      <div className="flex items-center space-x-2 p-4 border border-input rounded-lg">
-                        <RadioGroupItem value="online" id="online" />
-                        <Label htmlFor="online" className="flex-1 cursor-pointer">
-                          <div className="font-medium">Online</div>
-                          <div className="text-sm text-muted-foreground">Video call</div>
-                        </Label>
-                      </div>
-                      <div className="flex items-center space-x-2 p-4 border border-input rounded-lg">
-                        <RadioGroupItem value="offline" id="offline" />
-                        <Label htmlFor="offline" className="flex-1 cursor-pointer">
-                          <div className="font-medium">In-Person</div>
-                          <div className="text-sm text-muted-foreground">Office visit</div>
-                        </Label>
-                      </div>
-                      <div className="flex items-center space-x-2 p-4 border border-input rounded-lg">
-                        <RadioGroupItem value="phone" id="phone" />
-                        <Label htmlFor="phone" className="flex-1 cursor-pointer">
-                          <div className="font-medium">Phone</div>
-                          <div className="text-sm text-muted-foreground">Audio call</div>
-                        </Label>
-                      </div>
-                    </RadioGroup>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                <FormField
+                  control={form.control}
+                  name="sessionType"
+                  render={({ field }) => (
+                    <FormItem className="space-y-3">
+                      <FormLabel>Session Type</FormLabel>
+                      <FormControl>
+                        <RadioGroup
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                          className="grid grid-cols-1 sm:grid-cols-3 gap-4"
+                          data-testid="radio-session-type"
+                        >
+                          <div className="flex items-center space-x-2 p-4 border border-input rounded-lg">
+                            <RadioGroupItem value="online" id="online" />
+                            <Label htmlFor="online" className="flex-1 cursor-pointer">
+                              <div className="font-medium">Online</div>
+                              <div className="text-sm text-muted-foreground">Video call</div>
+                            </Label>
+                          </div>
+                          <div className="flex items-center space-x-2 p-4 border border-input rounded-lg">
+                            <RadioGroupItem value="offline" id="offline" />
+                            <Label htmlFor="offline" className="flex-1 cursor-pointer">
+                              <div className="font-medium">In-Person</div>
+                              <div className="text-sm text-muted-foreground">Office visit</div>
+                            </Label>
+                          </div>
+                          <div className="flex items-center space-x-2 p-4 border border-input rounded-lg">
+                            <RadioGroupItem value="phone" id="phone" />
+                            <Label htmlFor="phone" className="flex-1 cursor-pointer">
+                              <div className="font-medium">Phone</div>
+                              <div className="text-sm text-muted-foreground">Audio call</div>
+                            </Label>
+                          </div>
+                        </RadioGroup>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </>
+            )}
 
             <FormField
               control={form.control}
