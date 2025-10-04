@@ -30,8 +30,11 @@ const services = [
   { id: "admission-guidance", name: "Admission Guidance", price: 2000 },
 ];
 
-// Package to service mapping
+// Package to service mapping (includes individual services that should use simplified purchase flow)
 const packageMapping: Record<string, { serviceId: string; price: number; name: string }> = {
+  // Individual services (simplified purchase flow)
+  "life-coaching": { serviceId: "life-coaching", price: 3000, name: "Life Coaching" },
+  "meditation": { serviceId: "meditation", price: 997, name: "Meditation & Mindfulness" },
   // 8-9 Students
   "8-9-discover": { serviceId: "career-guidance", price: 5500, name: "Discover - 8-9 Students" },
   "8-9-discover-plus": { serviceId: "career-guidance", price: 15000, name: "Discover plus+ - 8-9 Students" },
