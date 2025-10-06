@@ -172,7 +172,7 @@ export default function HeroSection({ onBookingClick }: HeroSectionProps) {
               <img 
                 src={heroImage} 
                 alt="Innervea - Transformation and Life Coaching" 
-                className="w-[300px] h-[300px] sm:w-[350px] sm:h-[350px] lg:w-[400px] lg:h-[400px] object-contain mx-auto"
+                className="w-[400px] h-[400px] sm:w-[500px] sm:h-[500px] lg:w-[550px] lg:h-[550px] object-contain mx-auto"
                 data-testid="hero-image"
               />
             </div>
