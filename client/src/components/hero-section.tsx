@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import heroImage from "@assets/hero_1759750618213.png";
+import heroImage from "@assets/hero_1759750789247.png";
 
 interface HeroSectionProps {
   onBookingClick: (serviceType?: string) => void;
