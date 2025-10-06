@@ -53,7 +53,7 @@ export default function AboutSection({ onBookingClick }: AboutSectionProps) {
               data-testid="about-image"
             />
             <p className="mt-4 text-center text-muted-foreground text-sm max-w-xs">
-              Over 10 years of experience guiding individuals toward personal and professional transformation
+              Over 30 years of experience guiding individuals toward personal and professional transformation
             </p>
           </div>
           
