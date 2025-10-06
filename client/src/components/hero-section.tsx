@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import heroImage from "@assets/hero_1759750303862.png";
 
 interface HeroSectionProps {
   onBookingClick: (serviceType?: string) => void;
@@ -151,7 +152,7 @@ export default function HeroSection({ onBookingClick }: HeroSectionProps) {
                 lg:justify-start lg:items-start
               ">
                 <button 
-                  onClick={onBookingClick} 
+                  onClick={() => onBookingClick()} 
                   className="bg-white text-primary px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg hover:bg-white/95 hover:shadow-xl transition-all duration-300 transform hover:scale-105 shadow-lg"
                   data-testid="hero-start-journey"
                 >
@@ -168,55 +169,12 @@ export default function HeroSection({ onBookingClick }: HeroSectionProps) {
             </div>
             
             <div ref={animationRef} className="relative flex items-center justify-center min-h-[300px] sm:min-h-[400px] lg:min-h-[500px] order-1 lg:order-2 mb-8 lg:mb-0">
-              {/* Anime.js Style Animation Container */}
-              <div 
-                className="hero-animation-container relative w-[300px] h-[300px] sm:w-[350px] sm:h-[350px] lg:w-[400px] lg:h-[400px] flex items-center justify-center mx-auto"
-                data-testid="hero-animation"
-              >
-                {/* Rotating Rings */}
-                <div className="ring-outer absolute inset-4 border-4 border-accent/30 rounded-full"></div>
-                <div className="ring-middle absolute inset-8 border-[3px] border-white/40 rounded-full"></div>
-                <div className="ring-inner absolute inset-16 border-2 border-accent/50 rounded-full"></div>
-                
-                {/* Central Compass */}
-                <div className="compass-center absolute top-1/2 left-1/2 w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-accent via-primary to-accent rounded-full flex items-center justify-center shadow-2xl z-10">
-                  {/* Compass Needle */}
-                  <div
-                    className="compass-needle absolute w-1 h-6 sm:h-8 bg-white rounded-full shadow-lg"
-                    style={{ 
-                      transformOrigin: "center bottom",
-                      bottom: "50%",
-                      left: "50%"
-                    }}
-                  />
-                  <div className="w-3 h-3 bg-white rounded-full shadow-lg relative z-10" />
-                </div>
-                
-                {/* Floating Career Icons */}
-                <div className="icon-success absolute top-6 right-6 sm:top-8 sm:right-8 w-14 h-14 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm border border-white/10 shadow-lg">
-                  <svg className="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </div>
-                
-                <div className="icon-people absolute bottom-6 left-6 sm:bottom-8 sm:left-8 w-14 h-14 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm border border-white/10 shadow-lg">
-                  <svg className="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z" />
-                  </svg>
-                </div>
-                
-                <div className="icon-chart absolute top-16 left-6 sm:top-20 sm:left-8 w-14 h-14 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm border border-white/10 shadow-lg">
-                  <svg className="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z" />
-                  </svg>
-                </div>
-                
-                <div className="icon-growth absolute bottom-16 right-6 sm:bottom-20 sm:right-8 w-14 h-14 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm border border-white/10 shadow-lg">
-                  <svg className="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.414 14.586 7H12z" clipRule="evenodd" />
-                  </svg>
-                </div>
-              </div>
+              <img 
+                src={heroImage} 
+                alt="Innervea - Transformation and Life Coaching" 
+                className="w-[300px] h-[300px] sm:w-[350px] sm:h-[350px] lg:w-[400px] lg:h-[400px] object-contain mx-auto"
+                data-testid="hero-image"
+              />
             </div>
           </div>
         </div>
