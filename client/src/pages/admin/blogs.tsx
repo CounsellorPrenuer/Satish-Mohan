@@ -287,7 +287,7 @@ export default function AdminBlogs() {
             <Wand2 className="h-4 w-4 text-green-600 dark:text-green-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-900 dark:text-green-100" data-testid="ai-posts-count">AI</div>
+            <div className="text-2xl font-bold text-green-900 dark:text-green-100" data-testid="ai-posts-count">{aiPoweredCount}</div>
             <p className="text-xs text-green-700 dark:text-green-300">
               Content Generation
             </p>
@@ -302,7 +302,7 @@ export default function AdminBlogs() {
             <PenLine className="h-4 w-4 text-blue-600 dark:text-blue-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-blue-900 dark:text-blue-100" data-testid="smart-editing-label">AI</div>
+            <div className="text-2xl font-bold text-blue-900 dark:text-blue-100" data-testid="smart-editing-label">Enabled</div>
             <p className="text-xs text-blue-700 dark:text-blue-300">
               AI Content Improvement
             </p>

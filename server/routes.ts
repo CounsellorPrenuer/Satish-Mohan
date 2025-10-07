@@ -8,7 +8,11 @@ import {
   insertPaymentSchema 
 } from "@shared/schema";
 import Razorpay from "razorpay";
+import OpenAI from "openai";
 import "./types"; // Import session type extensions
+
+// the newest OpenAI model is "gpt-5" which was released August 7, 2025. do not change this unless explicitly requested by the user
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 // Initialize Razorpay
 const razorpay = new Razorpay({
@@ -263,6 +267,68 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(204).send();
     } catch (error) {
       res.status(500).json({ message: "Failed to delete blog post" });
+    }
+  });
+
+  // AI Blog Generation endpoint
+  app.post("/api/generate-blog", requireAuth, async (req, res) => {
+    try {
+      const { topic, keywords, tone, length } = req.body;
+      
+      if (!topic) {
+        return res.status(400).json({ message: "Topic is required" });
+      }
+
+      // Extract word count from length string
+      const wordCountMatch = length.match(/\d+-\d+/);
+      const wordCountRange = wordCountMatch ? wordCountMatch[0] : "1500-2000";
+
+      // Generate blog post using OpenAI
+      const prompt = `You are a professional blog writer for Innervea, a transformation and life coaching platform. Write a comprehensive, engaging blog post with the following specifications:
+
+Topic: ${topic}
+Keywords: ${keywords || 'career development, personal growth, life coaching'}
+Tone: ${tone}
+Length: ${wordCountRange} words
+
+Please provide the response in the following JSON format:
+{
+  "title": "Blog post title",
+  "excerpt": "A compelling 2-3 sentence excerpt",
+  "content": "Full blog post content in HTML format with proper headings, paragraphs, lists, and formatting",
+  "category": "One of: Career Growth, Mindfulness, Education, Life Coaching, or Personal Development",
+  "imageUrl": "Suggest an Unsplash image URL related to the topic"
+}
+
+Make the content insightful, actionable, and aligned with Innervea's mission of empowering individuals through transformation and life coaching. Include practical tips, examples, and a strong conclusion.`;
+
+      const response = await openai.chat.completions.create({
+        model: "gpt-5",
+        messages: [
+          {
+            role: "system",
+            content: "You are a professional content writer specializing in life coaching, career development, and personal transformation. Your writing is clear, inspiring, and actionable."
+          },
+          {
+            role: "user",
+            content: prompt
+          }
+        ],
+        response_format: { type: "json_object" },
+      });
+
+      const generatedContent = JSON.parse(response.choices[0].message.content || "{}");
+      
+      res.json({
+        title: generatedContent.title || topic,
+        excerpt: generatedContent.excerpt || "",
+        content: generatedContent.content || "",
+        category: generatedContent.category || "Personal Development",
+        imageUrl: generatedContent.imageUrl || "",
+      });
+    } catch (error) {
+      console.error("AI blog generation error:", error);
+      res.status(500).json({ message: "Failed to generate blog post", error: error instanceof Error ? error.message : "Unknown error" });
     }
   });
 
