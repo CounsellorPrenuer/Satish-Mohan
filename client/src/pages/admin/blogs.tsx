@@ -14,9 +14,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Plus, Edit, Trash2, Eye, FileText, Bold, Italic, Underline, Heading, Link, Image, List, ListOrdered, X } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Plus, Edit, Trash2, Eye, FileText, Bold, Italic, Underline, Heading, Link, Image, List, ListOrdered, X, Sparkles, Wand2, PenLine } from "lucide-react";
 import type { InsertBlogPost, BlogPost } from "@shared/schema";
+import { z } from "zod";
 
 const categories = [
   "Career Growth",
@@ -26,10 +28,20 @@ const categories = [
   "Personal Development"
 ];
 
+const aiGenerationSchema = z.object({
+  topic: z.string().min(1, "Topic is required"),
+  keywords: z.string(),
+  tone: z.string().min(1, "Tone is required"),
+  length: z.string().min(1, "Length is required"),
+});
+
+type AIGenerationForm = z.infer<typeof aiGenerationSchema>;
+
 export default function AdminBlogs() {
   const { isAuthenticated, isLoading: authLoading } = useRequireAuth();
   const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
   const [isEditing, setIsEditing] = useState(false);
+  const [showAIModal, setShowAIModal] = useState(false);
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -48,6 +60,16 @@ export default function AdminBlogs() {
       category: "Career Growth",
       published: false,
       featured: false,
+    },
+  });
+
+  const aiForm = useForm<AIGenerationForm>({
+    resolver: zodResolver(aiGenerationSchema),
+    defaultValues: {
+      topic: "",
+      keywords: "",
+      tone: "Professional",
+      length: "Medium (1500-2000 words)",
     },
   });
 
@@ -168,6 +190,44 @@ export default function AdminBlogs() {
     }
   };
 
+  // AI Blog Generation mutation
+  const generateBlogMutation = useMutation({
+    mutationFn: async (data: AIGenerationForm) => {
+      const response = await apiRequest("POST", "/api/generate-blog", data);
+      return response.json();
+    },
+    onSuccess: (data) => {
+      // Populate the form with AI-generated content
+      form.reset({
+        title: data.title,
+        excerpt: data.excerpt,
+        content: data.content,
+        featuredImage: data.imageUrl || "",
+        category: data.category || "Career Growth",
+        published: false,
+        featured: false,
+      });
+      setShowAIModal(false);
+      setIsEditing(true);
+      setSelectedPost(null);
+      toast({
+        title: "Blog post generated!",
+        description: "Review and edit the AI-generated content before publishing.",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Error generating blog post",
+        description: "Please try again later.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const onAISubmit = (data: AIGenerationForm) => {
+    generateBlogMutation.mutate(data);
+  };
+
   // Show loading while checking authentication (after all hooks are called)
   if (authLoading || !isAuthenticated) {
     return (
@@ -177,17 +237,68 @@ export default function AdminBlogs() {
     );
   }
 
+  const totalPosts = blogPosts?.length || 0;
+  const aiPoweredCount = blogPosts?.filter(p => p.content.includes('AI') || p.content.includes('generated'))?.length || 0;
+
   return (
     <AdminLayout
       title="Blog Management"
-      description="Create and manage blog posts"
+      description="Create, edit, and manage blog posts with AI assistance"
       headerActions={
         <Button onClick={handleNewPost} data-testid="new-post-button">
           <Plus className="w-4 h-4 mr-2" />
-          New Post
+          Create New Blog
         </Button>
       }
     >
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">
+              Total Blog Posts
+            </CardTitle>
+            <Sparkles className="h-4 w-4 text-purple-600" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold" data-testid="total-posts-count">{totalPosts}</div>
+            <p className="text-xs text-muted-foreground">
+              Total Blog Posts
+            </p>
+          </CardContent>
+        </Card>
+        
+        <Card className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 border-green-200 dark:border-green-900">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium text-green-900 dark:text-green-100">
+              AI Powered
+            </CardTitle>
+            <Wand2 className="h-4 w-4 text-green-600 dark:text-green-400" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-green-900 dark:text-green-100" data-testid="ai-posts-count">AI</div>
+            <p className="text-xs text-green-700 dark:text-green-300">
+              Content Generation
+            </p>
+          </CardContent>
+        </Card>
+        
+        <Card className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 border-blue-200 dark:border-blue-900">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium text-blue-900 dark:text-blue-100">
+              Smart Editing
+            </CardTitle>
+            <PenLine className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-blue-900 dark:text-blue-100" data-testid="smart-editing-label">AI</div>
+            <p className="text-xs text-blue-700 dark:text-blue-300">
+              AI Content Improvement
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Blog Posts List */}
         <div className="lg:col-span-1">

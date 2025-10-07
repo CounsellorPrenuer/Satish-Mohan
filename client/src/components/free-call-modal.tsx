@@ -299,7 +299,7 @@ export default function FreeCallModal({ isOpen, onClose }: FreeCallModalProps) {
           <div className="mt-6 flex items-center justify-center gap-4 text-sm text-muted-foreground flex-wrap">
             <div className="flex items-center gap-1">
               <Check className="w-4 h-4 text-green-600" />
-              <span>We'll call within 4 hours</span>
+              <span>We'll call within 24 hours</span>
             </div>
             <div className="flex items-center gap-1">
               <Phone className="w-4 h-4 text-primary" />
