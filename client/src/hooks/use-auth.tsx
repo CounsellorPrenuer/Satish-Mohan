@@ -23,13 +23,15 @@ export function useAuth() {
 
 export function useRequireAuth() {
   const { isAuthenticated, isLoading } = useAuth();
-  const [, setLocation] = useLocation();
+  const [location, setLocation] = useLocation();
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
-      setLocation("/admin/login");
+      // Redirect to login with current path as redirect parameter
+      const currentPath = location;
+      setLocation(`/admin/login?redirect=${encodeURIComponent(currentPath)}`);
     }
-  }, [isAuthenticated, isLoading, setLocation]);
+  }, [isAuthenticated, isLoading, setLocation, location]);
 
   return { isAuthenticated, isLoading };
 }

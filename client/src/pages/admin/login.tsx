@@ -25,6 +25,9 @@ export default function AdminLogin() {
   const { toast } = useToast();
   const [error, setError] = useState<string>("");
 
+  // Get redirect URL from query params
+  const redirectTo = new URLSearchParams(window.location.search).get('redirect') || '/admin/bookings';
+
   const form = useForm<LoginForm>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -42,9 +45,9 @@ export default function AdminLogin() {
   // Redirect if already authenticated
   useEffect(() => {
     if (authStatus?.isAuthenticated) {
-      setLocation("/admin/bookings");
+      setLocation(redirectTo);
     }
-  }, [authStatus?.isAuthenticated, setLocation]);
+  }, [authStatus?.isAuthenticated, setLocation, redirectTo]);
 
   const loginMutation = useMutation({
     mutationFn: async (data: LoginForm) => {
@@ -58,7 +61,7 @@ export default function AdminLogin() {
       });
       // Invalidate auth status to refresh the authentication state
       queryClient.invalidateQueries({ queryKey: ["/api/auth/status"] });
-      setLocation("/admin/bookings");
+      setLocation(redirectTo);
     },
     onError: (error: any) => {
       const message = error.message || "Login failed. Please check your credentials.";
