@@ -1,24 +1,28 @@
+import priyaImg from "@assets/stock_images/professional_indian__d90ae31e.jpg";
+import rajeshImg from "@assets/stock_images/professional_indian__7fa4ca90.jpg";
+import meeraImg from "@assets/stock_images/professional_indian__552ef7b7.jpg";
+
 const testimonials = [
   {
     id: 1,
     name: "Priya Sharma",
     role: "Product Manager, Tech Startup",
     content: "Satish helped me transition from engineering to product management. His holistic approach gave me the confidence to pursue my dreams.",
-    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=64&h=64"
+    image: priyaImg
   },
   {
     id: 2,
     name: "Rajesh Kumar",
     role: "Senior Manager, Finance",
     content: "The meditation sessions transformed my stress levels. I now handle work pressure with calmness and clarity.",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=64&h=64"
+    image: rajeshImg
   },
   {
     id: 3,
     name: "Meera Agarwal",
     role: "Parent & Entrepreneur",
     content: "His admission guidance was invaluable. My daughter got into her dream college with the perfect career path mapped out.",
-    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=64&h=64"
+    image: meeraImg
   }
 ];
 
