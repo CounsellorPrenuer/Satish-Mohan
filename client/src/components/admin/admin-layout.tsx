@@ -71,26 +71,26 @@ export default function AdminLayout({
       {/* Admin Header */}
       <header className="bg-card shadow-sm border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-4">
+          <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center py-4 gap-4">
+            <div className="flex items-center space-x-4 min-w-0">
               <Link href="/">
-                <Button variant="ghost" size="sm" data-testid="back-to-home">
+                <Button variant="ghost" size="sm" data-testid="back-to-home" className="shrink-0">
                   <ArrowLeft className="w-4 h-4 mr-2" />
                   Back to Site
                 </Button>
               </Link>
-              <div>
-                <h1 className="text-2xl font-bold text-foreground" data-testid="admin-title">
+              <div className="min-w-0">
+                <h1 className="text-xl sm:text-2xl font-bold text-foreground truncate" data-testid="admin-title">
                   {title}
                 </h1>
                 {description && (
-                  <span className="text-muted-foreground" data-testid="admin-description">
+                  <span className="text-sm text-muted-foreground line-clamp-1" data-testid="admin-description">
                     {description}
                   </span>
                 )}
               </div>
             </div>
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center gap-2 sm:gap-4 flex-wrap shrink-0">
               {headerActions}
               {onExportAll && (
                 <Button 
