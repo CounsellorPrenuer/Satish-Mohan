@@ -245,10 +245,21 @@ export default function AdminBlogs() {
       title="Blog Management"
       description="Create, edit, and manage blog posts with AI assistance"
       headerActions={
-        <Button onClick={handleNewPost} data-testid="new-post-button">
-          <Plus className="w-4 h-4 mr-2" />
-          Create New Blog
-        </Button>
+        <div className="flex gap-2">
+          <Button 
+            onClick={() => setShowAIModal(true)} 
+            variant="outline"
+            className="border-purple-300 dark:border-purple-700 text-purple-700 dark:text-purple-300 hover:bg-purple-50 dark:hover:bg-purple-950/20"
+            data-testid="ai-generate-button"
+          >
+            <Sparkles className="w-4 h-4 mr-2" />
+            AI Generate
+          </Button>
+          <Button onClick={handleNewPost} data-testid="new-post-button">
+            <Plus className="w-4 h-4 mr-2" />
+            Create New Blog
+          </Button>
+        </div>
       }
     >
       {/* Stats Cards */}
@@ -676,6 +687,141 @@ export default function AdminBlogs() {
           )}
         </div>
       </div>
+
+      {/* AI Blog Generation Modal */}
+      <Dialog open={showAIModal} onOpenChange={setShowAIModal}>
+        <DialogContent className="sm:max-w-[600px]">
+          <DialogHeader>
+            <DialogTitle>Create New Blog Post</DialogTitle>
+            <DialogDescription>
+              Generate a professional blog post using AI based on your topic and preferences.
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="bg-purple-50 dark:bg-purple-950/20 border border-purple-200 dark:border-purple-900 rounded-lg p-4 mb-4">
+            <div className="flex items-start gap-3">
+              <Sparkles className="w-5 h-5 text-purple-600 dark:text-purple-400 mt-0.5" />
+              <div>
+                <h4 className="font-medium text-purple-900 dark:text-purple-100 mb-1">AI Blog Generation</h4>
+                <p className="text-sm text-purple-700 dark:text-purple-300">
+                  Generate a professional blog post using AI based on your topic and preferences.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <Form {...aiForm}>
+            <form onSubmit={aiForm.handleSubmit(onAISubmit)} className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <FormField
+                  control={aiForm.control}
+                  name="topic"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Topic *</FormLabel>
+                      <FormControl>
+                        <Input 
+                          placeholder="e.g., How to transition to leadership roles" 
+                          {...field}
+                          data-testid="input-ai-topic"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={aiForm.control}
+                  name="keywords"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Keywords (comma separated)</FormLabel>
+                      <FormControl>
+                        <Input 
+                          placeholder="e.g., leadership, career growth, management" 
+                          {...field}
+                          data-testid="input-ai-keywords"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <FormField
+                  control={aiForm.control}
+                  name="tone"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Tone</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger data-testid="select-ai-tone">
+                            <SelectValue placeholder="Select tone" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="Professional">Professional</SelectItem>
+                          <SelectItem value="Casual">Casual</SelectItem>
+                          <SelectItem value="Inspirational">Inspirational</SelectItem>
+                          <SelectItem value="Educational">Educational</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={aiForm.control}
+                  name="length"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Length</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger data-testid="select-ai-length">
+                            <SelectValue placeholder="Select length" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="Short (800-1000 words)">Short (800-1000 words)</SelectItem>
+                          <SelectItem value="Medium (1500-2000 words)">Medium (1500-2000 words)</SelectItem>
+                          <SelectItem value="Long (2500-3000 words)">Long (2500-3000 words)</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <DialogFooter className="gap-2">
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  onClick={() => setShowAIModal(false)}
+                  data-testid="cancel-ai-generation"
+                >
+                  Cancel
+                </Button>
+                <Button 
+                  type="submit" 
+                  disabled={generateBlogMutation.isPending}
+                  className="bg-purple-600 hover:bg-purple-700"
+                  data-testid="generate-blog-button"
+                >
+                  <Sparkles className="w-4 h-4 mr-2" />
+                  {generateBlogMutation.isPending ? "Generating..." : "Generate Blog Post"}
+                </Button>
+              </DialogFooter>
+            </form>
+          </Form>
+        </DialogContent>
+      </Dialog>
     </AdminLayout>
   );
 }
