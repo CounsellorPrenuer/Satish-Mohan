@@ -1,5 +1,6 @@
 import express, { type Request, Response, NextFunction } from "express";
 import session from "express-session";
+import path from "path";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 import "./types"; // Import session type extensions
@@ -7,6 +8,9 @@ import "./types"; // Import session type extensions
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+// Serve static assets from attached_assets
+app.use('/assets', express.static(path.resolve(process.cwd(), 'attached_assets')));
 
 // Session middleware for admin authentication
 app.use(session({
