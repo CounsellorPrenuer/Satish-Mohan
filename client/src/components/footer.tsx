@@ -121,7 +121,7 @@ export default function Footer({ onBookingClick }: FooterProps) {
                   className="group text-white/70 hover:text-white transition-all duration-300 text-sm flex items-center space-x-2"
                 >
                   <span className="w-1.5 h-1.5 bg-white/40 rounded-full group-hover:bg-primary transition-colors"></span>
-                  <span>Seminars / Consulting</span>
+                  <span>Seminars / Workshops</span>
                 </button>
               </li>
               <li>
