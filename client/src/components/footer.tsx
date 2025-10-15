@@ -171,7 +171,7 @@ export default function Footer({ onBookingClick }: FooterProps) {
               </li>
               <li>
                 <button 
-                  onClick={onBookingClick} 
+                  onClick={() => onBookingClick()} 
                   className="group text-white/70 hover:text-white transition-all duration-300 text-sm flex items-center space-x-2 font-medium"
                 >
                   <span className="w-1.5 h-1.5 bg-white/40 rounded-full group-hover:bg-accent transition-colors"></span>
@@ -212,6 +212,11 @@ export default function Footer({ onBookingClick }: FooterProps) {
             <p className="text-white/60 text-xs max-w-md mx-auto leading-relaxed" data-testid="text-partnership-mentoria">
               In partnership with <span className="text-white/80 font-medium">Mentoria</span> for enhanced career guidance services.
             </p>
+            <div className="flex justify-center space-x-4 text-xs">
+              <Link href="/privacy-policy" className="text-white/60 hover:text-white transition-colors" data-testid="link-privacy-policy">
+                Privacy Policy
+              </Link>
+            </div>
           </div>
         </div>
       </div>
