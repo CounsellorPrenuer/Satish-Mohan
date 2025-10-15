@@ -90,7 +90,7 @@ export default function Footer({ onBookingClick }: FooterProps) {
             <ul className="space-y-3">
               <li>
                 <button 
-                  onClick={() => scrollToSection("services")} 
+                  onClick={() => scrollToSection("life-coaching")} 
                   className="group text-white/70 hover:text-white transition-all duration-300 text-sm flex items-center space-x-2"
                 >
                   <span className="w-1.5 h-1.5 bg-white/40 rounded-full group-hover:bg-primary transition-colors"></span>
@@ -99,7 +99,7 @@ export default function Footer({ onBookingClick }: FooterProps) {
               </li>
               <li>
                 <button 
-                  onClick={() => scrollToSection("services")} 
+                  onClick={() => scrollToSection("life-coaching")} 
                   className="group text-white/70 hover:text-white transition-all duration-300 text-sm flex items-center space-x-2"
                 >
                   <span className="w-1.5 h-1.5 bg-white/40 rounded-full group-hover:bg-primary transition-colors"></span>
@@ -108,7 +108,7 @@ export default function Footer({ onBookingClick }: FooterProps) {
               </li>
               <li>
                 <button 
-                  onClick={() => scrollToSection("services")} 
+                  onClick={() => scrollToSection("meditation")} 
                   className="group text-white/70 hover:text-white transition-all duration-300 text-sm flex items-center space-x-2"
                 >
                   <span className="w-1.5 h-1.5 bg-white/40 rounded-full group-hover:bg-primary transition-colors"></span>
@@ -117,11 +117,20 @@ export default function Footer({ onBookingClick }: FooterProps) {
               </li>
               <li>
                 <button 
-                  onClick={() => scrollToSection("services")} 
+                  onClick={() => scrollToSection("workshops")} 
                   className="group text-white/70 hover:text-white transition-all duration-300 text-sm flex items-center space-x-2"
                 >
                   <span className="w-1.5 h-1.5 bg-white/40 rounded-full group-hover:bg-primary transition-colors"></span>
-                  <span>Workshops</span>
+                  <span>Seminars / Consulting</span>
+                </button>
+              </li>
+              <li>
+                <button 
+                  onClick={() => scrollToSection("hospitality-consulting")} 
+                  className="group text-white/70 hover:text-white transition-all duration-300 text-sm flex items-center space-x-2"
+                >
+                  <span className="w-1.5 h-1.5 bg-white/40 rounded-full group-hover:bg-primary transition-colors"></span>
+                  <span>Hospitality Consulting</span>
                 </button>
               </li>
             </ul>

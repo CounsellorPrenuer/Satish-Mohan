@@ -92,6 +92,7 @@ export default function ServicesSection({ onServiceSelect }: ServicesSectionProp
             return (
               <div 
                 key={service.id}
+                id={service.id}
                 className={`service-card relative bg-gradient-to-br ${styles.gradient} bg-card border border-border/50 rounded-2xl p-6 sm:p-8 shadow-lg hover:shadow-2xl transition-all duration-500 group cursor-pointer transform hover:-translate-y-2 ${service.featured ? 'ring-2 ring-primary/20' : ''}`}
                 onClick={() => onServiceSelect(service.id)}
                 data-testid={`service-card-${service.id}`}
