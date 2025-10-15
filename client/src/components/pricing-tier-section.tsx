@@ -234,6 +234,7 @@ export default function PricingTierSection({ onPackageSelect }: PricingTierSecti
           {categories.map((category) => (
             <button
               key={category.id}
+              id={category.id}
               onClick={() => setSelectedCategory(category.id)}
               className={cn(
                 "p-6 rounded-2xl border-2 transition-all duration-300 text-left",
