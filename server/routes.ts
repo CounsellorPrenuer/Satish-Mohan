@@ -50,7 +50,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (username === adminUsername && password === adminPassword) {
         req.session.isAuthenticated = true;
         req.session.adminId = username;
-        res.json({ success: true, message: "Login successful" });
+        
+        // Save the session before sending response
+        req.session.save((err) => {
+          if (err) {
+            return res.status(500).json({ message: "Failed to save session" });
+          }
+          res.json({ success: true, message: "Login successful" });
+        });
       } else {
         res.status(401).json({ message: "Invalid credentials" });
       }
