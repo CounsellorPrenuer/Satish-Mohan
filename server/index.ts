@@ -1,5 +1,7 @@
 import express, { type Request, Response, NextFunction } from "express";
 import session from "express-session";
+import connectPgSimple from "connect-pg-simple";
+import { Pool } from "@neondatabase/serverless";
 import path from "path";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
@@ -12,8 +14,16 @@ app.use(express.urlencoded({ extended: false }));
 // Serve static assets from attached_assets
 app.use('/assets', express.static(path.resolve(process.cwd(), 'attached_assets')));
 
+// PostgreSQL session store for production persistence
+const PgSession = connectPgSimple(session);
+const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+
 // Session middleware for admin authentication
 app.use(session({
+  store: new PgSession({
+    pool: pool,
+    createTableIfMissing: true,
+  }),
   secret: process.env.SESSION_SECRET || 'fallback-secret-key',
   resave: false,
   saveUninitialized: false,
