@@ -1,5 +1,6 @@
 import type { Express, Request, Response, NextFunction } from "express";
 import { createServer, type Server } from "http";
+import crypto from "crypto";
 import { storage } from "./storage";
 import { 
   insertBookingSchema, 
@@ -9,7 +10,6 @@ import {
 } from "@shared/schema";
 import Razorpay from "razorpay";
 import OpenAI from "openai";
-import "./types"; // Import session type extensions
 
 // the newest OpenAI model is "gpt-5" which was released August 7, 2025. do not change this unless explicitly requested by the user
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
@@ -20,12 +20,48 @@ const razorpay = new Razorpay({
   key_secret: process.env.RAZORPAY_KEY_SECRET || "rzp_test_secret",
 });
 
+// Hardcoded admin credentials
+const ADMIN_USERNAME = "admin";
+const ADMIN_PASSWORD = "admin";
+const AUTH_SECRET = process.env.SESSION_SECRET || "fallback-auth-secret";
+
+// Simple token-based authentication helpers
+function createAuthToken(username: string): string {
+  const payload = JSON.stringify({ username, exp: Date.now() + 24 * 60 * 60 * 1000 });
+  const signature = crypto.createHmac("sha256", AUTH_SECRET).update(payload).digest("hex");
+  return `${Buffer.from(payload).toString("base64")}.${signature}`;
+}
+
+function verifyAuthToken(token: string): { username: string } | null {
+  try {
+    const [payloadB64, signature] = token.split(".");
+    const payload = Buffer.from(payloadB64, "base64").toString();
+    const expectedSignature = crypto.createHmac("sha256", AUTH_SECRET).update(payload).digest("hex");
+    
+    if (signature !== expectedSignature) return null;
+    
+    const data = JSON.parse(payload);
+    if (data.exp < Date.now()) return null;
+    
+    return { username: data.username };
+  } catch {
+    return null;
+  }
+}
+
 // Authentication middleware for admin routes
 function requireAuth(req: Request, res: Response, next: NextFunction) {
-  if (req.session?.isAuthenticated) {
-    return next();
+  const token = req.cookies?.authToken;
+  if (!token) {
+    return res.status(401).json({ message: "Authentication required" });
   }
-  return res.status(401).json({ message: "Authentication required" });
+  
+  const verified = verifyAuthToken(token);
+  if (!verified) {
+    return res.status(401).json({ message: "Authentication required" });
+  }
+  
+  return next();
 }
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -39,46 +75,38 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ message: "Username and password required" });
       }
 
-      // Check against environment variables
-      const adminUsername = process.env.ADMIN_USERNAME;
-      const adminPassword = process.env.ADMIN_PASSWORD;
-
-      if (!adminUsername || !adminPassword) {
-        return res.status(500).json({ message: "Admin credentials not configured" });
-      }
-
-      if (username === adminUsername && password === adminPassword) {
-        req.session.isAuthenticated = true;
-        req.session.adminId = username;
+      if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
+        const token = createAuthToken(username);
         
-        // Save the session before sending response
-        req.session.save((err) => {
-          if (err) {
-            return res.status(500).json({ message: "Failed to save session" });
-          }
-          res.json({ success: true, message: "Login successful" });
+        res.cookie("authToken", token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "lax",
+          maxAge: 24 * 60 * 60 * 1000, // 24 hours
         });
+        
+        return res.json({ success: true, message: "Login successful" });
       } else {
-        res.status(401).json({ message: "Invalid credentials" });
+        return res.status(401).json({ message: "Invalid credentials" });
       }
     } catch (error) {
-      res.status(500).json({ message: "Login failed", error });
+      console.error("Login error:", error);
+      return res.status(500).json({ message: "Login failed", error: String(error) });
     }
   });
 
   app.post("/api/auth/logout", (req, res) => {
-    req.session.destroy((err) => {
-      if (err) {
-        return res.status(500).json({ message: "Logout failed" });
-      }
-      res.json({ success: true, message: "Logout successful" });
-    });
+    res.clearCookie("authToken");
+    res.json({ success: true, message: "Logout successful" });
   });
 
   app.get("/api/auth/status", (req, res) => {
+    const token = req.cookies?.authToken;
+    const verified = token ? verifyAuthToken(token) : null;
+    
     res.json({ 
-      isAuthenticated: !!req.session?.isAuthenticated,
-      adminId: req.session?.adminId || null
+      isAuthenticated: !!verified,
+      adminId: verified?.username || null
     });
   });
   
