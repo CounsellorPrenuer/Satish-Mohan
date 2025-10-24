@@ -10,7 +10,6 @@ interface AuthStatus {
 export function useAuth() {
   const { data: authStatus, isLoading } = useQuery<AuthStatus>({
     queryKey: ["/api/auth/status"],
-    queryFn: () => fetch("/api/auth/status").then(res => res.json()),
     refetchInterval: 5 * 60 * 1000, // Refetch every 5 minutes to keep session alive
   });
 

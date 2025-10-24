@@ -37,9 +37,8 @@ export default function AdminLogin() {
   });
 
   // Check if already authenticated
-  const { data: authStatus } = useQuery({
+  const { data: authStatus } = useQuery<{ isAuthenticated: boolean; adminId: string | null }>({
     queryKey: ["/api/auth/status"],
-    queryFn: () => fetch("/api/auth/status").then(res => res.json()),
   });
 
   // Redirect if already authenticated
