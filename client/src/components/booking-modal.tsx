@@ -32,15 +32,15 @@ const services = [
 
 // Package to service mapping (includes individual services that should use simplified purchase flow)
 const packageMapping: Record<string, { serviceId: string; price: number; name: string; paymentMethod: "upi" | "razorpay" }> = {
-  // Individual services (simplified purchase flow - UPI)
+  // Individual services (UPI payment only)
   "life-coaching": { serviceId: "life-coaching", price: 3000, name: "Life Coaching", paymentMethod: "upi" },
   "meditation": { serviceId: "meditation", price: 997, name: "Meditation & Mindfulness", paymentMethod: "upi" },
-  // 8-9 Students (UPI payment)
-  "8-9-discover": { serviceId: "career-guidance", price: 5500, name: "Discover - 8-9 Students", paymentMethod: "upi" },
-  "8-9-discover-plus": { serviceId: "career-guidance", price: 15000, name: "Discover plus+ - 8-9 Students", paymentMethod: "upi" },
-  // 10-12 Students (UPI payment)
-  "10-12-achieve-online": { serviceId: "career-guidance", price: 5999, name: "Achieve Online - 10-12 Students", paymentMethod: "upi" },
-  "10-12-achieve-plus": { serviceId: "career-guidance", price: 10599, name: "Achieve Plus+ - 10-12 Students", paymentMethod: "upi" },
+  // 8-9 Students (Razorpay payment)
+  "8-9-discover": { serviceId: "career-guidance", price: 5500, name: "Discover - 8-9 Students", paymentMethod: "razorpay" },
+  "8-9-discover-plus": { serviceId: "career-guidance", price: 15000, name: "Discover plus+ - 8-9 Students", paymentMethod: "razorpay" },
+  // 10-12 Students (Razorpay payment)
+  "10-12-achieve-online": { serviceId: "career-guidance", price: 5999, name: "Achieve Online - 10-12 Students", paymentMethod: "razorpay" },
+  "10-12-achieve-plus": { serviceId: "career-guidance", price: 10599, name: "Achieve Plus+ - 10-12 Students", paymentMethod: "razorpay" },
   // College Graduates (Razorpay payment)
   "graduates-ascend-online": { serviceId: "career-guidance", price: 6499, name: "Ascend Online - College Graduates", paymentMethod: "razorpay" },
   "graduates-ascend-plus": { serviceId: "career-guidance", price: 10599, name: "Ascend Plus+ - College Graduates", paymentMethod: "razorpay" },
