@@ -2,6 +2,10 @@ import { useQuery } from "@tanstack/react-query";
 import { useParams, Link } from "wouter";
 import type { BlogPost } from "@shared/schema";
 import { ArrowLeft, Calendar, User, Tag } from "lucide-react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import rehypeRaw from "rehype-raw";
+import rehypeSanitize from "rehype-sanitize";
 
 export default function BlogPostPage() {
   const { id } = useParams<{ id: string }>();
@@ -110,10 +114,23 @@ export default function BlogPostPage() {
         )}
 
         <div 
-          className="prose prose-lg max-w-none text-foreground" 
+          className="prose prose-lg max-w-none dark:prose-invert text-foreground
+            prose-headings:text-foreground prose-p:text-foreground 
+            prose-strong:text-foreground prose-code:text-foreground
+            prose-a:text-primary hover:prose-a:text-primary/80
+            prose-blockquote:border-primary prose-blockquote:text-foreground
+            prose-pre:bg-muted prose-pre:text-foreground
+            prose-code:bg-muted prose-code:px-1 prose-code:py-0.5 prose-code:rounded
+            prose-img:rounded-lg prose-img:shadow-lg" 
           data-testid="blog-content"
-          dangerouslySetInnerHTML={{ __html: post.content }}
-        />
+        >
+          <ReactMarkdown
+            remarkPlugins={[remarkGfm]}
+            rehypePlugins={[rehypeRaw, rehypeSanitize]}
+          >
+            {post.content}
+          </ReactMarkdown>
+        </div>
         
         {/* Call to Action */}
         <div className="mt-8 sm:mt-12 p-6 sm:p-8 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-lg border border-primary/20">

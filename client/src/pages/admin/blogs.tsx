@@ -13,12 +13,17 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
-import { Plus, Edit, Trash2, Eye, FileText, Bold, Italic, Underline, Heading, Link, Image, List, ListOrdered, X, Sparkles, Wand2, PenLine } from "lucide-react";
+import { Plus, Edit, Trash2, Eye, FileText, Bold, Italic, Underline, Heading, Link, Image, List, ListOrdered, X, Sparkles, Wand2, PenLine, Code } from "lucide-react";
 import type { InsertBlogPost, BlogPost } from "@shared/schema";
 import { z } from "zod";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import rehypeRaw from "rehype-raw";
+import rehypeSanitize from "rehype-sanitize";
 
 const categories = [
   "Career Growth",
@@ -509,47 +514,203 @@ export default function AdminBlogs() {
                       name="content"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Content</FormLabel>
-                          <div className="border border-input rounded-lg">
-                            {/* Rich Text Editor Toolbar */}
-                            <div className="flex items-center space-x-2 p-3 border-b border-border bg-muted/30">
-                              <Button type="button" variant="ghost" size="sm" title="Bold">
-                                <Bold className="w-4 h-4" />
-                              </Button>
-                              <Button type="button" variant="ghost" size="sm" title="Italic">
-                                <Italic className="w-4 h-4" />
-                              </Button>
-                              <Button type="button" variant="ghost" size="sm" title="Underline">
-                                <Underline className="w-4 h-4" />
-                              </Button>
-                              <div className="w-px h-6 bg-border"></div>
-                              <Button type="button" variant="ghost" size="sm" title="Heading">
-                                <Heading className="w-4 h-4" />
-                              </Button>
-                              <Button type="button" variant="ghost" size="sm" title="Link">
-                                <Link className="w-4 h-4" />
-                              </Button>
-                              <Button type="button" variant="ghost" size="sm" title="Image">
-                                <Image className="w-4 h-4" />
-                              </Button>
-                              <div className="w-px h-6 bg-border"></div>
-                              <Button type="button" variant="ghost" size="sm" title="Bullet List">
-                                <List className="w-4 h-4" />
-                              </Button>
-                              <Button type="button" variant="ghost" size="sm" title="Numbered List">
-                                <ListOrdered className="w-4 h-4" />
-                              </Button>
-                            </div>
-                            <FormControl>
-                              <Textarea 
-                                rows={12} 
-                                placeholder="Start writing your blog post content here..." 
-                                className="border-0 rounded-t-none resize-none focus:ring-0" 
-                                {...field}
-                                data-testid="input-content"
-                              />
-                            </FormControl>
-                          </div>
+                          <FormLabel>Content (Markdown Supported)</FormLabel>
+                          <Tabs defaultValue="edit" className="w-full">
+                            <TabsList className="w-full justify-start">
+                              <TabsTrigger value="edit" data-testid="tab-edit">Edit</TabsTrigger>
+                              <TabsTrigger value="preview" data-testid="tab-preview">Preview</TabsTrigger>
+                            </TabsList>
+                            <TabsContent value="edit" className="mt-0">
+                              <div className="border border-input rounded-lg">
+                                {/* Markdown Helper Toolbar */}
+                                <div className="flex items-center flex-wrap gap-1 p-2 border-b border-border bg-muted/30">
+                                  <Button 
+                                    type="button" 
+                                    variant="ghost" 
+                                    size="sm" 
+                                    title="Bold (**text**)"
+                                    onClick={() => {
+                                      const textarea = document.querySelector('[data-testid="input-content"]') as HTMLTextAreaElement;
+                                      if (textarea) {
+                                        const start = textarea.selectionStart;
+                                        const end = textarea.selectionEnd;
+                                        const text = textarea.value;
+                                        const selected = text.substring(start, end) || 'bold text';
+                                        field.onChange(text.substring(0, start) + `**${selected}**` + text.substring(end));
+                                      }
+                                    }}
+                                  >
+                                    <Bold className="w-4 h-4" />
+                                  </Button>
+                                  <Button 
+                                    type="button" 
+                                    variant="ghost" 
+                                    size="sm" 
+                                    title="Italic (*text*)"
+                                    onClick={() => {
+                                      const textarea = document.querySelector('[data-testid="input-content"]') as HTMLTextAreaElement;
+                                      if (textarea) {
+                                        const start = textarea.selectionStart;
+                                        const end = textarea.selectionEnd;
+                                        const text = textarea.value;
+                                        const selected = text.substring(start, end) || 'italic text';
+                                        field.onChange(text.substring(0, start) + `*${selected}*` + text.substring(end));
+                                      }
+                                    }}
+                                  >
+                                    <Italic className="w-4 h-4" />
+                                  </Button>
+                                  <Button 
+                                    type="button" 
+                                    variant="ghost" 
+                                    size="sm" 
+                                    title="Code (`code`)"
+                                    onClick={() => {
+                                      const textarea = document.querySelector('[data-testid="input-content"]') as HTMLTextAreaElement;
+                                      if (textarea) {
+                                        const start = textarea.selectionStart;
+                                        const end = textarea.selectionEnd;
+                                        const text = textarea.value;
+                                        const selected = text.substring(start, end) || 'code';
+                                        field.onChange(text.substring(0, start) + `\`${selected}\`` + text.substring(end));
+                                      }
+                                    }}
+                                  >
+                                    <Code className="w-4 h-4" />
+                                  </Button>
+                                  <div className="w-px h-6 bg-border"></div>
+                                  <Button 
+                                    type="button" 
+                                    variant="ghost" 
+                                    size="sm" 
+                                    title="Heading (## Heading)"
+                                    onClick={() => {
+                                      const textarea = document.querySelector('[data-testid="input-content"]') as HTMLTextAreaElement;
+                                      if (textarea) {
+                                        const start = textarea.selectionStart;
+                                        const text = textarea.value;
+                                        field.onChange(text.substring(0, start) + '\n## Heading\n' + text.substring(start));
+                                      }
+                                    }}
+                                  >
+                                    <Heading className="w-4 h-4" />
+                                  </Button>
+                                  <Button 
+                                    type="button" 
+                                    variant="ghost" 
+                                    size="sm" 
+                                    title="Link ([text](url))"
+                                    onClick={() => {
+                                      const textarea = document.querySelector('[data-testid="input-content"]') as HTMLTextAreaElement;
+                                      if (textarea) {
+                                        const start = textarea.selectionStart;
+                                        const end = textarea.selectionEnd;
+                                        const text = textarea.value;
+                                        const selected = text.substring(start, end) || 'link text';
+                                        field.onChange(text.substring(0, start) + `[${selected}](url)` + text.substring(end));
+                                      }
+                                    }}
+                                  >
+                                    <Link className="w-4 h-4" />
+                                  </Button>
+                                  <Button 
+                                    type="button" 
+                                    variant="ghost" 
+                                    size="sm" 
+                                    title="Image (![alt](url))"
+                                    onClick={() => {
+                                      const textarea = document.querySelector('[data-testid="input-content"]') as HTMLTextAreaElement;
+                                      if (textarea) {
+                                        const start = textarea.selectionStart;
+                                        const text = textarea.value;
+                                        field.onChange(text.substring(0, start) + '![image alt](image-url)' + text.substring(start));
+                                      }
+                                    }}
+                                  >
+                                    <Image className="w-4 h-4" />
+                                  </Button>
+                                  <div className="w-px h-6 bg-border"></div>
+                                  <Button 
+                                    type="button" 
+                                    variant="ghost" 
+                                    size="sm" 
+                                    title="Bullet List (- item)"
+                                    onClick={() => {
+                                      const textarea = document.querySelector('[data-testid="input-content"]') as HTMLTextAreaElement;
+                                      if (textarea) {
+                                        const start = textarea.selectionStart;
+                                        const text = textarea.value;
+                                        field.onChange(text.substring(0, start) + '\n- List item 1\n- List item 2\n- List item 3\n' + text.substring(start));
+                                      }
+                                    }}
+                                  >
+                                    <List className="w-4 h-4" />
+                                  </Button>
+                                  <Button 
+                                    type="button" 
+                                    variant="ghost" 
+                                    size="sm" 
+                                    title="Numbered List (1. item)"
+                                    onClick={() => {
+                                      const textarea = document.querySelector('[data-testid="input-content"]') as HTMLTextAreaElement;
+                                      if (textarea) {
+                                        const start = textarea.selectionStart;
+                                        const text = textarea.value;
+                                        field.onChange(text.substring(0, start) + '\n1. First item\n2. Second item\n3. Third item\n' + text.substring(start));
+                                      }
+                                    }}
+                                  >
+                                    <ListOrdered className="w-4 h-4" />
+                                  </Button>
+                                </div>
+                                <FormControl>
+                                  <Textarea 
+                                    rows={12} 
+                                    placeholder="# Your Blog Title
+
+Start writing your blog post content using Markdown...
+
+## Subheading
+
+- Bullet point
+- Another point
+
+**Bold text** and *italic text*
+
+[Link text](https://example.com)" 
+                                    className="border-0 rounded-t-none resize-none focus:ring-0 font-mono text-sm" 
+                                    {...field}
+                                    data-testid="input-content"
+                                  />
+                                </FormControl>
+                              </div>
+                            </TabsContent>
+                            <TabsContent value="preview" className="mt-0">
+                              <div className="border border-input rounded-lg p-6 min-h-[300px] bg-background">
+                                {field.value ? (
+                                  <div className="prose prose-sm max-w-none dark:prose-invert
+                                    prose-headings:text-foreground prose-p:text-foreground 
+                                    prose-strong:text-foreground prose-code:text-foreground
+                                    prose-a:text-primary hover:prose-a:text-primary/80
+                                    prose-blockquote:border-primary prose-blockquote:text-foreground
+                                    prose-pre:bg-muted prose-pre:text-foreground
+                                    prose-code:bg-muted prose-code:px-1 prose-code:py-0.5 prose-code:rounded
+                                    prose-img:rounded-lg prose-img:shadow-lg">
+                                    <ReactMarkdown
+                                      remarkPlugins={[remarkGfm]}
+                                      rehypePlugins={[rehypeRaw, rehypeSanitize]}
+                                    >
+                                      {field.value}
+                                    </ReactMarkdown>
+                                  </div>
+                                ) : (
+                                  <p className="text-muted-foreground text-center py-12">
+                                    Start writing content to see the preview
+                                  </p>
+                                )}
+                              </div>
+                            </TabsContent>
+                          </Tabs>
                           <FormMessage />
                         </FormItem>
                       )}
@@ -666,7 +827,21 @@ export default function AdminBlogs() {
                 <p className="text-lg text-muted-foreground mb-6 font-medium">
                   {selectedPost.excerpt}
                 </p>
-                <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: selectedPost.content }} />
+                <div className="prose max-w-none dark:prose-invert
+                  prose-headings:text-foreground prose-p:text-foreground 
+                  prose-strong:text-foreground prose-code:text-foreground
+                  prose-a:text-primary hover:prose-a:text-primary/80
+                  prose-blockquote:border-primary prose-blockquote:text-foreground
+                  prose-pre:bg-muted prose-pre:text-foreground
+                  prose-code:bg-muted prose-code:px-1 prose-code:py-0.5 prose-code:rounded
+                  prose-img:rounded-lg prose-img:shadow-lg">
+                  <ReactMarkdown
+                    remarkPlugins={[remarkGfm]}
+                    rehypePlugins={[rehypeRaw, rehypeSanitize]}
+                  >
+                    {selectedPost.content}
+                  </ReactMarkdown>
+                </div>
               </CardContent>
             </Card>
           ) : (
