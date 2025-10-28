@@ -47,6 +47,7 @@ export default function AdminBlogs() {
   const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [showAIModal, setShowAIModal] = useState(false);
+  const [showPreview, setShowPreview] = useState(false);
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -772,7 +773,12 @@ Start writing your blog post content using Markdown...
                         Save as Draft
                       </Button>
                       <div className="flex space-x-4">
-                        <Button type="button" variant="outline" data-testid="preview-post">
+                        <Button 
+                          type="button" 
+                          variant="outline" 
+                          onClick={() => setShowPreview(true)}
+                          data-testid="preview-post"
+                        >
                           <Eye className="w-4 h-4 mr-2" />
                           Preview
                         </Button>
@@ -862,6 +868,98 @@ Start writing your blog post content using Markdown...
           )}
         </div>
       </div>
+
+      {/* Preview Modal */}
+      <Dialog open={showPreview} onOpenChange={setShowPreview}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Blog Post Preview</DialogTitle>
+            <DialogDescription>
+              This is how your blog post will appear to readers
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="space-y-6">
+            {/* Header Preview */}
+            <div className="bg-gradient-to-r from-primary to-secondary py-8 px-6 rounded-lg">
+              <div className="text-white">
+                <div className="inline-block bg-white/20 text-white px-3 py-1 rounded-full text-sm font-medium mb-4">
+                  {form.watch("category")}
+                </div>
+                <h1 className="text-3xl sm:text-4xl font-bold mb-4">
+                  {form.watch("title") || "Untitled Post"}
+                </h1>
+                <div className="flex items-center space-x-6 text-white/90">
+                  <div className="flex items-center">
+                    <Eye className="w-4 h-4 mr-2" />
+                    Satish Mohan
+                  </div>
+                  <div className="flex items-center">
+                    <Eye className="w-4 h-4 mr-2" />
+                    {new Date().toLocaleDateString('en-US', { 
+                      year: 'numeric', 
+                      month: 'long', 
+                      day: 'numeric' 
+                    })}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Featured Image */}
+            {form.watch("featuredImage") && (
+              <img 
+                src={form.watch("featuredImage") || ""} 
+                alt={form.watch("title") || "Featured image"} 
+                className="w-full h-64 object-cover rounded-lg shadow-lg"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).style.display = 'none';
+                }}
+              />
+            )}
+
+            {/* Excerpt */}
+            {form.watch("excerpt") && (
+              <div className="text-lg text-muted-foreground p-6 bg-muted/30 rounded-lg border-l-4 border-primary">
+                {form.watch("excerpt")}
+              </div>
+            )}
+
+            {/* Content Preview */}
+            <div className="prose prose-lg max-w-none dark:prose-invert text-foreground
+              prose-headings:text-foreground prose-p:text-foreground 
+              prose-strong:text-foreground prose-code:text-foreground
+              prose-a:text-primary hover:prose-a:text-primary/80
+              prose-blockquote:border-primary prose-blockquote:text-foreground
+              prose-pre:bg-muted prose-pre:text-foreground
+              prose-code:bg-muted prose-code:px-1 prose-code:py-0.5 prose-code:rounded
+              prose-img:rounded-lg prose-img:shadow-lg">
+              {form.watch("content") ? (
+                <ReactMarkdown
+                  remarkPlugins={[remarkGfm]}
+                  rehypePlugins={[rehypeRaw, rehypeSanitize]}
+                >
+                  {form.watch("content")}
+                </ReactMarkdown>
+              ) : (
+                <p className="text-muted-foreground text-center py-12">
+                  No content to preview yet
+                </p>
+              )}
+            </div>
+          </div>
+
+          <DialogFooter>
+            <Button 
+              onClick={() => setShowPreview(false)} 
+              variant="outline"
+              data-testid="close-preview"
+            >
+              Close Preview
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       {/* AI Blog Generation Modal */}
       <Dialog open={showAIModal} onOpenChange={setShowAIModal}>
