@@ -5,7 +5,7 @@ import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { CheckCircle, Copy, Download, ArrowLeft } from "lucide-react";
+import { CheckCircle, ArrowLeft } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
 
 const UPI_ID = "n.shobana2013@okicici";
@@ -17,7 +17,6 @@ export default function UPIPayment() {
   const [bookingId, setBookingId] = useState<string>("");
   const [amount, setAmount] = useState<number>(0);
   const [customerName, setCustomerName] = useState<string>("");
-  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     // Get payment details from URL parameters
@@ -38,16 +37,6 @@ export default function UPIPayment() {
 
   // Generate UPI payment URL with pre-filled details
   const upiUrl = `upi://pay?pa=${UPI_ID}&pn=${encodeURIComponent(PAYEE_NAME)}&am=${amount}&cu=INR&tn=${encodeURIComponent(`Payment for booking ${bookingId}`)}`;
-
-  const copyUPIId = () => {
-    navigator.clipboard.writeText(UPI_ID);
-    setCopied(true);
-    toast({
-      title: "Copied!",
-      description: "UPI ID copied to clipboard",
-    });
-    setTimeout(() => setCopied(false), 2000);
-  };
 
   const confirmPaymentMutation = useMutation({
     mutationFn: async () => {
@@ -74,30 +63,6 @@ export default function UPIPayment() {
 
   const handlePaymentComplete = () => {
     confirmPaymentMutation.mutate();
-  };
-
-  const downloadQR = () => {
-    const svg = document.getElementById("upi-qr-code");
-    if (!svg) return;
-
-    const svgData = new XMLSerializer().serializeToString(svg);
-    const canvas = document.createElement("canvas");
-    const ctx = canvas.getContext("2d");
-    const img = new Image();
-
-    img.onload = () => {
-      canvas.width = img.width;
-      canvas.height = img.height;
-      ctx?.drawImage(img, 0, 0);
-      const pngFile = canvas.toDataURL("image/png");
-
-      const downloadLink = document.createElement("a");
-      downloadLink.download = `innervea-payment-qr-${bookingId}.png`;
-      downloadLink.href = pngFile;
-      downloadLink.click();
-    };
-
-    img.src = "data:image/svg+xml;base64," + btoa(svgData);
   };
 
   return (
@@ -169,45 +134,6 @@ export default function UPIPayment() {
                   (Google Pay, PhonePe, Paytm, BHIM, etc.)
                 </p>
               </div>
-
-              <Button
-                variant="outline"
-                onClick={downloadQR}
-                className="w-full sm:w-auto"
-                data-testid="button-download-qr"
-              >
-                <Download className="mr-2 h-4 w-4" />
-                Download QR Code
-              </Button>
-            </div>
-
-            {/* UPI ID Section */}
-            <div className="bg-gradient-to-r from-primary/10 to-secondary/10 rounded-lg p-6 space-y-4">
-              <div className="text-center">
-                <p className="text-sm font-semibold text-muted-foreground mb-2">
-                  Or pay directly using UPI ID
-                </p>
-                <div className="flex items-center justify-center gap-2 bg-white dark:bg-gray-800 p-4 rounded-lg border-2 border-primary/20">
-                  <code className="text-lg font-mono font-bold" data-testid="text-upi-id">
-                    {UPI_ID}
-                  </code>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={copyUPIId}
-                    data-testid="button-copy-upi"
-                  >
-                    {copied ? (
-                      <CheckCircle className="h-4 w-4 text-green-500" />
-                    ) : (
-                      <Copy className="h-4 w-4" />
-                    )}
-                  </Button>
-                </div>
-                <p className="text-sm text-muted-foreground mt-2">
-                  Payee: <span className="font-semibold">{PAYEE_NAME}</span>
-                </p>
-              </div>
             </div>
 
             {/* Instructions */}
@@ -215,7 +141,7 @@ export default function UPIPayment() {
               <h3 className="font-semibold text-lg">Payment Instructions:</h3>
               <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground">
                 <li>Open any UPI app on your phone</li>
-                <li>Scan the QR code or enter the UPI ID manually</li>
+                <li>Scan the QR code shown above</li>
                 <li>Verify the amount (₹{amount.toFixed(2)}) and payee name</li>
                 <li>Complete the payment using your UPI PIN</li>
                 <li>Click "I've Completed Payment" below after payment</li>
