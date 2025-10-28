@@ -449,6 +449,59 @@ Make the content insightful, actionable, and aligned with Innervea's mission of 
     }
   });
 
+  // Confirm UPI payment (user indicates they have paid)
+  app.post("/api/payments/confirm-upi", async (req, res) => {
+    try {
+      const { booking_id } = req.body;
+      
+      if (!booking_id) {
+        return res.status(400).json({ message: "Booking ID is required" });
+      }
+
+      // Get the booking to retrieve the amount
+      const booking = await storage.getBooking(booking_id);
+      if (!booking) {
+        return res.status(404).json({ message: "Booking not found" });
+      }
+      
+      // Create payment record with pending status (awaiting manual verification)
+      const paymentData = {
+        bookingId: booking_id,
+        amount: booking.amount,
+        currency: "INR",
+        status: "pending", // Admin will verify manually
+        paymentMethod: "upi"
+      };
+
+      const payment = await storage.createPayment(paymentData);
+      
+      // Update booking with pending payment status
+      await storage.updateBooking(booking_id, {
+        paymentStatus: "pending",
+        status: "pending"
+      });
+
+      // Automatically create a lead from this booking (non-blocking)
+      try {
+        await storage.createLeadDownload({
+          name: booking.fullName,
+          email: booking.email,
+          phone: booking.phone || undefined,
+          source: "upi_payment",
+          sourceId: payment.id,
+        });
+      } catch (leadError) {
+        // Log error but don't fail the payment
+        console.error("Failed to create lead from UPI payment:", leadError);
+      }
+
+      res.json({ success: true, payment, message: "Payment confirmation received. We will verify and contact you soon." });
+    } catch (error) {
+      console.error("UPI payment confirmation error:", error);
+      res.status(500).json({ message: "Failed to confirm payment", error: String(error) });
+    }
+  });
+
   // Lead downloads endpoints
   app.get("/api/lead-downloads", async (req, res) => {
     try {

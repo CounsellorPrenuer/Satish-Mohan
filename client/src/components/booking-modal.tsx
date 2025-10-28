@@ -5,6 +5,7 @@ import { insertBookingSchema } from "@shared/schema";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -14,7 +15,6 @@ import { Label } from "@/components/ui/label";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { X } from "lucide-react";
-import { useRazorpay } from "@/hooks/use-razorpay";
 import type { InsertBooking } from "@shared/schema";
 
 interface BookingModalProps {
@@ -67,7 +67,7 @@ export default function BookingModal({ isOpen, onClose, selectedService }: Booki
   const [selectedPackageId, setSelectedPackageId] = useState(packageInfo ? selectedService : null);
   const { toast } = useToast();
   const queryClient = useQueryClient();
-  const { initializePayment } = useRazorpay();
+  const [, setLocation] = useLocation();
 
   const form = useForm<InsertBooking>({
     resolver: zodResolver(insertBookingSchema),
@@ -95,26 +95,21 @@ export default function BookingModal({ isOpen, onClose, selectedService }: Booki
       return response.json();
     },
     onSuccess: async (booking) => {
-      // Initialize Razorpay payment
-      const success = await initializePayment({
-        amount: parseFloat(booking.amount),
-        currency: "INR",
-        bookingId: booking.id,
-        customerName: booking.fullName,
-        customerEmail: booking.email,
-        customerPhone: booking.phone,
+      // Redirect to UPI payment page
+      const paymentUrl = `/upi-payment?bookingId=${booking.id}&amount=${booking.amount}&name=${encodeURIComponent(booking.fullName)}`;
+      
+      toast({
+        title: "Booking created!",
+        description: "Redirecting to payment page...",
       });
-
-      if (success) {
-        toast({
-          title: "Booking confirmed!",
-          description: "Your payment was successful. We'll contact you soon.",
-        });
-        queryClient.invalidateQueries({ queryKey: ["/api/bookings"] });
-        queryClient.invalidateQueries({ queryKey: ["/api/stats"] });
-        onClose();
-        form.reset();
-      }
+      
+      queryClient.invalidateQueries({ queryKey: ["/api/bookings"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/stats"] });
+      onClose();
+      form.reset();
+      
+      // Navigate to UPI payment page
+      setLocation(paymentUrl);
     },
     onError: () => {
       toast({
@@ -377,9 +372,9 @@ export default function BookingModal({ isOpen, onClose, selectedService }: Booki
                 type="submit" 
                 className="flex-1 bg-gradient-to-r from-primary to-secondary text-white py-3 px-6 rounded-lg font-semibold hover:from-primary/90 hover:to-secondary/90 transition-all duration-300 transform hover:scale-[1.02] shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100" 
                 disabled={bookingMutation.isPending}
-                data-testid="button-pay-razorpay"
+                data-testid="button-proceed-payment"
               >
-                {bookingMutation.isPending ? "Processing..." : "Pay with Razorpay"}
+                {bookingMutation.isPending ? "Processing..." : "Proceed to Payment"}
               </Button>
             </div>
           </form>
