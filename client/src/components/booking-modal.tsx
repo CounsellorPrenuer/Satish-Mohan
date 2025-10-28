@@ -31,22 +31,22 @@ const services = [
 ];
 
 // Package to service mapping (includes individual services that should use simplified purchase flow)
-const packageMapping: Record<string, { serviceId: string; price: number; name: string }> = {
-  // Individual services (simplified purchase flow)
-  "life-coaching": { serviceId: "life-coaching", price: 3000, name: "Life Coaching" },
-  "meditation": { serviceId: "meditation", price: 997, name: "Meditation & Mindfulness" },
-  // 8-9 Students
-  "8-9-discover": { serviceId: "career-guidance", price: 5500, name: "Discover - 8-9 Students" },
-  "8-9-discover-plus": { serviceId: "career-guidance", price: 15000, name: "Discover plus+ - 8-9 Students" },
-  // 10-12 Students
-  "10-12-achieve-online": { serviceId: "career-guidance", price: 5999, name: "Achieve Online - 10-12 Students" },
-  "10-12-achieve-plus": { serviceId: "career-guidance", price: 10599, name: "Achieve Plus+ - 10-12 Students" },
-  // College Graduates
-  "graduates-ascend-online": { serviceId: "career-guidance", price: 6499, name: "Ascend Online - College Graduates" },
-  "graduates-ascend-plus": { serviceId: "career-guidance", price: 10599, name: "Ascend Plus+ - College Graduates" },
-  // Working Professionals
-  "professionals-ascend-online": { serviceId: "career-guidance", price: 6499, name: "Ascend Online - Working Professionals" },
-  "professionals-ascend-plus": { serviceId: "career-guidance", price: 10599, name: "Ascend Plus+ - Working Professionals" },
+const packageMapping: Record<string, { serviceId: string; price: number; name: string; paymentMethod: "upi" | "razorpay" }> = {
+  // Individual services (simplified purchase flow - UPI)
+  "life-coaching": { serviceId: "life-coaching", price: 3000, name: "Life Coaching", paymentMethod: "upi" },
+  "meditation": { serviceId: "meditation", price: 997, name: "Meditation & Mindfulness", paymentMethod: "upi" },
+  // 8-9 Students (UPI payment)
+  "8-9-discover": { serviceId: "career-guidance", price: 5500, name: "Discover - 8-9 Students", paymentMethod: "upi" },
+  "8-9-discover-plus": { serviceId: "career-guidance", price: 15000, name: "Discover plus+ - 8-9 Students", paymentMethod: "upi" },
+  // 10-12 Students (UPI payment)
+  "10-12-achieve-online": { serviceId: "career-guidance", price: 5999, name: "Achieve Online - 10-12 Students", paymentMethod: "upi" },
+  "10-12-achieve-plus": { serviceId: "career-guidance", price: 10599, name: "Achieve Plus+ - 10-12 Students", paymentMethod: "upi" },
+  // College Graduates (Razorpay payment)
+  "graduates-ascend-online": { serviceId: "career-guidance", price: 6499, name: "Ascend Online - College Graduates", paymentMethod: "razorpay" },
+  "graduates-ascend-plus": { serviceId: "career-guidance", price: 10599, name: "Ascend Plus+ - College Graduates", paymentMethod: "razorpay" },
+  // Working Professionals (Razorpay payment)
+  "professionals-ascend-online": { serviceId: "career-guidance", price: 6499, name: "Ascend Online - Working Professionals", paymentMethod: "razorpay" },
+  "professionals-ascend-plus": { serviceId: "career-guidance", price: 10599, name: "Ascend Plus+ - Working Professionals", paymentMethod: "razorpay" },
 };
 
 const timeSlots = [
@@ -95,21 +95,28 @@ export default function BookingModal({ isOpen, onClose, selectedService }: Booki
       return response.json();
     },
     onSuccess: async (booking) => {
-      // Redirect to UPI payment page
-      const paymentUrl = `/upi-payment?bookingId=${booking.id}&amount=${booking.amount}&name=${encodeURIComponent(booking.fullName)}`;
-      
-      toast({
-        title: "Booking created!",
-        description: "Redirecting to payment page...",
-      });
-      
       queryClient.invalidateQueries({ queryKey: ["/api/bookings"] });
       queryClient.invalidateQueries({ queryKey: ["/api/stats"] });
-      onClose();
-      form.reset();
       
-      // Navigate to UPI payment page
-      setLocation(paymentUrl);
+      // Determine payment method based on package
+      const paymentMethod = packageInfo?.paymentMethod || "upi";
+      
+      if (paymentMethod === "upi") {
+        // Redirect to UPI payment page
+        const paymentUrl = `/upi-payment?bookingId=${booking.id}&amount=${booking.amount}&name=${encodeURIComponent(booking.fullName)}`;
+        
+        toast({
+          title: "Booking created!",
+          description: "Redirecting to UPI payment page...",
+        });
+        
+        onClose();
+        form.reset();
+        setLocation(paymentUrl);
+      } else {
+        // Use Razorpay checkout
+        handleRazorpayPayment(booking);
+      }
     },
     onError: () => {
       toast({
@@ -119,6 +126,93 @@ export default function BookingModal({ isOpen, onClose, selectedService }: Booki
       });
     },
   });
+
+  const handleRazorpayPayment = async (booking: any) => {
+    try {
+      // Get Razorpay key
+      const keyResponse = await fetch("/api/payments/razorpay-key");
+      const { key } = await keyResponse.json();
+
+      // Create Razorpay order
+      const orderResponse = await apiRequest("POST", "/api/payments/create-order", {
+        amount: booking.amount,
+        currency: "INR",
+      });
+      const order = await orderResponse.json();
+
+      // Load Razorpay script if not already loaded
+      if (!(window as any).Razorpay) {
+        const script = document.createElement("script");
+        script.src = "https://checkout.razorpay.com/v1/checkout.js";
+        script.async = true;
+        document.body.appendChild(script);
+        
+        await new Promise((resolve) => {
+          script.onload = resolve;
+        });
+      }
+
+      // Open Razorpay checkout
+      const options = {
+        key: key,
+        amount: order.amount,
+        currency: order.currency,
+        name: "Innervea",
+        description: packageInfo?.name || "Career Coaching Session",
+        order_id: order.id,
+        handler: async (response: any) => {
+          try {
+            // Verify payment on backend
+            const verifyResponse = await apiRequest("POST", "/api/payments/verify", {
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature,
+              booking_id: booking.id,
+            });
+
+            if (verifyResponse.ok) {
+              toast({
+                title: "Payment successful!",
+                description: "Your booking has been confirmed.",
+              });
+              onClose();
+              form.reset();
+              setLocation("/");
+            } else {
+              throw new Error("Payment verification failed");
+            }
+          } catch (error) {
+            toast({
+              title: "Payment verification failed",
+              description: "Please contact support.",
+              variant: "destructive",
+            });
+          }
+        },
+        prefill: {
+          name: booking.fullName,
+          email: booking.email,
+          contact: booking.phone,
+        },
+        theme: {
+          color: "#6366f1",
+        },
+      };
+
+      const razorpay = new (window as any).Razorpay(options);
+      razorpay.open();
+      
+      // Close the booking modal
+      onClose();
+      form.reset();
+    } catch (error) {
+      toast({
+        title: "Payment initialization failed",
+        description: "Please try again later.",
+        variant: "destructive",
+      });
+    }
+  };
 
   const onSubmit = (data: InsertBooking) => {
     // Use package pricing if available, otherwise use regular service pricing

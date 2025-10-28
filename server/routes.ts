@@ -377,6 +377,11 @@ Make the content insightful, actionable, and aligned with Innervea's mission of 
     }
   });
 
+  // Get Razorpay key
+  app.get("/api/payments/razorpay-key", async (req, res) => {
+    res.json({ key: process.env.RAZORPAY_KEY_ID || "rzp_test_key" });
+  });
+
   // Create Razorpay order
   app.post("/api/payments/create-order", async (req, res) => {
     try {
@@ -400,8 +405,20 @@ Make the content insightful, actionable, and aligned with Innervea's mission of 
     try {
       const { razorpay_order_id, razorpay_payment_id, razorpay_signature, booking_id } = req.body;
       
-      // Verify payment signature (simplified for demo)
-      // In production, use crypto.createHmac to verify the signature
+      // Verify payment signature using HMAC SHA256
+      const body = razorpay_order_id + "|" + razorpay_payment_id;
+      const expectedSignature = crypto
+        .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET || "")
+        .update(body.toString())
+        .digest("hex");
+      
+      if (expectedSignature !== razorpay_signature) {
+        console.error("Razorpay signature verification failed");
+        return res.status(400).json({ 
+          success: false,
+          message: "Payment verification failed. Invalid signature." 
+        });
+      }
       
       // Get the booking to retrieve the actual amount
       const booking = await storage.getBooking(booking_id);
