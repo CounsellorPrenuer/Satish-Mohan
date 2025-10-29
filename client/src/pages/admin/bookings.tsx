@@ -13,11 +13,11 @@ import { Download, Calendar, Inbox, CreditCard, Users } from "lucide-react";
 import type { Booking } from "@shared/schema";
 
 const tabs = [
-  { id: "overview", label: "Overview", icon: Calendar },
-  { id: "bookings", label: "Bookings", icon: Calendar },
-  { id: "contact-forms", label: "Contact Forms", icon: Inbox },
-  { id: "payments", label: "Payments", icon: CreditCard },
-  { id: "leads", label: "Lead Downloads", icon: Users },
+  { id: "overview", label: "Overview", icon: Calendar, path: "/admin/bookings" },
+  { id: "bookings", label: "Bookings", icon: Calendar, path: "/admin/bookings" },
+  { id: "contact-forms", label: "Contact Forms", icon: Inbox, path: "/admin/bookings" },
+  { id: "payments", label: "Payments", icon: CreditCard, path: "/admin/bookings" },
+  { id: "leads", label: "Lead Downloads", icon: Users, path: "/admin/bookings" },
 ];
 
 const statusColors = {

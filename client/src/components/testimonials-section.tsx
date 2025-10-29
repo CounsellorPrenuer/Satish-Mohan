@@ -1,32 +1,20 @@
-import priyaImg from "@assets/stock_images/professional_indian__d90ae31e.jpg";
-import rajeshImg from "@assets/stock_images/professional_indian__7fa4ca90.jpg";
-import meeraImg from "@assets/stock_images/professional_indian__552ef7b7.jpg";
-
-const testimonials = [
-  {
-    id: 1,
-    name: "Priya Sharma",
-    role: "Product Manager, Tech Startup",
-    content: "Satish helped me transition from engineering to product management. His holistic approach gave me the confidence to pursue my dreams.",
-    image: priyaImg
-  },
-  {
-    id: 2,
-    name: "Rajesh Kumar",
-    role: "Senior Manager, Finance",
-    content: "The meditation sessions transformed my stress levels. I now handle work pressure with calmness and clarity.",
-    image: rajeshImg
-  },
-  {
-    id: 3,
-    name: "Meera Agarwal",
-    role: "Parent & Entrepreneur",
-    content: "His admission guidance was invaluable. My daughter got into her dream college with the perfect career path mapped out.",
-    image: meeraImg
-  }
-];
+import { useQuery } from "@tanstack/react-query";
+import type { Testimonial } from "@shared/schema";
 
 export default function TestimonialsSection() {
+  const { data: testimonials = [], isLoading } = useQuery<Testimonial[]>({
+    queryKey: ["/api/testimonials"],
+  });
+
+  if (isLoading) {
+    return (
+      <section className="py-16 sm:py-24 lg:py-20 gradient-bg border-t-4 border-primary/20">
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-8">
+          <div className="text-center text-white">Loading testimonials...</div>
+        </div>
+      </section>
+    );
+  }
   return (
     <section className="py-16 sm:py-24 lg:py-20 gradient-bg border-t-4 border-primary/20">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-8">
@@ -47,7 +35,7 @@ export default function TestimonialsSection() {
               data-testid={`testimonial-card-${testimonial.id}`}
             >
               <div className="flex text-accent mb-4">
-                {[...Array(5)].map((_, i) => (
+                {[...Array(testimonial.rating || 5)].map((_, i) => (
                   <svg key={i} className="w-5 h-5 fill-current" viewBox="0 0 24 24">
                     <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
                   </svg>
@@ -57,12 +45,14 @@ export default function TestimonialsSection() {
                 "{testimonial.content}"
               </p>
               <div className="flex items-center">
-                <img 
-                  src={testimonial.image} 
-                  alt={testimonial.name} 
-                  className="w-12 h-12 rounded-full mr-4"
-                  data-testid={`testimonial-image-${testimonial.id}`}
-                />
+                {testimonial.imageUrl && (
+                  <img 
+                    src={testimonial.imageUrl} 
+                    alt={testimonial.name} 
+                    className="w-12 h-12 rounded-full mr-4 object-cover"
+                    data-testid={`testimonial-image-${testimonial.id}`}
+                  />
+                )}
                 <div>
                   <div className="font-semibold" data-testid={`testimonial-name-${testimonial.id}`}>
                     {testimonial.name}

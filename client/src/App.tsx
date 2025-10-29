@@ -13,6 +13,8 @@ import UPIPayment from "@/pages/upi-payment";
 import AdminLogin from "@/pages/admin/login";
 import AdminBookings from "@/pages/admin/bookings";
 import AdminBlogs from "@/pages/admin/blogs";
+import AdminTestimonials from "@/pages/admin/testimonials";
+import AdminServices from "@/pages/admin/services";
 
 function Router() {
   return (
@@ -25,6 +27,8 @@ function Router() {
       <Route path="/admin/login" component={AdminLogin} />
       <Route path="/admin/bookings" component={AdminBookings} />
       <Route path="/admin/blogs" component={AdminBlogs} />
+      <Route path="/admin/testimonials" component={AdminTestimonials} />
+      <Route path="/admin/services" component={AdminServices} />
       <Route component={NotFound} />
     </Switch>
   );

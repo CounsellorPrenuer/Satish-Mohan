@@ -1,4 +1,6 @@
 import { Compass, Heart, Leaf, Users, GraduationCap, Building } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import type { Service } from "@shared/schema";
 
 interface ServicesSectionProps {
   onServiceSelect: (serviceType: string) => void;
@@ -31,48 +33,29 @@ const colorStyles = {
   }
 };
 
-const services = [
-  {
-    id: "life-coaching",
-    title: "Life Coaching",
-    description: "Unlock your potential and create meaningful change in your personal and professional life.",
-    icon: Heart,
-    color: "secondary",
-    price: "₹3,000",
-    featured: true
-  },
-  {
-    id: "meditation",
-    title: "Meditation & Mindfulness",
-    description: "Find inner peace and clarity through guided meditation and mindfulness practices.",
-    icon: Leaf,
-    color: "accent",
-    price: "₹997",
-    featured: false
-  },
-  {
-    id: "workshops",
-    title: "Workshops & Seminars",
-    description: "Interactive group sessions designed to inspire and educate on career and life topics.",
-    icon: Users,
-    color: "primary",
-    price: "Contact for Details",
-    featured: false,
-    isQueryForm: true
-  },
-  {
-    id: "hospitality-consulting",
-    title: "Hospitality Consulting",
-    description: "Strategic consulting for hospitality businesses and independent director services.",
-    icon: Building,
-    color: "accent",
-    price: "Contact for Details",
-    featured: false,
-    isQueryForm: true
-  }
-];
+const iconMap: Record<string, any> = {
+  Heart,
+  Leaf,
+  Users,
+  Building,
+  Compass,
+  GraduationCap,
+};
 
 export default function ServicesSection({ onServiceSelect }: ServicesSectionProps) {
+  const { data: services = [], isLoading } = useQuery<Service[]>({
+    queryKey: ["/api/services"],
+  });
+
+  if (isLoading) {
+    return (
+      <section id="services" className="py-16 sm:py-24 lg:py-20 bg-background border-t border-border/40">
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-8">
+          <div className="text-center">Loading services...</div>
+        </div>
+      </section>
+    );
+  }
   return (
     <section id="services" className="py-16 sm:py-24 lg:py-20 bg-background border-t border-border/40">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-8">
@@ -87,15 +70,15 @@ export default function ServicesSection({ onServiceSelect }: ServicesSectionProp
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8 sm:gap-10 lg:gap-8">
           {services.map((service) => {
-            const IconComponent = service.icon;
+            const IconComponent = iconMap[service.icon] || Heart;
             const styles = colorStyles[service.color as keyof typeof colorStyles];
             return (
               <div 
                 key={service.id}
-                id={service.id}
+                id={service.serviceId}
                 className={`service-card relative bg-gradient-to-br ${styles.gradient} bg-card border border-border/50 rounded-2xl p-6 sm:p-8 shadow-lg hover:shadow-2xl transition-all duration-500 group cursor-pointer transform hover:-translate-y-2 ${service.featured ? 'ring-2 ring-primary/20' : ''}`}
-                onClick={() => onServiceSelect(service.id)}
-                data-testid={`service-card-${service.id}`}
+                onClick={() => onServiceSelect(service.serviceId)}
+                data-testid={`service-card-${service.serviceId}`}
               >
                 {service.featured && (
                   <div className="absolute -top-3 -right-3 bg-primary text-primary-foreground text-xs font-semibold px-3 py-1 rounded-full shadow-lg">
@@ -116,7 +99,7 @@ export default function ServicesSection({ onServiceSelect }: ServicesSectionProp
                     {service.price}
                   </div>
                   <div className={`flex items-center ${styles.button} font-semibold text-sm group-hover:gap-2 transition-all duration-300`}>
-                    {(service as any).isQueryForm ? 'Send Query' : 'Book Now'}
+                    {service.isQueryForm ? 'Send Query' : 'Book Now'}
                     <svg className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>
