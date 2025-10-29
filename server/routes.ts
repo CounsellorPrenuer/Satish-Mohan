@@ -6,7 +6,9 @@ import {
   insertBookingSchema, 
   insertContactFormSchema, 
   insertBlogPostSchema,
-  insertPaymentSchema 
+  insertPaymentSchema,
+  insertTestimonialSchema,
+  insertServiceSchema
 } from "@shared/schema";
 import Razorpay from "razorpay";
 import OpenAI from "openai";
@@ -535,6 +537,118 @@ Make the content insightful, actionable, and aligned with Innervea's mission of 
       res.status(201).json(lead);
     } catch (error) {
       res.status(400).json({ message: "Failed to create lead download", error });
+    }
+  });
+
+  // Testimonials endpoints
+  app.get("/api/testimonials", async (req, res) => {
+    try {
+      const testimonials = await storage.getAllTestimonials();
+      res.json(testimonials);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch testimonials" });
+    }
+  });
+
+  app.get("/api/testimonials/:id", async (req, res) => {
+    try {
+      const testimonial = await storage.getTestimonial(req.params.id);
+      if (!testimonial) {
+        return res.status(404).json({ message: "Testimonial not found" });
+      }
+      res.json(testimonial);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch testimonial" });
+    }
+  });
+
+  app.post("/api/testimonials", requireAuth, async (req, res) => {
+    try {
+      const validatedData = insertTestimonialSchema.parse(req.body);
+      const testimonial = await storage.createTestimonial(validatedData);
+      res.status(201).json(testimonial);
+    } catch (error) {
+      res.status(400).json({ message: "Failed to create testimonial", error });
+    }
+  });
+
+  app.patch("/api/testimonials/:id", requireAuth, async (req, res) => {
+    try {
+      const testimonial = await storage.updateTestimonial(req.params.id, req.body);
+      if (!testimonial) {
+        return res.status(404).json({ message: "Testimonial not found" });
+      }
+      res.json(testimonial);
+    } catch (error) {
+      res.status(400).json({ message: "Failed to update testimonial", error });
+    }
+  });
+
+  app.delete("/api/testimonials/:id", requireAuth, async (req, res) => {
+    try {
+      const success = await storage.deleteTestimonial(req.params.id);
+      if (!success) {
+        return res.status(404).json({ message: "Testimonial not found" });
+      }
+      res.json({ success: true });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to delete testimonial" });
+    }
+  });
+
+  // Services endpoints
+  app.get("/api/services", async (req, res) => {
+    try {
+      const services = await storage.getAllServices();
+      res.json(services);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch services" });
+    }
+  });
+
+  app.get("/api/services/:id", async (req, res) => {
+    try {
+      const service = await storage.getService(req.params.id);
+      if (!service) {
+        return res.status(404).json({ message: "Service not found" });
+      }
+      res.json(service);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch service" });
+    }
+  });
+
+  app.post("/api/services", requireAuth, async (req, res) => {
+    try {
+      const validatedData = insertServiceSchema.parse(req.body);
+      const service = await storage.createService(validatedData);
+      res.status(201).json(service);
+    } catch (error) {
+      res.status(400).json({ message: "Failed to create service", error });
+    }
+  });
+
+  app.patch("/api/services/:id", requireAuth, async (req, res) => {
+    try {
+      const service = await storage.updateService(req.params.id, req.body);
+      if (!service) {
+        return res.status(404).json({ message: "Service not found" });
+      }
+      res.json(service);
+    } catch (error) {
+      res.status(400).json({ message: "Failed to update service", error });
+    }
+  });
+
+  app.delete("/api/services/:id", requireAuth, async (req, res) => {
+    try {
+      const success = await storage.deleteService(req.params.id);
+      if (!success) {
+        return res.status(404).json({ message: "Service not found" });
+      }
+      res.json({ success: true });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to delete service" });
     }
   });
 
