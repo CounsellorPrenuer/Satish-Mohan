@@ -150,6 +150,18 @@ export class DatabaseStorage implements IStorage {
       if (existingPosts.length === 0) {
         await this.createSampleBlogPosts();
       }
+
+      // Create default testimonials if none exist
+      const existingTestimonials = await this.getAllTestimonials();
+      if (existingTestimonials.length === 0) {
+        await this.createDefaultTestimonials();
+      }
+
+      // Create default services if none exist
+      const existingServices = await this.getAllServices();
+      if (existingServices.length === 0) {
+        await this.createDefaultServices();
+      }
     } catch (error) {
       // Only catch database connection errors during initialization
       if (error instanceof Error && error.message.includes("ADMIN_PASSWORD")) {
@@ -193,6 +205,97 @@ export class DatabaseStorage implements IStorage {
     for (const post of samplePosts) {
       await this.createBlogPost(post);
     }
+  }
+
+  private async createDefaultTestimonials() {
+    const defaultTestimonials = [
+      {
+        name: "Priya Sharma",
+        role: "Product Manager, Tech Startup",
+        content: "Satish helped me transition from engineering to product management. His holistic approach gave me the confidence to pursue my dreams.",
+        imageUrl: "/attached_assets/stock_images/professional_indian__d90ae31e.jpg",
+        rating: 5,
+        featured: true,
+        displayOrder: 1
+      },
+      {
+        name: "Rajesh Kumar",
+        role: "Senior Manager, Finance",
+        content: "The meditation sessions transformed my stress levels. I now handle work pressure with calmness and clarity.",
+        imageUrl: "/attached_assets/stock_images/professional_indian__7fa4ca90.jpg",
+        rating: 5,
+        featured: true,
+        displayOrder: 2
+      },
+      {
+        name: "Meera Agarwal",
+        role: "Parent & Entrepreneur",
+        content: "His admission guidance was invaluable. My daughter got into her dream college with the perfect career path mapped out.",
+        imageUrl: "/attached_assets/stock_images/professional_indian__552ef7b7.jpg",
+        rating: 5,
+        featured: true,
+        displayOrder: 3
+      }
+    ];
+
+    for (const testimonial of defaultTestimonials) {
+      await this.createTestimonial(testimonial);
+    }
+    console.log("✓ Default testimonials created");
+  }
+
+  private async createDefaultServices() {
+    const defaultServices = [
+      {
+        serviceId: "life-coaching",
+        title: "Life Coaching",
+        description: "Unlock your potential and create meaningful change in your personal and professional life.",
+        icon: "Heart",
+        color: "secondary",
+        price: "₹3,000",
+        featured: true,
+        isQueryForm: false,
+        displayOrder: 1
+      },
+      {
+        serviceId: "meditation",
+        title: "Meditation & Mindfulness",
+        description: "Find inner peace and clarity through guided meditation and mindfulness practices.",
+        icon: "Leaf",
+        color: "accent",
+        price: "₹997",
+        featured: false,
+        isQueryForm: false,
+        displayOrder: 2
+      },
+      {
+        serviceId: "workshops",
+        title: "Workshops & Seminars",
+        description: "Interactive group sessions designed to inspire and educate on career and life topics.",
+        icon: "Users",
+        color: "primary",
+        price: "Contact for Details",
+        featured: false,
+        isQueryForm: true,
+        displayOrder: 3
+      },
+      {
+        serviceId: "hospitality-consulting",
+        title: "Hospitality Consulting",
+        description: "Strategic consulting for hospitality businesses and independent director services.",
+        icon: "Building",
+        color: "accent",
+        price: "Contact for Details",
+        featured: false,
+        isQueryForm: true,
+        displayOrder: 4
+      }
+    ];
+
+    for (const service of defaultServices) {
+      await this.createService(service);
+    }
+    console.log("✓ Default services created");
   }
 
   // Users
