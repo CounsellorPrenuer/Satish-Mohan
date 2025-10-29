@@ -15,6 +15,10 @@ import {
   type InsertTimeSlot,
   type Client,
   type InsertClient,
+  type Testimonial,
+  type InsertTestimonial,
+  type Service,
+  type InsertService,
   users,
   bookings,
   contactForms,
@@ -22,7 +26,9 @@ import {
   leadDownloads,
   payments,
   timeSlots,
-  clients
+  clients,
+  testimonials,
+  services
 } from "@shared/schema";
 import { randomUUID } from "crypto";
 import { db } from "./db";
@@ -84,6 +90,21 @@ export interface IStorage {
   getClientByEmail(email: string): Promise<Client | undefined>;
   createClient(client: InsertClient): Promise<Client>;
   updateClient(id: string, updates: Partial<Client>): Promise<Client | undefined>;
+
+  // Testimonials
+  getAllTestimonials(): Promise<Testimonial[]>;
+  getTestimonial(id: string): Promise<Testimonial | undefined>;
+  createTestimonial(testimonial: InsertTestimonial): Promise<Testimonial>;
+  updateTestimonial(id: string, updates: Partial<Testimonial>): Promise<Testimonial | undefined>;
+  deleteTestimonial(id: string): Promise<boolean>;
+
+  // Services
+  getAllServices(): Promise<Service[]>;
+  getService(id: string): Promise<Service | undefined>;
+  getServiceByServiceId(serviceId: string): Promise<Service | undefined>;
+  createService(service: InsertService): Promise<Service>;
+  updateService(id: string, updates: Partial<Service>): Promise<Service | undefined>;
+  deleteService(id: string): Promise<boolean>;
 
   // Statistics
   getStats(): Promise<{
@@ -468,6 +489,75 @@ export class DatabaseStorage implements IStorage {
       .where(eq(clients.id, id))
       .returning();
     return client || undefined;
+  }
+
+  // Testimonials
+  async getAllTestimonials(): Promise<Testimonial[]> {
+    return await db.select().from(testimonials).orderBy(testimonials.displayOrder, desc(testimonials.createdAt));
+  }
+
+  async getTestimonial(id: string): Promise<Testimonial | undefined> {
+    const [testimonial] = await db.select().from(testimonials).where(eq(testimonials.id, id));
+    return testimonial || undefined;
+  }
+
+  async createTestimonial(insertTestimonial: InsertTestimonial): Promise<Testimonial> {
+    const [testimonial] = await db
+      .insert(testimonials)
+      .values(insertTestimonial)
+      .returning();
+    return testimonial;
+  }
+
+  async updateTestimonial(id: string, updates: Partial<Testimonial>): Promise<Testimonial | undefined> {
+    const [testimonial] = await db
+      .update(testimonials)
+      .set({ ...updates, updatedAt: new Date() })
+      .where(eq(testimonials.id, id))
+      .returning();
+    return testimonial || undefined;
+  }
+
+  async deleteTestimonial(id: string): Promise<boolean> {
+    const result = await db.delete(testimonials).where(eq(testimonials.id, id));
+    return (result.rowCount || 0) > 0;
+  }
+
+  // Services
+  async getAllServices(): Promise<Service[]> {
+    return await db.select().from(services).orderBy(services.displayOrder, desc(services.createdAt));
+  }
+
+  async getService(id: string): Promise<Service | undefined> {
+    const [service] = await db.select().from(services).where(eq(services.id, id));
+    return service || undefined;
+  }
+
+  async getServiceByServiceId(serviceId: string): Promise<Service | undefined> {
+    const [service] = await db.select().from(services).where(eq(services.serviceId, serviceId));
+    return service || undefined;
+  }
+
+  async createService(insertService: InsertService): Promise<Service> {
+    const [service] = await db
+      .insert(services)
+      .values(insertService)
+      .returning();
+    return service;
+  }
+
+  async updateService(id: string, updates: Partial<Service>): Promise<Service | undefined> {
+    const [service] = await db
+      .update(services)
+      .set({ ...updates, updatedAt: new Date() })
+      .where(eq(services.id, id))
+      .returning();
+    return service || undefined;
+  }
+
+  async deleteService(id: string): Promise<boolean> {
+    const result = await db.delete(services).where(eq(services.id, id));
+    return (result.rowCount || 0) > 0;
   }
 
   // Statistics

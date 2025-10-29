@@ -116,6 +116,36 @@ export const clients = pgTable("clients", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
+// Testimonials table
+export const testimonials = pgTable("testimonials", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  name: text("name").notNull(),
+  role: text("role").notNull(),
+  content: text("content").notNull(),
+  imageUrl: text("image_url"),
+  rating: integer("rating").default(5),
+  featured: boolean("featured").default(false),
+  displayOrder: integer("display_order").default(0),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Services table
+export const services = pgTable("services", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  serviceId: text("service_id").notNull().unique(), // e.g., "life-coaching", "meditation"
+  title: text("title").notNull(),
+  description: text("description").notNull(),
+  icon: text("icon").notNull(), // Icon name from lucide-react
+  color: text("color").notNull(), // primary, secondary, accent
+  price: text("price").notNull(),
+  featured: boolean("featured").default(false),
+  isQueryForm: boolean("is_query_form").default(false),
+  displayOrder: integer("display_order").default(0),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
 // Relations
 export const bookingsRelations = relations(bookings, ({ one }) => ({
   payment: one(payments, {
@@ -146,6 +176,10 @@ export const timeSlotsRelations = relations(timeSlots, ({ many }) => ({
 export const clientsRelations = relations(clients, ({ many }) => ({
   bookings: many(bookings),
 }));
+
+export const testimonialsRelations = relations(testimonials, ({}) => ({}));
+
+export const servicesRelations = relations(services, ({}) => ({}));
 
 // Schema validation
 export const insertUserSchema = createInsertSchema(users).pick({
@@ -197,6 +231,18 @@ export const insertPaymentSchema = createInsertSchema(payments).omit({
   updatedAt: true,
 });
 
+export const insertTestimonialSchema = createInsertSchema(testimonials).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertServiceSchema = createInsertSchema(services).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
 // Types
 export type User = typeof users.$inferSelect;
 export type InsertUser = z.infer<typeof insertUserSchema>;
@@ -221,3 +267,9 @@ export type InsertTimeSlot = z.infer<typeof insertTimeSlotSchema>;
 
 export type Client = typeof clients.$inferSelect;
 export type InsertClient = z.infer<typeof insertClientSchema>;
+
+export type Testimonial = typeof testimonials.$inferSelect;
+export type InsertTestimonial = z.infer<typeof insertTestimonialSchema>;
+
+export type Service = typeof services.$inferSelect;
+export type InsertService = z.infer<typeof insertServiceSchema>;
