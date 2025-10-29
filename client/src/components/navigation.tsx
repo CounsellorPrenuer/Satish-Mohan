@@ -82,6 +82,11 @@ export default function Navigation({ onBookingClick }: NavigationProps) {
     setIsMobileMenuOpen(false);
   };
 
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    setActiveSection('home');
+  };
+
   const NavLink = ({ item, isActive }: { item: typeof navigationItems[0], isActive: boolean }) => (
     <div
       onClick={() => scrollToSection(item.id)}
@@ -110,7 +115,12 @@ export default function Navigation({ onBookingClick }: NavigationProps) {
       <div className="max-w-7xl mx-auto px-6 h-full">
         <div className="flex items-center justify-between h-full">
           {/* Logo & Brand */}
-          <div className="flex items-center space-x-3 flex-shrink-0">
+          <button 
+            onClick={scrollToTop}
+            className="flex items-center space-x-3 flex-shrink-0 cursor-pointer"
+            data-testid="logo-scroll-top"
+            aria-label="Scroll to top"
+          >
             <div className="relative group">
               <img 
                 src={logoImage} 
@@ -130,7 +140,7 @@ export default function Navigation({ onBookingClick }: NavigationProps) {
                 Innervea
               </h1>
             </div>
-          </div>
+          </button>
           
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center">
