@@ -246,9 +246,9 @@ export default function BookingModal({ isOpen, onClose, selectedService }: Booki
                 name="fullName"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Full Name</FormLabel>
+                    <FormLabel>Full Name <span className="text-red-500">*</span></FormLabel>
                     <FormControl>
-                      <Input placeholder="John Doe" {...field} data-testid="input-fullname" />
+                      <Input placeholder="John Doe" {...field} required data-testid="input-fullname" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -259,9 +259,9 @@ export default function BookingModal({ isOpen, onClose, selectedService }: Booki
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel>Email <span className="text-red-500">*</span></FormLabel>
                     <FormControl>
-                      <Input type="email" placeholder="john@example.com" {...field} data-testid="input-email" />
+                      <Input type="email" placeholder="john@example.com" {...field} required data-testid="input-email" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -275,9 +275,9 @@ export default function BookingModal({ isOpen, onClose, selectedService }: Booki
                 name="phone"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Phone</FormLabel>
+                    <FormLabel>Phone <span className="text-red-500">*</span></FormLabel>
                     <FormControl>
-                      <Input type="tel" placeholder="+91 9876543210" {...field} data-testid="input-phone" />
+                      <Input type="tel" placeholder="+91 9876543210" {...field} required data-testid="input-phone" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
