@@ -213,7 +213,7 @@ export class DatabaseStorage implements IStorage {
         name: "Priya Sharma",
         role: "Product Manager, Tech Startup",
         content: "Satish helped me transition from engineering to product management. His holistic approach gave me the confidence to pursue my dreams.",
-        imageUrl: "/assets/stock_images/professional_indian__d90ae31e.jpg",
+        imageUrl: "/assets/stock_images/professional_indian__df18122d.jpg",
         rating: 5,
         featured: true,
         displayOrder: 1
@@ -222,7 +222,7 @@ export class DatabaseStorage implements IStorage {
         name: "Rajesh Kumar",
         role: "Senior Manager, Finance",
         content: "The meditation sessions transformed my stress levels. I now handle work pressure with calmness and clarity.",
-        imageUrl: "/assets/stock_images/professional_indian__7fa4ca90.jpg",
+        imageUrl: "/assets/stock_images/professional_indian__32a4a51c.jpg",
         rating: 5,
         featured: true,
         displayOrder: 2
@@ -231,7 +231,7 @@ export class DatabaseStorage implements IStorage {
         name: "Meera Agarwal",
         role: "Parent & Entrepreneur",
         content: "His admission guidance was invaluable. My daughter got into her dream college with the perfect career path mapped out.",
-        imageUrl: "/assets/stock_images/professional_indian__552ef7b7.jpg",
+        imageUrl: "/assets/stock_images/professional_indian__c6c61c09.jpg",
         rating: 5,
         featured: true,
         displayOrder: 3
