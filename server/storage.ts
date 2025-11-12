@@ -282,7 +282,7 @@ export class DatabaseStorage implements IStorage {
       {
         serviceId: "hospitality-consulting",
         title: "Hospitality Consulting",
-        description: "Strategic consulting for hospitality businesses and independent director services.",
+        description: "Strategic consulting for hospitality businesses.",
         icon: "Building",
         color: "accent",
         price: "Contact for Details",
