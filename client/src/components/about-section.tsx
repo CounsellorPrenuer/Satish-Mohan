@@ -52,9 +52,7 @@ export default function AboutSection({ onBookingClick }: AboutSectionProps) {
               className="rounded-2xl shadow-lg w-64 h-64 object-cover"
               data-testid="about-image"
             />
-            <p className="mt-4 text-center text-muted-foreground text-sm max-w-xs">
-              Hospitality expert and life coach who blends 30+ years of leadership with holistic guidance to empower individuals and organizations to thrive.
-            </p>
+            <p className="mt-4 text-center text-muted-foreground text-sm max-w-xs">Hospitality expert & Life Coach with 30+ years of leadership.  Provides holistic guidance to empower individuals & organizations to thrive.</p>
           </div>
           
           <div>
