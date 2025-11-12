@@ -271,7 +271,7 @@ export class DatabaseStorage implements IStorage {
       {
         serviceId: "workshops",
         title: "Workshops & Seminars",
-        description: "Interactive group sessions designed to inspire and educate on career and life topics.",
+        description: "Interactive sessions to inspire and educate.",
         icon: "Users",
         color: "primary",
         price: "Contact for Details",
