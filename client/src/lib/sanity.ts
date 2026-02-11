@@ -56,12 +56,13 @@ export async function getTestimonials() {
 
 export async function getPosts() {
     const query = `*[_type == "post" && published == true] | order(publishedAt desc) {
+    "id": _id,
     title,
-    slug,
+    "slug": slug.current,
     excerpt,
-    featuredImage,
+    "featuredImage": featuredImage.asset->url,
     category,
-    publishedAt,
+    "createdAt": publishedAt,
     featured
   }`;
     // Note: mockBlogPosts structure might need mapping if we change mock data often

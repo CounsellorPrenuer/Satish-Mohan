@@ -1,0 +1,135 @@
+Part 1: The Category Selector (Tabs)
+This is a set of three selectable boxes at the top. When one is selected, it should be highlighted.
+
+Selector 1:
+
+Title: Freshers
+
+Subtitle: Strategic career foundation & professional readiness
+
+Selector 2:
+
+Title: Middle Management
+
+Subtitle: Leadership development & strategic advancement
+
+Selector 3:
+
+Title: Senior Professionals
+
+Subtitle: Executive transformation & C-suite positioning
+
+Part 2: The Dynamic Content Area
+The content in this area changes based on which selector is active.
+
+Content for "Freshers"
+When the "Freshers" selector is chosen, display the following:
+
+Heading: Packages for Freshers
+Subheading: Strategic career foundation & professional readiness
+
+Package 1: Ascend
+
+Price: ₹6,499
+
+Plan Name: Ascend
+
+For: For College Graduates
+
+Features:
+
+Psychometric assessment to measure your interests, personality and abilities
+
+1 career coaching session for specialisation/job selection
+
+Lifetime access to Knowledge Gateway
+
+Pre-recorded webinars by industry experts
+
+Button Text: Choose Ascend
+
+Package 2: Ascend Plus
+
+Price: ₹10,599
+
+Plan Name: Ascend Plus
+
+For: For College Graduates
+
+Features:
+
+Psychometric assessment to measure your interests, personality and abilities
+
+3 career coaching sessions
+
+Lifetime access to Knowledge Gateway
+
+Guidance on Masters' admissions in India and abroad
+
+CV reviews during internships/graduation
+
+Guidance until you get into the job you love
+
+Career helpline access
+
+Button Text: Choose Ascend Plus
+
+Content for "Middle Management"
+When the "Middle Management" selector is chosen, display the following:
+
+Heading: Packages for Middle Management
+Subheading: Leadership development & strategic advancement
+
+Package 1: Ascend
+
+Price: ₹6,499
+
+Plan Name: Ascend
+
+For: For Working Professionals
+
+Features:
+
+Psychometric assessment to measure your interests, personality and abilities
+
+1 career coaching session focused on career transition, growth and upskilling
+
+Lifetime access to Knowledge Gateway
+
+Pre-recorded webinars by industry experts
+
+Button Text: Choose Ascend
+
+Package 2: Ascend Plus
+
+Price: ₹10,599
+
+Plan Name: Ascend Plus
+
+For: For Working Professionals
+
+Features:
+
+Psychometric assessment to measure your interests, personality and abilities
+
+3 career coaching sessions
+
+Lifetime access to Knowledge Gateway
+
+CV reviews and Interview Prep
+
+Guidance until you get into the job you love
+
+Career helpline access
+
+Button Text: Choose Ascend Plus
+
+Content for "Senior Professionals"
+When the "Senior Professionals" selector is chosen, display the following:
+
+Heading: Packages for Senior Professionals
+Subheading: Executive transformation & C-suite positioning
+
+Main Text: Packages Coming Soon
+Message: We're preparing specialized packages for senior professionals.
+Button Text: Get Notified When Available

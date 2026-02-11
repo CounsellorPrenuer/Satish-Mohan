@@ -1,0 +1,105 @@
+﻿
+> rest-express@1.0.0 build
+> vite build && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist
+
+[36mvite v5.4.20 [32mbuilding for production...[36m[39m
+transforming...
+[32mΓ£ô[39m 1737 modules transformed.
+node.exe : 
+[31mx[39m Build 
+failed in 2.83s
+At line:1 char:1
++ & "C:\Program Files
+\nodejs/node.exe" 
+"C:\Program 
+Files\nodejs/node_mo 
+...
++ ~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~
+    + CategoryInfo   
+           : 
+NotSpecified: (    
+[31mx[39m Build 
+fail    ed in 
+2.83s:String) [    
+], RemoteException
+    + 
+FullyQualifiedError  
+  Id : 
+NativeCommandErr    
+or
+ 
+[31merror during 
+build:
+[31m[vite]: Rollup 
+failed to resolve 
+import 
+"@sanity/client" 
+from "C:/Users/Gary/D
+esktop/Satish-Mohan/c
+lient/src/lib/sanity.
+ts".
+This is most likely 
+unintended because 
+it can break your 
+application at 
+runtime.
+If you do want to 
+externalize this 
+module explicitly 
+add it to
+`build.rollupOptions.
+external`[31m
+    at viteWarn (file
+:///C:/Users/Gary/Des
+ktop/Satish-Mohan/nod
+e_modules/vite/dist/n
+ode/chunks/dep-D_zLpg
+Qd.js:65854:17)
+    at onwarn (file:/
+//C:/Users/Gary/Deskt
+op/Satish-Mohan/node_
+modules/@vitejs/plugi
+n-react/dist/index.js
+:90:7)
+    at 
+onRollupWarning (file
+:///C:/Users/Gary/Des
+ktop/Satish-Mohan/nod
+e_modules/vite/dist/n
+ode/chunks/dep-D_zLpg
+Qd.js:65884:5)
+    at onwarn (file:/
+//C:/Users/Gary/Deskt
+op/Satish-Mohan/node_
+modules/vite/dist/nod
+e/chunks/dep-D_zLpgQd
+.js:65549:7)
+    at file:///C:/Use
+rs/Gary/Desktop/Satis
+h-Mohan/node_modules/
+rollup/dist/es/shared
+/node-entry.js:20972:
+13
+    at Object.logger 
+[as onLog] (file:///C
+:/Users/Gary/Desktop/
+Satish-Mohan/node_mod
+ules/rollup/dist/es/s
+hared/node-entry.js:2
+2945:9)
+    at ModuleLoader.h
+andleInvalidResolvedI
+d (file:///C:/Users/G
+ary/Desktop/Satish-Mo
+han/node_modules/roll
+up/dist/es/shared/nod
+e-entry.js:21689:26)
+    at file:///C:/Use
+rs/Gary/Desktop/Satis
+h-Mohan/node_modules/
+rollup/dist/es/shared
+/node-entry.js:21647:
+26[39m
