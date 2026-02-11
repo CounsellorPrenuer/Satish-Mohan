@@ -1,6 +1,7 @@
 import { Compass, Heart, Leaf, Users, GraduationCap, Building } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import type { Service } from "@shared/schema";
+import { getServices } from "@/lib/sanity";
 
 interface ServicesSectionProps {
   onServiceSelect: (serviceType: string) => void;
@@ -8,6 +9,7 @@ interface ServicesSectionProps {
 
 const colorStyles = {
   primary: {
+    // ... existing styles
     iconBg: "bg-primary/10 hover:bg-primary/20",
     iconColor: "text-primary",
     titleHover: "group-hover:text-primary",
@@ -44,7 +46,8 @@ const iconMap: Record<string, any> = {
 
 export default function ServicesSection({ onServiceSelect }: ServicesSectionProps) {
   const { data: services = [], isLoading } = useQuery<Service[]>({
-    queryKey: ["/api/services"],
+    queryKey: ["sanity-services"],
+    queryFn: getServices
   });
 
   if (isLoading) {
@@ -73,7 +76,7 @@ export default function ServicesSection({ onServiceSelect }: ServicesSectionProp
             const IconComponent = iconMap[service.icon] || Heart;
             const styles = colorStyles[service.color as keyof typeof colorStyles];
             return (
-              <div 
+              <div
                 key={service.id}
                 id={service.serviceId}
                 className={`service-card relative bg-gradient-to-br ${styles.gradient} bg-card border border-border/50 rounded-2xl p-6 sm:p-8 shadow-lg hover:shadow-2xl transition-all duration-500 group cursor-pointer transform hover:-translate-y-2 ${service.featured ? 'ring-2 ring-primary/20' : ''}`}

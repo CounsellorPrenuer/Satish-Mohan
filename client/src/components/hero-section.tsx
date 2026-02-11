@@ -1,13 +1,28 @@
-import { useEffect, useRef } from "react";
-import heroImage from "@assets/hero_1759750789247.png";
+import { useEffect, useRef, useState } from "react";
+import heroImageStatic from "@assets/hero_1759750789247.png";
+import { getHero } from "@/lib/sanity";
 
 interface HeroSectionProps {
   onBookingClick: (serviceType?: string) => void;
 }
 
+interface HeroData {
+  title?: string;
+  subtitle?: string;
+  description?: string;
+  heroImage?: string;
+}
+
 export default function HeroSection({ onBookingClick }: HeroSectionProps) {
   const animationRef = useRef<HTMLDivElement>(null);
-  
+  const [heroData, setHeroData] = useState<HeroData | null>(null);
+
+  useEffect(() => {
+    getHero().then(data => {
+      if (data) setHeroData(data);
+    });
+  }, []);
+
   const scrollToServices = () => {
     const element = document.getElementById("services");
     if (element) {
@@ -24,7 +39,7 @@ export default function HeroSection({ onBookingClick }: HeroSectionProps) {
       // Start with initial state
       (container as HTMLElement).style.opacity = '0';
       (container as HTMLElement).style.transform = 'scale(0.8)';
-      
+
       // Trigger entrance animation
       setTimeout(() => {
         (container as HTMLElement).style.transition = 'all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
@@ -73,6 +88,11 @@ export default function HeroSection({ onBookingClick }: HeroSectionProps) {
       });
     }
   }, []);
+
+  const titleText = heroData?.title || "The Path Within to";
+  const subtitleText = heroData?.subtitle || "Purpose & Growth";
+  const descText = heroData?.description || "In life, many of us chase success, yet feel lost. Careers stall, purpose feels distant, and the mind never rests. Innervea was created to change that. Transform from confusion to clarity, from self-doubt to self-belief, from restless striving to purposeful living.";
+  const displayImage = heroData?.heroImage || heroImageStatic;
 
   return (
     <>
@@ -133,32 +153,32 @@ export default function HeroSection({ onBookingClick }: HeroSectionProps) {
           50% { transform: scale(1.15) rotate(-180deg); }
         }
       `}</style>
-      
+
       <section id="home" className="pt-24 pb-24 sm:pb-24 lg:pb-20 sm:pt-24 lg:pt-24 min-h-screen flex items-center gradient-bg relative overflow-hidden">
         <div className="absolute inset-0 bg-black/10"></div>
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             <div className="text-white animate-fade-in-up order-2 lg:order-1 text-center lg:text-left">
               <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold mb-6 sm:mb-8 leading-tight tracking-tight" data-testid="hero-title">
-                The Path Within to
-                <span className="text-accent"> Purpose & Growth</span>
+                {titleText}
+                <span className="text-accent"> {subtitleText}</span>
               </h1>
               <p className="text-lg sm:text-xl md:text-2xl mb-8 sm:mb-10 text-white/90 leading-relaxed max-w-2xl mx-auto lg:mx-0" data-testid="hero-description">
-                In life, many of us chase success, yet feel lost. Careers stall, purpose feels distant, and the mind never rests. Innervea was created to change that. Transform from confusion to clarity, from self-doubt to self-belief, from restless striving to purposeful living.
+                {descText}
               </p>
               <div className="
                 flex flex-col sm:flex-row gap-3 sm:gap-4
                 items-center justify-center
                 lg:justify-start lg:items-start
               ">
-                <button 
-                  onClick={() => onBookingClick()} 
+                <button
+                  onClick={() => onBookingClick()}
                   className="bg-white text-primary px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg hover:bg-white/95 hover:shadow-xl transition-all duration-300 transform hover:scale-105 shadow-lg"
                   data-testid="hero-start-journey"
                 >
                   Free Discovery Call
                 </button>
-                <button 
+                <button
                   onClick={scrollToServices}
                   className="border-2 border-white text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg hover:bg-white hover:text-primary transition-colors text-center"
                   data-testid="hero-explore-services"
@@ -167,11 +187,11 @@ export default function HeroSection({ onBookingClick }: HeroSectionProps) {
                 </button>
               </div>
             </div>
-            
+
             <div ref={animationRef} className="relative flex items-center justify-center min-h-[300px] sm:min-h-[400px] lg:min-h-[500px] order-1 lg:order-2 mb-8 lg:mb-0">
-              <img 
-                src={heroImage} 
-                alt="Innervea - Transformation and Life Coaching" 
+              <img
+                src={displayImage}
+                alt="Innervea - Transformation and Life Coaching"
                 className="w-[500px] h-[500px] sm:w-[600px] sm:h-[600px] lg:w-[700px] lg:h-[700px] object-contain mx-auto"
                 data-testid="hero-image"
               />

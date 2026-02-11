@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Check, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import RazorpayButton from "@/components/razorpay-button";
 
 interface PricingTierSectionProps {
   onPackageSelect: (packageId: string) => void;
@@ -20,6 +21,7 @@ interface PackagePlan {
   features: Feature[];
   buttonText: string;
   highlighted?: boolean;
+  paymentButtonId?: string;
 }
 
 interface PackageContent {
@@ -82,6 +84,7 @@ const packages: Record<string, PackageContent> = {
           { text: "CV building during internship/graduation", included: false },
         ],
         buttonText: "BUY NOW",
+        paymentButtonId: "pl_RwDuOx96VYrsyN"
       },
       {
         id: "8-9-discover-plus",
@@ -99,6 +102,7 @@ const packages: Record<string, PackageContent> = {
         ],
         buttonText: "BUY NOW",
         highlighted: true,
+        paymentButtonId: "pl_RwDq8XpK76OhB3"
       },
     ],
   },
@@ -121,6 +125,7 @@ const packages: Record<string, PackageContent> = {
           { text: "CV reviews during internship/graduation", included: false },
         ],
         buttonText: "BUY NOW",
+        paymentButtonId: "pl_RwDxvLPQP7j4rG"
       },
       {
         id: "10-12-achieve-plus",
@@ -138,6 +143,7 @@ const packages: Record<string, PackageContent> = {
         ],
         buttonText: "BUY NOW",
         highlighted: true,
+        paymentButtonId: "pl_RwDzfVkQYEdAIf"
       },
     ],
   },
@@ -160,6 +166,7 @@ const packages: Record<string, PackageContent> = {
           { text: "CV reviews for job application", included: false },
         ],
         buttonText: "BUY NOW",
+        paymentButtonId: "pl_RwE1evNHrHWJDW"
       },
       {
         id: "graduates-ascend-plus",
@@ -177,6 +184,7 @@ const packages: Record<string, PackageContent> = {
         ],
         buttonText: "BUY NOW",
         highlighted: true,
+        paymentButtonId: "pl_RwE3WEILWB9WeJ"
       },
     ],
   },
@@ -199,6 +207,7 @@ const packages: Record<string, PackageContent> = {
           { text: "CV reviews for job application", included: false },
         ],
         buttonText: "BUY NOW",
+        paymentButtonId: "pl_RwE1evNHrHWJDW"
       },
       {
         id: "professionals-ascend-plus",
@@ -216,15 +225,25 @@ const packages: Record<string, PackageContent> = {
         ],
         buttonText: "BUY NOW",
         highlighted: true,
+        paymentButtonId: "pl_RwE3WEILWB9WeJ"
       },
     ],
   },
 };
 
+import { getPricing } from "@/lib/sanity";
+import { useQuery } from "@tanstack/react-query";
+
 export default function PricingTierSection({ onPackageSelect }: PricingTierSectionProps) {
   const [selectedCategory, setSelectedCategory] = useState<string>("8-9-students");
 
-  const currentPackage = packages[selectedCategory];
+  const { data: pricingData } = useQuery({
+    queryKey: ["sanity-pricing"],
+    queryFn: getPricing
+  });
+
+  const activePackages = pricingData || packages;
+  const currentPackage = activePackages[selectedCategory] || packages[selectedCategory];
 
   return (
     <section className="py-16 sm:py-24 lg:py-20 bg-muted/30 border-t border-border/40">
@@ -283,11 +302,11 @@ export default function PricingTierSection({ onPackageSelect }: PricingTierSecti
         ) : (
           /* Pricing Plans */
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-            {currentPackage.plans?.map((plan) => (
+            {currentPackage.plans?.map((plan: PackagePlan) => (
               <div
                 key={plan.id}
                 className={cn(
-                  "relative bg-card rounded-2xl p-8 border transition-all duration-300",
+                  "relative bg-card rounded-2xl p-8 border transition-all duration-300 flex flex-col",
                   plan.highlighted
                     ? "border-primary shadow-2xl scale-105"
                     : "border-border shadow-lg hover:shadow-xl"
@@ -299,15 +318,15 @@ export default function PricingTierSection({ onPackageSelect }: PricingTierSecti
                     Most Popular
                   </div>
                 )}
-                
+
                 <div className="text-center mb-6">
                   <h3 className="text-2xl font-extrabold text-foreground mb-2">{plan.name}</h3>
                   <p className="text-sm text-muted-foreground mb-4">{plan.for}</p>
                   <div className="text-4xl font-bold text-primary mb-2">{plan.price}</div>
                 </div>
 
-                <ul className="space-y-4 mb-8">
-                  {plan.features.map((feature, index) => (
+                <ul className="space-y-4 mb-8 flex-grow">
+                  {plan.features.map((feature: Feature, index: number) => (
                     <li key={index} className="flex items-start gap-3">
                       {feature.included ? (
                         <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
@@ -324,18 +343,22 @@ export default function PricingTierSection({ onPackageSelect }: PricingTierSecti
                   ))}
                 </ul>
 
-                <Button
-                  onClick={() => onPackageSelect(plan.id)}
-                  className={cn(
-                    "w-full py-6 rounded-lg font-semibold transition-all duration-300",
-                    plan.highlighted
-                      ? "bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white"
-                      : "bg-primary hover:bg-primary/90 text-primary-foreground"
-                  )}
-                  data-testid={`button-${plan.id}`}
-                >
-                  {plan.buttonText}
-                </Button>
+                {plan.paymentButtonId ? (
+                  <RazorpayButton paymentButtonId={plan.paymentButtonId} />
+                ) : (
+                  <Button
+                    onClick={() => onPackageSelect(plan.id)}
+                    className={cn(
+                      "w-full py-6 rounded-lg font-semibold transition-all duration-300",
+                      plan.highlighted
+                        ? "bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white"
+                        : "bg-primary hover:bg-primary/90 text-primary-foreground"
+                    )}
+                    data-testid={`button-${plan.id}`}
+                  >
+                    {plan.buttonText}
+                  </Button>
+                )}
               </div>
             ))}
           </div>

@@ -1,50 +1,65 @@
-import { QueryClient, QueryFunction } from "@tanstack/react-query";
-
-async function throwIfResNotOk(res: Response) {
-  if (!res.ok) {
-    const text = (await res.text()) || res.statusText;
-    throw new Error(`${res.status}: ${text}`);
-  }
-}
+import { QueryClient } from "@tanstack/react-query";
+import { mockServices, mockBlogPosts, mockTestimonials } from "./mockData";
 
 export async function apiRequest(
   method: string,
   url: string,
   data?: unknown | undefined,
 ): Promise<Response> {
-  const res = await fetch(url, {
-    method,
-    headers: data ? { "Content-Type": "application/json" } : {},
-    body: data ? JSON.stringify(data) : undefined,
-    credentials: "include",
-  });
+  console.log(`[MOCK API] ${method} ${url}`, data);
 
-  await throwIfResNotOk(res);
-  return res;
-}
+  // Simulate network delay
+  await new Promise(resolve => setTimeout(resolve, 500));
 
-type UnauthorizedBehavior = "returnNull" | "throw";
-export const getQueryFn: <T>(options: {
-  on401: UnauthorizedBehavior;
-}) => QueryFunction<T> =
-  ({ on401: unauthorizedBehavior }) =>
-  async ({ queryKey }) => {
-    const res = await fetch(queryKey.join("/") as string, {
-      credentials: "include",
-    });
-
-    if (unauthorizedBehavior === "returnNull" && res.status === 401) {
-      return null;
+  // Handle Mock GET Requests
+  if (method === "GET") {
+    if (url.startsWith("/api/services")) {
+      const id = url.split("/").pop();
+      if (id && id !== "services") {
+        const service = mockServices.find(s => s.id === id || s.serviceId === id);
+        if (service) return new Response(JSON.stringify(service));
+        return new Response("Not Found", { status: 404 });
+      }
+      return new Response(JSON.stringify(mockServices));
     }
 
-    await throwIfResNotOk(res);
-    return await res.json();
-  };
+    if (url.startsWith("/api/blog-posts")) {
+      const id = url.split("/").pop();
+      if (id && id !== "blog-posts") {
+        const post = mockBlogPosts.find(p => p.id === id || p.slug === id);
+        if (post) return new Response(JSON.stringify(post));
+        return new Response("Not Found", { status: 404 });
+      }
+      return new Response(JSON.stringify(mockBlogPosts));
+    }
+
+    if (url.startsWith("/api/testimonials")) {
+      return new Response(JSON.stringify(mockTestimonials));
+    }
+
+    if (url === "/api/auth/status") {
+      return new Response(JSON.stringify({ isAuthenticated: false, adminId: null }));
+    }
+  }
+
+  // Handle Mock Mutation Requests (POST, PUT, DELETE)
+  // For static site, we just log and succeed.
+  return new Response(JSON.stringify({ success: true, message: "Mock operation successful" }), {
+    status: 200,
+    headers: { "Content-Type": "application/json" }
+  });
+}
 
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      queryFn: getQueryFn({ on401: "throw" }),
+      // Direct query function that bypasses fetch
+      queryFn: async ({ queryKey }) => {
+        const url = queryKey.join("/");
+        const res = await apiRequest("GET", url);
+        if (!res.ok) throw new Error("Mock fetch failed to " + url);
+        return res.json();
+      },
       refetchInterval: false,
       refetchOnWindowFocus: false,
       staleTime: Infinity,

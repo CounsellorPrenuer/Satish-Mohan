@@ -1,9 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import type { Testimonial } from "@shared/schema";
+import { getTestimonials } from "@/lib/sanity";
 
 export default function TestimonialsSection() {
   const { data: testimonials = [], isLoading } = useQuery<Testimonial[]>({
-    queryKey: ["/api/testimonials"],
+    queryKey: ["sanity-testimonials"],
+    queryFn: getTestimonials
   });
 
   if (isLoading) {
@@ -29,7 +31,7 @@ export default function TestimonialsSection() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {testimonials.map((testimonial) => (
-            <div 
+            <div
               key={testimonial.id}
               className="testimonial-card rounded-xl p-6 sm:p-8 text-white"
               data-testid={`testimonial-card-${testimonial.id}`}
@@ -46,9 +48,9 @@ export default function TestimonialsSection() {
               </p>
               <div className="flex items-center">
                 {testimonial.imageUrl && (
-                  <img 
-                    src={testimonial.imageUrl} 
-                    alt={testimonial.name} 
+                  <img
+                    src={testimonial.imageUrl}
+                    alt={testimonial.name}
                     className="w-12 h-12 rounded-full mr-4 object-cover"
                     data-testid={`testimonial-image-${testimonial.id}`}
                   />

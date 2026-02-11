@@ -1,10 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "wouter";
 import type { BlogPost } from "@shared/schema";
+import { getPosts } from "@/lib/sanity";
 
 export default function BlogPreviewSection() {
   const { data: blogPosts, isLoading } = useQuery<BlogPost[]>({
-    queryKey: ["/api/blog-posts?published=true"],
+    queryKey: ["sanity-posts-featured"],
+    queryFn: getPosts
   });
 
   if (isLoading) {
@@ -48,15 +50,15 @@ export default function BlogPreviewSection() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {featuredPosts.map((post) => (
-            <article 
+            <article
               key={post.id}
               className="blog-card bg-card rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
               data-testid={`blog-post-${post.id}`}
             >
               {post.featuredImage && (
-                <img 
-                  src={post.featuredImage} 
-                  alt={post.title} 
+                <img
+                  src={post.featuredImage}
+                  alt={post.title}
                   className="w-full h-48 object-cover"
                   data-testid={`blog-image-${post.id}`}
                 />
@@ -73,15 +75,15 @@ export default function BlogPreviewSection() {
                 </p>
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-muted-foreground" data-testid={`blog-date-${post.id}`}>
-                    {post.createdAt ? new Date(post.createdAt).toLocaleDateString('en-US', { 
-                      year: 'numeric', 
-                      month: 'short', 
-                      day: 'numeric' 
+                    {post.createdAt ? new Date(post.createdAt).toLocaleDateString('en-US', {
+                      year: 'numeric',
+                      month: 'short',
+                      day: 'numeric'
                     }) : ''}
                   </span>
-                  <Link 
-                    href={`/blog/${post.id}`} 
-                    className="text-primary hover:text-primary/80 font-medium text-sm transition-colors" 
+                  <Link
+                    href={`/blog/${post.id}`}
+                    className="text-primary hover:text-primary/80 font-medium text-sm transition-colors"
                     data-testid={`blog-read-more-${post.id}`}
                   >
                     Read More →
@@ -93,9 +95,9 @@ export default function BlogPreviewSection() {
         </div>
 
         <div className="text-center mt-12">
-          <Link 
+          <Link
             href="/blogs"
-            className="inline-block bg-primary text-dark px-8 py-3 rounded-lg font-semibold hover:bg-primary/90 transition-colors btn-primary border border-2" 
+            className="inline-block bg-primary text-dark px-8 py-3 rounded-lg font-semibold hover:bg-primary/90 transition-colors btn-primary border border-2"
             data-testid="blog-view-all"
           >
             View All Articles
