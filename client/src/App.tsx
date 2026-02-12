@@ -11,27 +11,32 @@ import BlogPostPage from "@/pages/blog-post";
 import BlogsPage from "@/pages/blogs";
 import PrivacyPolicy from "@/pages/privacy-policy";
 import UPIPayment from "@/pages/upi-payment";
-import AdminLogin from "@/pages/admin/login";
-import AdminBookings from "@/pages/admin/bookings";
-import AdminBlogs from "@/pages/admin/blogs";
-import AdminTestimonials from "@/pages/admin/testimonials";
-import AdminServices from "@/pages/admin/services";
+import { Suspense, lazy } from "react";
+
+// Lazy load admin pages to isolate dependencies (charts, etc.)
+const AdminLogin = lazy(() => import("@/pages/admin/login"));
+const AdminBookings = lazy(() => import("@/pages/admin/bookings"));
+const AdminBlogs = lazy(() => import("@/pages/admin/blogs"));
+const AdminTestimonials = lazy(() => import("@/pages/admin/testimonials"));
+const AdminServices = lazy(() => import("@/pages/admin/services"));
 
 function Router() {
   return (
-    <Switch>
-      <Route path="/" component={Home} />
-      <Route path="/blogs" component={BlogsPage} />
-      <Route path="/blog/:id" component={BlogPostPage} />
-      <Route path="/privacy-policy" component={PrivacyPolicy} />
-      <Route path="/upi-payment" component={UPIPayment} />
-      <Route path="/admin/login" component={AdminLogin} />
-      <Route path="/admin/bookings" component={AdminBookings} />
-      <Route path="/admin/blogs" component={AdminBlogs} />
-      <Route path="/admin/testimonials" component={AdminTestimonials} />
-      <Route path="/admin/services" component={AdminServices} />
-      <Route component={NotFound} />
-    </Switch>
+    <Suspense fallback={<div className="flex items-center justify-center min-h-screen">Loading...</div>}>
+      <Switch>
+        <Route path="/" component={Home} />
+        <Route path="/blogs" component={BlogsPage} />
+        <Route path="/blog/:id" component={BlogPostPage} />
+        <Route path="/privacy-policy" component={PrivacyPolicy} />
+        <Route path="/upi-payment" component={UPIPayment} />
+        <Route path="/admin/login" component={AdminLogin} />
+        <Route path="/admin/bookings" component={AdminBookings} />
+        <Route path="/admin/blogs" component={AdminBlogs} />
+        <Route path="/admin/testimonials" component={AdminTestimonials} />
+        <Route path="/admin/services" component={AdminServices} />
+        <Route component={NotFound} />
+      </Switch>
+    </Suspense>
   );
 }
 

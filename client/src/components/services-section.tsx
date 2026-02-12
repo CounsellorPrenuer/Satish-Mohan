@@ -74,7 +74,8 @@ export default function ServicesSection({ onServiceSelect }: ServicesSectionProp
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8 sm:gap-10 lg:gap-8">
           {services.map((service) => {
             const IconComponent = iconMap[service.icon] || Heart;
-            const styles = colorStyles[service.color as keyof typeof colorStyles];
+            // Fallback to 'primary' if color is invalid or missing
+            const styles = colorStyles[service.color as keyof typeof colorStyles] || colorStyles.primary;
             return (
               <div
                 key={service.id}
