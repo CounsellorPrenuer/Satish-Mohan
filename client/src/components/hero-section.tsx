@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import heroImageStatic from "@assets/hero_1759750789247.png";
-import { getHero } from "@/lib/sanity";
+import { getHero, getLogo } from "@/lib/sanity";
 
 interface HeroSectionProps {
   onBookingClick: (serviceType?: string) => void;
@@ -16,10 +16,14 @@ interface HeroData {
 export default function HeroSection({ onBookingClick }: HeroSectionProps) {
   const animationRef = useRef<HTMLDivElement>(null);
   const [heroData, setHeroData] = useState<HeroData | null>(null);
+  const [sanityLogo, setSanityLogo] = useState<string | null>(null);
 
   useEffect(() => {
     getHero().then(data => {
       if (data) setHeroData(data);
+    });
+    getLogo().then(url => {
+      if (url) setSanityLogo(url);
     });
   }, []);
 
@@ -92,7 +96,7 @@ export default function HeroSection({ onBookingClick }: HeroSectionProps) {
   const titleText = heroData?.title || "The Path Within to";
   const subtitleText = heroData?.subtitle || "Purpose & Growth";
   const descText = heroData?.description || "In life, many of us chase success, yet feel lost. Careers stall, purpose feels distant, and the mind never rests. Innervea was created to change that. Transform from confusion to clarity, from self-doubt to self-belief, from restless striving to purposeful living.";
-  const displayImage = heroData?.heroImage || heroImageStatic;
+  const displayImage = sanityLogo || heroData?.heroImage || heroImageStatic;
 
   return (
     <>

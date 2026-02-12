@@ -171,3 +171,17 @@ export async function getEvents() {
   }`;
     return fetchWithFallback(query, mockEvents, "Events fetch failed");
 }
+
+export async function getLogo(): Promise<string | null> {
+    const query = `*[_type == "siteSettings"][0] {
+    "logoUrl": logo.asset->url
+  }`;
+    try {
+        const data = await sanityClient.fetch(query);
+        if (data?.logoUrl) return data.logoUrl;
+        return null;
+    } catch (error) {
+        console.warn("[Sanity] Logo fetch failed, using static fallback:", error);
+        return null;
+    }
+}
