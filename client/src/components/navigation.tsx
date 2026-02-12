@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
-import { Menu, X, Home, Building2, User, BookOpen, Mail, Calendar } from "lucide-react";
+import { Menu, X, Home, Building2, User, BookOpen, Mail, Calendar, CalendarDays } from "lucide-react";
 import logoImage from "@assets/logo_1758786484720.jpeg";
 import {
   NavigationMenu,
@@ -22,6 +22,7 @@ const navigationItems = [
   { id: 'home', label: 'Home', icon: Home },
   { id: 'services', label: 'Services', icon: Building2 },
   { id: 'about', label: 'About', icon: User },
+  { id: 'events', label: 'Events', icon: CalendarDays },
   { id: 'blog', label: 'Blog', icon: BookOpen },
   { id: 'contact', label: 'Contact', icon: Mail },
 ];
@@ -41,11 +42,11 @@ export default function Navigation({ onBookingClick }: NavigationProps) {
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 100);
-      
+
       // Update active section based on scroll position
       const sections = ['home', 'services', 'about', 'blog', 'contact'];
       const sectionElements = sections.map(id => document.getElementById(id));
-      
+
       for (let i = sectionElements.length - 1; i >= 0; i--) {
         const element = sectionElements[i];
         if (element) {
@@ -92,8 +93,8 @@ export default function Navigation({ onBookingClick }: NavigationProps) {
       onClick={() => scrollToSection(item.id)}
       className={cn(
         "relative px-4 py-2 text-sm font-medium transition-all duration-300 nav-link-hover cursor-pointer",
-        isActive 
-          ? "text-primary nav-link-active" 
+        isActive
+          ? "text-primary nav-link-active"
           : "text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary"
       )}
       data-testid={`nav-${item.id}`}
@@ -103,11 +104,11 @@ export default function Navigation({ onBookingClick }: NavigationProps) {
   );
 
   return (
-    <nav 
+    <nav
       className={cn(
         "fixed top-0 left-0 right-0 z-50 nav-height-transition nav-slide-in",
-        isScrolled 
-          ? "h-16 glass shadow-xl border-b border-white/20" 
+        isScrolled
+          ? "h-16 glass shadow-xl border-b border-white/20"
           : "h-20 bg-white/60 backdrop-blur-md border-b border-transparent"
       )}
       data-testid="main-navigation"
@@ -115,16 +116,16 @@ export default function Navigation({ onBookingClick }: NavigationProps) {
       <div className="max-w-7xl mx-auto px-6 h-full">
         <div className="flex items-center justify-between h-full">
           {/* Logo & Brand */}
-          <button 
+          <button
             onClick={scrollToTop}
             className="flex items-center space-x-3 flex-shrink-0 cursor-pointer"
             data-testid="logo-scroll-top"
             aria-label="Scroll to top"
           >
             <div className="relative group">
-              <img 
-                src={logoImage} 
-                alt="Innervea Logo" 
+              <img
+                src={logoImage}
+                alt="Innervea Logo"
                 className={cn(
                   "w-auto rounded-xl transition-all duration-300 shadow-lg group-hover:shadow-xl",
                   isScrolled ? "h-8" : "h-10"
@@ -141,7 +142,7 @@ export default function Navigation({ onBookingClick }: NavigationProps) {
               </h1>
             </div>
           </button>
-          
+
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center">
             <NavigationMenu>
@@ -153,8 +154,8 @@ export default function Navigation({ onBookingClick }: NavigationProps) {
                         onClick={() => scrollToSection(item.id)}
                         className={cn(
                           "relative px-4 py-2 text-sm font-medium transition-all duration-300 nav-link-hover",
-                          activeSection === item.id 
-                            ? "text-primary nav-link-active" 
+                          activeSection === item.id
+                            ? "text-primary nav-link-active"
                             : "text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary"
                         )}
                         data-testid={`nav-${item.id}`}
@@ -170,8 +171,8 @@ export default function Navigation({ onBookingClick }: NavigationProps) {
                       onClick={() => scrollToSection(navigationItems[4].id)}
                       className={cn(
                         "relative px-4 py-2 text-sm font-medium transition-all duration-300 nav-link-hover",
-                        activeSection === navigationItems[4].id 
-                          ? "text-primary nav-link-active" 
+                        activeSection === navigationItems[4].id
+                          ? "text-primary nav-link-active"
                           : "text-gray-700 hover:text-primary"
                       )}
                       data-testid={`nav-${navigationItems[4].id}`}
@@ -186,7 +187,7 @@ export default function Navigation({ onBookingClick }: NavigationProps) {
 
           {/* Desktop Actions */}
           <div className="hidden lg:flex items-center space-x-4">
-            <Button 
+            <Button
               onClick={handleBookingClick}
               className={cn(
                 "bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90",
@@ -205,7 +206,7 @@ export default function Navigation({ onBookingClick }: NavigationProps) {
           <div className="lg:hidden flex items-center">
             <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
               <SheetTrigger asChild>
-                <Button 
+                <Button
                   variant="ghost"
                   size="sm"
                   className="lg:hidden w-10 h-10 rounded-xl"
@@ -249,9 +250,9 @@ export default function Navigation({ onBookingClick }: NavigationProps) {
                       );
                     })}
                   </div>
-                  
+
                   {/* CTA Button */}
-                  <Button 
+                  <Button
                     onClick={handleBookingClick}
                     className="w-full bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white font-semibold py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]"
                     data-testid="mobile-nav-book-session"

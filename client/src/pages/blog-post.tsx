@@ -7,15 +7,16 @@ import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
 import rehypeSanitize from "rehype-sanitize";
 
+import { getPost } from "@/lib/sanity";
+
+// ... imports remain the same
+
 export default function BlogPostPage() {
   const { id } = useParams<{ id: string }>();
 
   const { data: post, isLoading, error } = useQuery<BlogPost>({
-    queryKey: ["/api/blog-posts", id],
-    queryFn: () => fetch(`/api/blog-posts/${id}`).then(res => {
-      if (!res.ok) throw new Error('Blog post not found');
-      return res.json();
-    }),
+    queryKey: ["sanity-post", id],
+    queryFn: () => getPost(id!),
     enabled: !!id,
   });
 

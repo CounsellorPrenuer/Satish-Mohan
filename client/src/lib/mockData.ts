@@ -1,4 +1,4 @@
-import { Service, BlogPost, Testimonial, TeamMember } from "./types";
+import { Service, BlogPost, Testimonial, TeamMember, Event } from "./types";
 
 export const mockServices: Service[] = [
     {
@@ -137,5 +137,41 @@ export const mockTestimonials: Testimonial[] = [
         displayOrder: 3,
         createdAt: new Date(),
         updatedAt: new Date()
+    }
+];
+
+export const mockEvents: Event[] = [
+    {
+        id: "1",
+        title: "Career Discovery Workshop",
+        slug: "career-discovery-workshop",
+        date: new Date("2026-03-15T10:00:00"),
+        location: "Online (Zoom)",
+        description: "A 2-hour interactive workshop to help you uncover your true career calling. Includes personality assessments, guided exercises, and a personalized action plan.",
+        image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400",
+        registrationLink: "https://forms.google.com",
+        isActive: true
+    },
+    {
+        id: "2",
+        title: "Mindfulness & Meditation Retreat",
+        slug: "mindfulness-meditation-retreat",
+        date: new Date("2026-04-05T09:00:00"),
+        location: "Mumbai, India",
+        description: "A full-day retreat combining guided meditation, breathwork, and mindfulness practices. Perfect for professionals seeking clarity and inner peace.",
+        image: "https://images.unsplash.com/photo-1545389336-cf090694435e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400",
+        registrationLink: "https://forms.google.com",
+        isActive: true
+    },
+    {
+        id: "3",
+        title: "Leadership Excellence Seminar",
+        slug: "leadership-excellence-seminar",
+        date: new Date("2026-04-20T14:00:00"),
+        location: "Online (Zoom)",
+        description: "Learn leadership principles from 30+ years of hospitality industry experience. Ideal for aspiring and current leaders in any field.",
+        image: "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400",
+        registrationLink: "https://forms.google.com",
+        isActive: true
     }
 ];

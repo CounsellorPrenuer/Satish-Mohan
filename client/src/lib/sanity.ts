@@ -1,5 +1,5 @@
 import { createClient } from "@sanity/client";
-import { mockServices, mockTestimonials, mockBlogPosts } from "./mockData";
+import { mockServices, mockTestimonials, mockBlogPosts, mockEvents } from "./mockData";
 
 // Note: In a real environment, project ID would be an env var.
 // For local studio without a cloud project, this client won't fetch much unless configured properly.
@@ -67,6 +67,22 @@ export async function getPosts() {
   }`;
     // Note: mockBlogPosts structure might need mapping if we change mock data often
     return fetchWithFallback(query, mockBlogPosts, "Posts fetch failed");
+}
+
+export async function getPost(id: string) {
+    const query = `*[_type == "post" && _id == "${id}"][0] {
+    "id": _id,
+    title,
+    "slug": slug.current,
+    excerpt,
+    content,
+    "featuredImage": featuredImage.asset->url,
+    category,
+    "createdAt": publishedAt,
+    featured
+  }`;
+    const mockPost = mockBlogPosts.find(p => p.id === id);
+    return fetchWithFallback(query, mockPost, `Post ${id} fetch failed`);
 }
 
 export async function getPricing() {
@@ -139,4 +155,19 @@ export async function getAbout() {
     stats
   }`;
     return fetchWithFallback(query, null, "About fetch failed");
+}
+
+export async function getEvents() {
+    const query = `*[_type == "event" && isActive == true] | order(date asc) {
+    "id": _id,
+    title,
+    "slug": slug.current,
+    date,
+    location,
+    description,
+    "image": image.asset->url,
+    registrationLink,
+    isActive
+  }`;
+    return fetchWithFallback(query, mockEvents, "Events fetch failed");
 }

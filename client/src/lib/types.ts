@@ -156,3 +156,15 @@ export const insertBlogPostSchema = z.object({
 });
 
 export type InsertBlogPost = z.infer<typeof insertBlogPostSchema>;
+
+export interface Event {
+    id: string;
+    title: string;
+    slug: string;
+    date: Date;
+    location?: string;
+    description?: string;
+    image?: string;
+    registrationLink?: string;
+    isActive: boolean;
+}

@@ -3,6 +3,7 @@ import HeroSection from "@/components/hero-section";
 import ServicesSection from "@/components/services-section";
 import PricingTierSection from "@/components/pricing-tier-section";
 import AboutSection from "@/components/about-section";
+import EventsSection from "@/components/events-section";
 import PartnershipSection from "@/components/partnership-section";
 import TestimonialsSection from "@/components/testimonials-section";
 import BlogPreviewSection from "@/components/blog-preview-section";
@@ -32,13 +33,13 @@ export default function Home() {
       setIsFreeCallModalOpen(true);
       return;
     }
-    
+
     // Handle notification requests (e.g., "senior-professionals-notify")
     if (serviceType.includes('notify')) {
       setIsFreeCallModalOpen(true);
       return;
     }
-    
+
     setSelectedService(serviceType);
     // Check if this service requires a query form
     if (queryServices.includes(serviceType)) {
@@ -70,27 +71,28 @@ export default function Home() {
       <ServicesSection onServiceSelect={openBookingModal} />
       <PricingTierSection onPackageSelect={openBookingModal} />
       <AboutSection onBookingClick={openBookingModal} />
+      <EventsSection />
       <TestimonialsSection />
       <BlogPreviewSection />
       <ContactSection />
       <PartnershipSection />
       <Footer onBookingClick={openBookingModal} />
-      
+
       {isFreeCallModalOpen && (
-        <FreeCallModal 
-          isOpen={isFreeCallModalOpen} 
+        <FreeCallModal
+          isOpen={isFreeCallModalOpen}
           onClose={closeFreeCallModal}
         />
       )}
 
       {isBookingModalOpen && (
-        <BookingModal 
-          isOpen={isBookingModalOpen} 
+        <BookingModal
+          isOpen={isBookingModalOpen}
           onClose={closeBookingModal}
           selectedService={selectedService}
         />
       )}
-      
+
       {isQueryModalOpen && selectedService && (
         <ServiceQueryModal
           isOpen={isQueryModalOpen}
