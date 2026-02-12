@@ -21,10 +21,12 @@ export const hero = {
         },
         {
             name: 'heroImage',
-            title: 'Hero Image',
+            title: 'Hero Image / Logo (GIF supported)',
             type: 'image',
+            description: 'Upload a PNG, JPG, or animated GIF here. GIFs will play as animations.',
             options: {
                 hotspot: true,
+                accept: 'image/*,.gif',
             }
         }
     ]
