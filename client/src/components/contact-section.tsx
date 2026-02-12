@@ -2,8 +2,6 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,7 +12,7 @@ import { insertContactFormSchema, type InsertContactForm } from "@/lib/types";
 
 export default function ContactSection() {
   const { toast } = useToast();
-  const queryClient = useQueryClient();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<InsertContactForm>({
     resolver: zodResolver(insertContactFormSchema),
@@ -26,30 +24,49 @@ export default function ContactSection() {
     },
   });
 
-  const contactMutation = useMutation({
-    mutationFn: async (data: InsertContactForm) => {
-      const response = await apiRequest("POST", "/api/contact-forms", data);
-      return response.json();
-    },
-    onSuccess: () => {
-      toast({
-        title: "Message sent successfully!",
-        description: "Thank you for reaching out. We'll get back to you soon.",
-      });
-      form.reset();
-      queryClient.invalidateQueries({ queryKey: ["/api/contact-forms"] });
-    },
-    onError: () => {
-      toast({
-        title: "Error sending message",
-        description: "Please try again later.",
-        variant: "destructive",
-      });
-    },
-  });
-
   const onSubmit = (data: InsertContactForm) => {
-    contactMutation.mutate(data);
+    setIsSubmitting(true);
+
+    const emailBody = [
+      `--- New Contact Message ---`,
+      ``,
+      `Name: ${data.name}`,
+      `Email: ${data.email}`,
+      `Subject: ${data.subject}`,
+      ``,
+      `Message:`,
+      data.message,
+      ``,
+      `---`,
+    ].join('\n');
+
+    const emailSubject = `Contact: ${data.subject} - from ${data.name}`;
+    const mailtoLink = `mailto:innervea@gmail.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+
+    // Most reliable cross-browser approach: hidden anchor click
+    const anchor = document.createElement('a');
+    anchor.href = mailtoLink;
+    anchor.style.display = 'none';
+    document.body.appendChild(anchor);
+    anchor.click();
+    document.body.removeChild(anchor);
+
+    // Clipboard fallback
+    try {
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(`To: innervea@gmail.com\nSubject: ${emailSubject}\n\n${emailBody}`);
+      }
+    } catch (e) { }
+
+    toast({
+      title: "Opening your email app...",
+      description: "Your message has been prepared. If your email app didn't open, the details have been copied to your clipboard.",
+    });
+
+    setTimeout(() => {
+      setIsSubmitting(false);
+      form.reset();
+    }, 2000);
   };
 
   return (
@@ -202,10 +219,10 @@ export default function ContactSection() {
                 <Button
                   type="submit"
                   className="w-full bg-gradient-to-r from-primary to-secondary text-white py-3 px-6 rounded-lg font-semibold hover:from-primary/90 hover:to-secondary/90 transition-all duration-300 transform hover:scale-[1.02] shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
-                  disabled={contactMutation.isPending}
+                  disabled={isSubmitting}
                   data-testid="button-send-message"
                 >
-                  {contactMutation.isPending ? "Sending..." : "Send Message"}
+                  {isSubmitting ? "Sending..." : "Send Message"}
                 </Button>
               </form>
             </Form>
