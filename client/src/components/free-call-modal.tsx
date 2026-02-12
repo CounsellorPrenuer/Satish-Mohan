@@ -1,8 +1,7 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -39,7 +38,7 @@ const backgrounds = [
 
 export default function FreeCallModal({ isOpen, onClose }: FreeCallModalProps) {
   const { toast } = useToast();
-  const queryClient = useQueryClient();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<FreeCallFormData>({
     resolver: zodResolver(freeCallSchema),
@@ -50,37 +49,49 @@ export default function FreeCallModal({ isOpen, onClose }: FreeCallModalProps) {
     },
   });
 
-  const callMutation = useMutation({
-    mutationFn: async (data: FreeCallFormData) => {
-      const contactData = {
-        name: data.name,
-        email: `${data.phone}@phone.contact`,
-        subject: `Free Discovery Call Request - ${data.background}`,
-        message: `Free Discovery Call Request\n\nName: ${data.name}\nPhone: ${data.phone}\nBackground: ${data.background}`,
-      };
-      const response = await apiRequest("POST", "/api/contact-forms", contactData);
-      return response.json();
-    },
-    onSuccess: () => {
-      toast({
-        title: "Request submitted successfully!",
-        description: "We'll call you within 4 hours to schedule your free discovery call.",
-      });
-      queryClient.invalidateQueries({ queryKey: ["/api/contact-forms"] });
+  const onSubmit = (data: FreeCallFormData) => {
+    setIsSubmitting(true);
+
+    const emailBody = [
+      `--- Free Discovery Call Request ---`,
+      ``,
+      `Name: ${data.name}`,
+      `Phone: ${data.phone}`,
+      `Background: ${data.background}`,
+      ``,
+      `Please call me to schedule a free discovery call.`,
+      ``,
+      `---`,
+    ].join('\n');
+
+    const emailSubject = `Free Discovery Call Request - ${data.name} (${data.background})`;
+    const mailtoLink = `mailto:innervea@gmail.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+
+    // Most reliable cross-browser: hidden anchor click
+    const anchor = document.createElement('a');
+    anchor.href = mailtoLink;
+    anchor.style.display = 'none';
+    document.body.appendChild(anchor);
+    anchor.click();
+    document.body.removeChild(anchor);
+
+    // Clipboard fallback
+    try {
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(`To: innervea@gmail.com\nSubject: ${emailSubject}\n\n${emailBody}`);
+      }
+    } catch (e) { }
+
+    toast({
+      title: "Opening your email app...",
+      description: "Your call request details are ready to send. If email didn't open, details were copied to clipboard — paste in an email to innervea@gmail.com",
+    });
+
+    setTimeout(() => {
+      setIsSubmitting(false);
       onClose();
       form.reset();
-    },
-    onError: () => {
-      toast({
-        title: "Error submitting request",
-        description: "Please try again later.",
-        variant: "destructive",
-      });
-    },
-  });
-
-  const onSubmit = (data: FreeCallFormData) => {
-    callMutation.mutate(data);
+    }, 2000);
   };
 
   return (
@@ -247,11 +258,11 @@ export default function FreeCallModal({ isOpen, onClose }: FreeCallModalProps) {
               <Button
                 type="submit"
                 className="w-full bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white font-semibold py-6 rounded-xl text-base"
-                disabled={callMutation.isPending}
+                disabled={isSubmitting}
                 data-testid="button-submit-free-call"
               >
                 <Phone className="w-5 h-5 mr-2" />
-                {callMutation.isPending ? "Submitting..." : "Book a Free Call →"}
+                {isSubmitting ? "Submitting..." : "Book a Free Call →"}
               </Button>
             </form>
           </Form>
