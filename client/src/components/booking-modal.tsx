@@ -2,10 +2,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
-import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -30,23 +27,18 @@ const services = [
   { id: "admission-guidance", name: "Admission Guidance", price: 2000 },
 ];
 
-// Package to service mapping (includes individual services that should use simplified purchase flow)
-const packageMapping: Record<string, { serviceId: string; price: number; name: string; paymentMethod: "upi" | "razorpay" }> = {
-  // Individual services (UPI payment only)
-  "life-coaching": { serviceId: "life-coaching", price: 3000, name: "Life Coaching", paymentMethod: "upi" },
-  "meditation": { serviceId: "meditation", price: 997, name: "Meditation & Mindfulness", paymentMethod: "upi" },
-  // 8-9 Students (Razorpay payment)
-  "8-9-discover": { serviceId: "career-guidance", price: 5500, name: "Discover - 8-9 Students", paymentMethod: "razorpay" },
-  "8-9-discover-plus": { serviceId: "career-guidance", price: 15000, name: "Discover plus+ - 8-9 Students", paymentMethod: "razorpay" },
-  // 10-12 Students (Razorpay payment)
-  "10-12-achieve-online": { serviceId: "career-guidance", price: 5999, name: "Achieve Online - 10-12 Students", paymentMethod: "razorpay" },
-  "10-12-achieve-plus": { serviceId: "career-guidance", price: 10599, name: "Achieve Plus+ - 10-12 Students", paymentMethod: "razorpay" },
-  // College Graduates (Razorpay payment)
-  "graduates-ascend-online": { serviceId: "career-guidance", price: 6499, name: "Ascend Online - College Graduates", paymentMethod: "razorpay" },
-  "graduates-ascend-plus": { serviceId: "career-guidance", price: 10599, name: "Ascend Plus+ - College Graduates", paymentMethod: "razorpay" },
-  // Working Professionals (Razorpay payment)
-  "professionals-ascend-online": { serviceId: "career-guidance", price: 6499, name: "Ascend Online - Working Professionals", paymentMethod: "razorpay" },
-  "professionals-ascend-plus": { serviceId: "career-guidance", price: 10599, name: "Ascend Plus+ - Working Professionals", paymentMethod: "razorpay" },
+// Package to service mapping
+const packageMapping: Record<string, { serviceId: string; price: number; name: string }> = {
+  "life-coaching": { serviceId: "life-coaching", price: 3000, name: "Life Coaching" },
+  "meditation": { serviceId: "meditation", price: 997, name: "Meditation & Mindfulness" },
+  "8-9-discover": { serviceId: "career-guidance", price: 5500, name: "Discover - 8-9 Students" },
+  "8-9-discover-plus": { serviceId: "career-guidance", price: 15000, name: "Discover plus+ - 8-9 Students" },
+  "10-12-achieve-online": { serviceId: "career-guidance", price: 5999, name: "Achieve Online - 10-12 Students" },
+  "10-12-achieve-plus": { serviceId: "career-guidance", price: 10599, name: "Achieve Plus+ - 10-12 Students" },
+  "graduates-ascend-online": { serviceId: "career-guidance", price: 6499, name: "Ascend Online - College Graduates" },
+  "graduates-ascend-plus": { serviceId: "career-guidance", price: 10599, name: "Ascend Plus+ - College Graduates" },
+  "professionals-ascend-online": { serviceId: "career-guidance", price: 6499, name: "Ascend Online - Working Professionals" },
+  "professionals-ascend-plus": { serviceId: "career-guidance", price: 10599, name: "Ascend Plus+ - Working Professionals" },
 };
 
 const timeSlots = [
@@ -58,16 +50,13 @@ const timeSlots = [
 ];
 
 export default function BookingModal({ isOpen, onClose, selectedService }: BookingModalProps) {
-  // Check if selectedService is a package ID or a regular service ID
   const packageInfo = selectedService ? packageMapping[selectedService] : null;
   const initialServiceId = packageInfo ? packageInfo.serviceId : (selectedService || "career-guidance");
   const initialPrice = packageInfo ? packageInfo.price : (services.find(s => s.id === selectedService)?.price || 2500);
 
   const [selectedServiceId, setSelectedServiceId] = useState(initialServiceId);
-  const [selectedPackageId, setSelectedPackageId] = useState(packageInfo ? selectedService : null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
-  const queryClient = useQueryClient();
-  const [, setLocation] = useLocation();
 
   const form = useForm<InsertBooking>({
     resolver: zodResolver(insertBookingSchema),
@@ -89,139 +78,68 @@ export default function BookingModal({ isOpen, onClose, selectedService }: Booki
     ? { id: packageInfo.serviceId, name: packageInfo.name, price: packageInfo.price }
     : services.find(s => s.id === selectedServiceId);
 
-  const bookingMutation = useMutation({
-    mutationFn: async (data: InsertBooking) => {
-      const response = await apiRequest("POST", "/api/bookings", data);
-      return response.json();
-    },
-    onSuccess: async (booking) => {
-      queryClient.invalidateQueries({ queryKey: ["/api/bookings"] });
-      queryClient.invalidateQueries({ queryKey: ["/api/stats"] });
+  const onSubmit = (data: InsertBooking) => {
+    setIsSubmitting(true);
 
-      // Determine payment method based on package
-      const paymentMethod = packageInfo?.paymentMethod || "upi";
+    const serviceName = packageInfo?.name || selectedServiceData?.name || data.serviceType;
+    const price = packageInfo?.price || selectedServiceData?.price || 2500;
 
-      if (paymentMethod === "upi") {
-        // Redirect to UPI payment page
-        const paymentUrl = `/upi-payment?bookingId=${booking.id}&amount=${booking.amount}&name=${encodeURIComponent(booking.fullName)}`;
+    // Build email body with all form data
+    const emailBody = [
+      `--- New Booking Request ---`,
+      ``,
+      `Name: ${data.fullName}`,
+      `Email: ${data.email}`,
+      `Phone: ${data.phone}`,
+      `Service: ${serviceName}`,
+      `Amount: ₹${price}`,
+      data.preferredDate ? `Preferred Date: ${data.preferredDate}` : '',
+      data.preferredTime ? `Preferred Time: ${data.preferredTime}` : '',
+      data.sessionType ? `Session Type: ${data.sessionType}` : '',
+      data.description ? `\nDescription:\n${data.description}` : '',
+      ``,
+      `---`,
+    ].filter(Boolean).join('\n');
 
-        toast({
-          title: "Booking created!",
-          description: "Redirecting to UPI payment page...",
+    const emailSubject = `Booking Request - ${serviceName} - ${data.fullName}`;
+    const mailtoLink = `mailto:innervea@gmail.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+
+    // Strategy 1: Try window.open (works better in some in-app browsers)
+    const emailWindow = window.open(mailtoLink, '_blank');
+
+    // Strategy 2: If window.open failed or was blocked, try location.href
+    if (!emailWindow || emailWindow.closed) {
+      window.location.href = mailtoLink;
+    }
+
+    // Strategy 3: Copy to clipboard as ultimate fallback
+    // Give the mailto a moment to trigger, then check if we need fallback
+    setTimeout(() => {
+      const fallbackText = `To: innervea@gmail.com\nSubject: ${emailSubject}\n\n${emailBody}`;
+
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(fallbackText).then(() => {
+          toast({
+            title: "Email details copied!",
+            description: "If your email app didn't open, the booking details have been copied to your clipboard. Paste them in an email to innervea@gmail.com",
+          });
+        }).catch(() => {
+          toast({
+            title: "Send your booking details",
+            description: `Please email innervea@gmail.com with your booking details for ${serviceName}.`,
+          });
         });
-
-        onClose();
-        form.reset();
-        setLocation(paymentUrl);
       } else {
-        // Use Razorpay checkout
-        handleRazorpayPayment(booking);
-      }
-    },
-    onError: () => {
-      toast({
-        title: "Booking failed",
-        description: "Please try again later.",
-        variant: "destructive",
-      });
-    },
-  });
-
-  const handleRazorpayPayment = async (booking: any) => {
-    try {
-      // Get Razorpay key
-      const keyResponse = await fetch("/api/payments/razorpay-key");
-      const { key } = await keyResponse.json();
-
-      // Create Razorpay order
-      const orderResponse = await apiRequest("POST", "/api/payments/create-order", {
-        amount: booking.amount,
-        currency: "INR",
-      });
-      const order = await orderResponse.json();
-
-      // Load Razorpay script if not already loaded
-      if (!(window as any).Razorpay) {
-        const script = document.createElement("script");
-        script.src = "https://checkout.razorpay.com/v1/checkout.js";
-        script.async = true;
-        document.body.appendChild(script);
-
-        await new Promise((resolve) => {
-          script.onload = resolve;
+        toast({
+          title: "Send your booking details",
+          description: `Please email innervea@gmail.com with your booking details for ${serviceName}.`,
         });
       }
 
-      // Open Razorpay checkout
-      const options = {
-        key: key,
-        amount: order.amount,
-        currency: order.currency,
-        name: "Innervea",
-        description: packageInfo?.name || "Career Coaching Session",
-        order_id: order.id,
-        handler: async (response: any) => {
-          try {
-            // Verify payment on backend
-            const verifyResponse = await apiRequest("POST", "/api/payments/verify", {
-              razorpay_order_id: response.razorpay_order_id,
-              razorpay_payment_id: response.razorpay_payment_id,
-              razorpay_signature: response.razorpay_signature,
-              booking_id: booking.id,
-            });
-
-            if (verifyResponse.ok) {
-              toast({
-                title: "Payment successful!",
-                description: "Your booking has been confirmed.",
-              });
-              onClose();
-              form.reset();
-              setLocation("/");
-            } else {
-              throw new Error("Payment verification failed");
-            }
-          } catch (error) {
-            toast({
-              title: "Payment verification failed",
-              description: "Please contact support.",
-              variant: "destructive",
-            });
-          }
-        },
-        prefill: {
-          name: booking.fullName,
-          email: booking.email,
-          contact: booking.phone,
-        },
-        theme: {
-          color: "#6366f1",
-        },
-      };
-
-      const razorpay = new (window as any).Razorpay(options);
-      razorpay.open();
-
-      // Close the booking modal
+      setIsSubmitting(false);
       onClose();
       form.reset();
-    } catch (error) {
-      toast({
-        title: "Payment initialization failed",
-        description: "Please try again later.",
-        variant: "destructive",
-      });
-    }
-  };
-
-  const onSubmit = (data: InsertBooking) => {
-    // Use package pricing if available, otherwise use regular service pricing
-    const price = packageInfo?.price || services.find(s => s.id === data.serviceType)?.price || 2500;
-    const bookingData = {
-      ...data,
-      amount: price.toString(),
-    };
-    bookingMutation.mutate(bookingData);
+    }, 1500);
   };
 
   return (
@@ -465,10 +383,10 @@ export default function BookingModal({ isOpen, onClose, selectedService }: Booki
               <Button
                 type="submit"
                 className="flex-1 bg-gradient-to-r from-primary to-secondary text-white py-3 px-6 rounded-lg font-semibold hover:from-primary/90 hover:to-secondary/90 transition-all duration-300 transform hover:scale-[1.02] shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
-                disabled={bookingMutation.isPending}
+                disabled={isSubmitting}
                 data-testid="button-proceed-payment"
               >
-                {bookingMutation.isPending ? "Processing..." : "Proceed to Payment"}
+                {isSubmitting ? "Processing..." : "Submit Booking Request"}
               </Button>
             </div>
           </form>
