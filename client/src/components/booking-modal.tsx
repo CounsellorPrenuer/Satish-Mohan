@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { insertBookingSchema } from "@shared/schema";
+
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
@@ -15,7 +15,7 @@ import { Label } from "@/components/ui/label";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { X } from "lucide-react";
-import type { InsertBooking } from "@shared/schema";
+import { insertBookingSchema, type InsertBooking } from "@/lib/types";
 
 interface BookingModalProps {
   isOpen: boolean;
@@ -62,7 +62,7 @@ export default function BookingModal({ isOpen, onClose, selectedService }: Booki
   const packageInfo = selectedService ? packageMapping[selectedService] : null;
   const initialServiceId = packageInfo ? packageInfo.serviceId : (selectedService || "career-guidance");
   const initialPrice = packageInfo ? packageInfo.price : (services.find(s => s.id === selectedService)?.price || 2500);
-  
+
   const [selectedServiceId, setSelectedServiceId] = useState(initialServiceId);
   const [selectedPackageId, setSelectedPackageId] = useState(packageInfo ? selectedService : null);
   const { toast } = useToast();
@@ -85,7 +85,7 @@ export default function BookingModal({ isOpen, onClose, selectedService }: Booki
     },
   });
 
-  const selectedServiceData = packageInfo 
+  const selectedServiceData = packageInfo
     ? { id: packageInfo.serviceId, name: packageInfo.name, price: packageInfo.price }
     : services.find(s => s.id === selectedServiceId);
 
@@ -97,19 +97,19 @@ export default function BookingModal({ isOpen, onClose, selectedService }: Booki
     onSuccess: async (booking) => {
       queryClient.invalidateQueries({ queryKey: ["/api/bookings"] });
       queryClient.invalidateQueries({ queryKey: ["/api/stats"] });
-      
+
       // Determine payment method based on package
       const paymentMethod = packageInfo?.paymentMethod || "upi";
-      
+
       if (paymentMethod === "upi") {
         // Redirect to UPI payment page
         const paymentUrl = `/upi-payment?bookingId=${booking.id}&amount=${booking.amount}&name=${encodeURIComponent(booking.fullName)}`;
-        
+
         toast({
           title: "Booking created!",
           description: "Redirecting to UPI payment page...",
         });
-        
+
         onClose();
         form.reset();
         setLocation(paymentUrl);
@@ -146,7 +146,7 @@ export default function BookingModal({ isOpen, onClose, selectedService }: Booki
         script.src = "https://checkout.razorpay.com/v1/checkout.js";
         script.async = true;
         document.body.appendChild(script);
-        
+
         await new Promise((resolve) => {
           script.onload = resolve;
         });
@@ -201,7 +201,7 @@ export default function BookingModal({ isOpen, onClose, selectedService }: Booki
 
       const razorpay = new (window as any).Razorpay(options);
       razorpay.open();
-      
+
       // Close the booking modal
       onClose();
       form.reset();
@@ -232,8 +232,8 @@ export default function BookingModal({ isOpen, onClose, selectedService }: Booki
             {packageInfo ? "Purchase Package" : "Book Your Session"}
           </DialogTitle>
           <DialogDescription>
-            {packageInfo 
-              ? "Complete your details to purchase the coaching package." 
+            {packageInfo
+              ? "Complete your details to purchase the coaching package."
               : "Fill in your details to schedule your coaching session."}
           </DialogDescription>
         </DialogHeader>
@@ -268,7 +268,7 @@ export default function BookingModal({ isOpen, onClose, selectedService }: Booki
                 )}
               />
             </div>
-            
+
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <FormField
                 control={form.control}
@@ -291,7 +291,7 @@ export default function BookingModal({ isOpen, onClose, selectedService }: Booki
                     <FormLabel>Service Type</FormLabel>
                     {packageInfo ? (
                       <div className="relative">
-                        <Input 
+                        <Input
                           value={packageInfo.name}
                           disabled
                           className="bg-muted"
@@ -300,11 +300,11 @@ export default function BookingModal({ isOpen, onClose, selectedService }: Booki
                         <p className="text-sm text-muted-foreground mt-1">Package pre-selected</p>
                       </div>
                     ) : (
-                      <Select 
+                      <Select
                         onValueChange={(value) => {
                           field.onChange(value);
                           setSelectedServiceId(value);
-                        }} 
+                        }}
                         defaultValue={field.value}
                       >
                         <FormControl>
@@ -337,9 +337,9 @@ export default function BookingModal({ isOpen, onClose, selectedService }: Booki
                       <FormItem>
                         <FormLabel>Preferred Date</FormLabel>
                         <FormControl>
-                          <Input 
-                            type="date" 
-                            {...field} 
+                          <Input
+                            type="date"
+                            {...field}
                             min={new Date().toISOString().split('T')[0]}
                             data-testid="input-date"
                           />
@@ -424,10 +424,10 @@ export default function BookingModal({ isOpen, onClose, selectedService }: Booki
                 <FormItem>
                   <FormLabel>Brief Description</FormLabel>
                   <FormControl>
-                    <Textarea 
-                      rows={4} 
-                      placeholder="Tell me about your current situation and what you'd like to achieve..." 
-                      className="resize-none" 
+                    <Textarea
+                      rows={4}
+                      placeholder="Tell me about your current situation and what you'd like to achieve..."
+                      className="resize-none"
                       {...field}
                       value={field.value || ""}
                       data-testid="input-description"
@@ -453,18 +453,18 @@ export default function BookingModal({ isOpen, onClose, selectedService }: Booki
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button 
-                type="button" 
-                variant="outline" 
-                onClick={onClose} 
+              <Button
+                type="button"
+                variant="outline"
+                onClick={onClose}
                 className="flex-1"
                 data-testid="button-cancel"
               >
                 Cancel
               </Button>
-              <Button 
-                type="submit" 
-                className="flex-1 bg-gradient-to-r from-primary to-secondary text-white py-3 px-6 rounded-lg font-semibold hover:from-primary/90 hover:to-secondary/90 transition-all duration-300 transform hover:scale-[1.02] shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100" 
+              <Button
+                type="submit"
+                className="flex-1 bg-gradient-to-r from-primary to-secondary text-white py-3 px-6 rounded-lg font-semibold hover:from-primary/90 hover:to-secondary/90 transition-all duration-300 transform hover:scale-[1.02] shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                 disabled={bookingMutation.isPending}
                 data-testid="button-proceed-payment"
               >

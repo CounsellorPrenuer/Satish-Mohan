@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "wouter";
 import { ArrowLeft, Calendar, User } from "lucide-react";
-import type { BlogPost } from "@shared/schema";
+import type { BlogPost } from "@/lib/types";
 
 export default function BlogsPage() {
   const { data: blogPosts, isLoading } = useQuery<BlogPost[]>({
@@ -13,8 +13,8 @@ export default function BlogsPage() {
       <div className="min-h-screen bg-background">
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-8 py-12">
           <div className="mb-8">
-            <Link 
-              href="/" 
+            <Link
+              href="/"
               className="inline-flex items-center text-primary hover:text-primary/80 font-medium transition-colors"
               data-testid="back-to-home"
             >
@@ -22,14 +22,14 @@ export default function BlogsPage() {
               Back to Home
             </Link>
           </div>
-          
+
           <div className="text-center mb-16">
             <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-6">All Articles</h1>
             <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto">
               Discover valuable insights on career development, personal growth, and life transformation
             </p>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[...Array(6)].map((_, i) => (
               <div key={i} className="bg-card rounded-xl shadow-lg overflow-hidden">
@@ -54,8 +54,8 @@ export default function BlogsPage() {
     <div className="min-h-screen bg-background">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-8 py-12">
         <div className="mb-8">
-          <Link 
-            href="/" 
+          <Link
+            href="/"
             className="inline-flex items-center text-primary hover:text-primary/80 font-medium transition-colors"
             data-testid="back-to-home"
           >
@@ -63,7 +63,7 @@ export default function BlogsPage() {
             Back to Home
           </Link>
         </div>
-        
+
         <div className="text-center mb-16">
           <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-6" data-testid="blogs-title">
             All Articles
@@ -77,8 +77,8 @@ export default function BlogsPage() {
           <div className="text-center py-16">
             <h3 className="text-2xl font-semibold text-foreground mb-4">No Articles Yet</h3>
             <p className="text-muted-foreground mb-8">Check back soon for inspiring content!</p>
-            <Link 
-              href="/" 
+            <Link
+              href="/"
               className="inline-block bg-primary text-primary-foreground px-8 py-3 rounded-lg font-semibold hover:bg-primary/90 transition-colors"
             >
               Return Home
@@ -88,16 +88,16 @@ export default function BlogsPage() {
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {allPosts.map((post) => (
-                <article 
+                <article
                   key={post.id}
                   className="blog-card bg-card rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
                   data-testid={`blog-post-${post.id}`}
                 >
                   {post.featuredImage && (
                     <div className="aspect-video overflow-hidden">
-                      <img 
-                        src={post.featuredImage} 
-                        alt={post.title} 
+                      <img
+                        src={post.featuredImage}
+                        alt={post.title}
                         className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
                         data-testid={`blog-image-${post.id}`}
                       />
@@ -123,15 +123,15 @@ export default function BlogsPage() {
                     <div className="flex items-center justify-between">
                       <div className="flex items-center text-sm text-muted-foreground" data-testid={`blog-date-${post.id}`}>
                         <Calendar size={16} className="mr-2" />
-                        {post.createdAt ? new Date(post.createdAt).toLocaleDateString('en-US', { 
-                          year: 'numeric', 
-                          month: 'short', 
-                          day: 'numeric' 
+                        {post.createdAt ? new Date(post.createdAt).toLocaleDateString('en-US', {
+                          year: 'numeric',
+                          month: 'short',
+                          day: 'numeric'
                         }) : ''}
                       </div>
-                      <Link 
-                        href={`/blog/${post.id}`} 
-                        className="text-primary hover:text-primary/80 font-medium text-sm transition-colors flex items-center" 
+                      <Link
+                        href={`/blog/${post.id}`}
+                        className="text-primary hover:text-primary/80 font-medium text-sm transition-colors flex items-center"
                         data-testid={`blog-read-more-${post.id}`}
                       >
                         Read More →
@@ -141,13 +141,13 @@ export default function BlogsPage() {
                 </article>
               ))}
             </div>
-            
+
             <div className="text-center mt-16">
               <p className="text-muted-foreground mb-6">
                 Showing {allPosts.length} article{allPosts.length !== 1 ? 's' : ''}
               </p>
-              <Link 
-                href="/" 
+              <Link
+                href="/"
                 className="inline-block bg-secondary text-secondary-foreground px-8 py-3 rounded-lg font-semibold hover:bg-secondary/90 transition-colors"
                 data-testid="return-home"
               >

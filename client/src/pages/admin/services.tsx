@@ -12,7 +12,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Plus, Edit, Trash2 } from "lucide-react";
-import type { Service, InsertService } from "@shared/schema";
+import { type Service, type InsertService } from "@/lib/types";
 
 const iconOptions = [
   { value: "Heart", label: "Heart" },
@@ -184,7 +184,7 @@ export default function AdminServices() {
   }
 
   return (
-    <AdminLayout 
+    <AdminLayout
       title="Admin Dashboard"
       description="Manage your website content"
       headerActions={

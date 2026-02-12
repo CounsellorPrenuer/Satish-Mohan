@@ -1,6 +1,6 @@
 import { Compass, Heart, Leaf, Users, GraduationCap, Building } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
-import type { Service } from "@shared/schema";
+import type { Service } from "@/lib/types";
 import { getServices } from "@/lib/sanity";
 
 interface ServicesSectionProps {

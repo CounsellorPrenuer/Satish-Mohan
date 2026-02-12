@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "wouter";
-import type { BlogPost } from "@shared/schema";
+import type { BlogPost } from "@/lib/types";
 import { getPosts } from "@/lib/sanity";
 
 export default function BlogPreviewSection() {

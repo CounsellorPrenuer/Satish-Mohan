@@ -1,4 +1,4 @@
-import { Service, BlogPost, Testimonial, TeamMember } from "@shared/schema";
+import { Service, BlogPost, Testimonial, TeamMember } from "./types";
 
 export const mockServices: Service[] = [
     {

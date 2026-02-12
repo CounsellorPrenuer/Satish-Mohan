@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import type { Testimonial } from "@shared/schema";
+import type { Testimonial } from "@/lib/types";
 import { getTestimonials } from "@/lib/sanity";
 
 export default function TestimonialsSection() {

@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Download, Calendar, Inbox, CreditCard, Users } from "lucide-react";
-import type { Booking } from "@shared/schema";
+import type { Booking, ContactForm, Payment, LeadDownload } from "@/lib/types";
 
 const tabs = [
   { id: "overview", label: "Overview", icon: Calendar, path: "/admin/bookings" },
@@ -22,7 +22,7 @@ const tabs = [
 
 const statusColors = {
   pending: "bg-amber-100 text-amber-800",
-  confirmed: "bg-blue-100 text-blue-800", 
+  confirmed: "bg-blue-100 text-blue-800",
   completed: "bg-green-100 text-green-800",
   cancelled: "bg-red-100 text-red-800"
 };
@@ -60,17 +60,17 @@ export default function AdminBookings() {
   });
 
   // Fetch contact forms
-  const { data: contactForms, isLoading: contactFormsLoading } = useQuery({
+  const { data: contactForms, isLoading: contactFormsLoading } = useQuery<ContactForm[]>({
     queryKey: ["/api/contact-forms"],
   });
 
   // Fetch payments
-  const { data: payments, isLoading: paymentsLoading } = useQuery({
+  const { data: payments, isLoading: paymentsLoading } = useQuery<Payment[]>({
     queryKey: ["/api/payments"],
   });
 
   // Fetch lead downloads
-  const { data: leadDownloads, isLoading: leadDownloadsLoading } = useQuery({
+  const { data: leadDownloads, isLoading: leadDownloadsLoading } = useQuery<LeadDownload[]>({
     queryKey: ["/api/lead-downloads"],
   });
 
@@ -112,7 +112,7 @@ export default function AdminBookings() {
       a.click();
       window.URL.revokeObjectURL(url);
       document.body.removeChild(a);
-      
+
       toast({
         title: "Export successful",
         description: "Data has been downloaded successfully.",
@@ -151,7 +151,7 @@ export default function AdminBookings() {
       render: (booking: Booking) => (
         <div>
           <div className="font-medium" data-testid={`booking-service-${booking.id}`}>
-            {booking.serviceType.split('-').map(word => 
+            {booking.serviceType.split('-').map(word =>
               word.charAt(0).toUpperCase() + word.slice(1)
             ).join(' ')}
           </div>
@@ -205,8 +205,8 @@ export default function AdminBookings() {
   const contactFormColumns = [
     {
       header: "Contact",
-      accessor: "name" as keyof any,
-      render: (form: any) => (
+      accessor: "name" as keyof ContactForm,
+      render: (form: ContactForm) => (
         <div>
           <div className="font-medium" data-testid={`contact-name-${form.id}`}>{form.name}</div>
           <div className="text-sm text-muted-foreground" data-testid={`contact-email-${form.id}`}>{form.email}</div>
@@ -215,15 +215,15 @@ export default function AdminBookings() {
     },
     {
       header: "Subject",
-      accessor: "subject" as keyof any,
-      render: (form: any) => (
+      accessor: "subject" as keyof ContactForm,
+      render: (form: ContactForm) => (
         <div className="font-medium" data-testid={`contact-subject-${form.id}`}>{form.subject}</div>
       )
     },
     {
       header: "Message",
-      accessor: "message" as keyof any,
-      render: (form: any) => (
+      accessor: "message" as keyof ContactForm,
+      render: (form: ContactForm) => (
         <div className="text-sm text-muted-foreground max-w-xs truncate" data-testid={`contact-message-${form.id}`}>
           {form.message}
         </div>
@@ -231,8 +231,8 @@ export default function AdminBookings() {
     },
     {
       header: "Date",
-      accessor: "createdAt" as keyof any,
-      render: (form: any) => (
+      accessor: "createdAt" as keyof ContactForm,
+      render: (form: ContactForm) => (
         <div className="text-sm" data-testid={`contact-date-${form.id}`}>
           {form.createdAt ? new Date(form.createdAt).toLocaleDateString() : ''}
         </div>
@@ -240,8 +240,8 @@ export default function AdminBookings() {
     },
     {
       header: "Status",
-      accessor: "status" as keyof any,
-      render: (form: any) => (
+      accessor: "status" as keyof ContactForm,
+      render: (form: ContactForm) => (
         <Badge className={form.status === 'new' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800'} data-testid={`contact-status-${form.id}`}>
           {form.status.charAt(0).toUpperCase() + form.status.slice(1)}
         </Badge>
@@ -540,8 +540,8 @@ export default function AdminBookings() {
             columns={[
               {
                 header: "Payment ID",
-                accessor: "razorpayPaymentId" as keyof any,
-                render: (payment: any) => (
+                accessor: "razorpayPaymentId" as keyof Payment,
+                render: (payment: Payment) => (
                   <div className="font-mono text-sm" data-testid={`payment-id-${payment.id}`}>
                     {payment.razorpayPaymentId || payment.id}
                   </div>
@@ -549,8 +549,8 @@ export default function AdminBookings() {
               },
               {
                 header: "Amount",
-                accessor: "amount" as keyof any,
-                render: (payment: any) => (
+                accessor: "amount" as keyof Payment,
+                render: (payment: Payment) => (
                   <div className="font-semibold" data-testid={`payment-amount-${payment.id}`}>
                     ₹{payment.amount}
                   </div>
@@ -558,8 +558,8 @@ export default function AdminBookings() {
               },
               {
                 header: "Status",
-                accessor: "status" as keyof any,
-                render: (payment: any) => (
+                accessor: "status" as keyof Payment,
+                render: (payment: Payment) => (
                   <Badge className={paymentStatusColors[payment.status as keyof typeof paymentStatusColors]} data-testid={`payment-status-${payment.id}`}>
                     {payment.status.charAt(0).toUpperCase() + payment.status.slice(1)}
                   </Badge>
@@ -567,8 +567,8 @@ export default function AdminBookings() {
               },
               {
                 header: "Date",
-                accessor: "createdAt" as keyof any,
-                render: (payment: any) => (
+                accessor: "createdAt" as keyof Payment,
+                render: (payment: Payment) => (
                   <div className="text-sm" data-testid={`payment-date-${payment.id}`}>
                     {payment.createdAt ? new Date(payment.createdAt).toLocaleDateString() : ''}
                   </div>
@@ -589,22 +589,22 @@ export default function AdminBookings() {
             columns={[
               {
                 header: "Email",
-                accessor: "email" as keyof any,
-                render: (lead: any) => (
+                accessor: "email" as keyof LeadDownload,
+                render: (lead: LeadDownload) => (
                   <div className="font-medium" data-testid={`lead-email-${lead.id}`}>{lead.email}</div>
                 )
               },
               {
                 header: "Download Type",
-                accessor: "downloadType" as keyof any,
-                render: (lead: any) => (
+                accessor: "downloadType" as keyof LeadDownload,
+                render: (lead: LeadDownload) => (
                   <div data-testid={`lead-type-${lead.id}`}>{lead.downloadType}</div>
                 )
               },
               {
                 header: "Date",
-                accessor: "createdAt" as keyof any,
-                render: (lead: any) => (
+                accessor: "createdAt" as keyof LeadDownload,
+                render: (lead: LeadDownload) => (
                   <div className="text-sm" data-testid={`lead-date-${lead.id}`}>
                     {lead.createdAt ? new Date(lead.createdAt).toLocaleDateString() : ''}
                   </div>

@@ -11,7 +11,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Plus, Edit, Trash2, Star } from "lucide-react";
-import type { Testimonial, InsertTestimonial } from "@shared/schema";
+import { type Testimonial, type InsertTestimonial } from "@/lib/types";
 
 export default function AdminTestimonials() {
   const { isAuthenticated, isLoading: authLoading } = useRequireAuth();
@@ -160,7 +160,7 @@ export default function AdminTestimonials() {
   }
 
   return (
-    <AdminLayout 
+    <AdminLayout
       title="Admin Dashboard"
       description="Manage your website content"
       headerActions={

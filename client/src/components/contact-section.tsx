@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { insertContactFormSchema } from "@shared/schema";
+
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Phone, Mail, Linkedin, Instagram, Facebook, Twitter, Youtube } from "lucide-react";
-import type { InsertContactForm } from "@shared/schema";
+import { insertContactFormSchema, type InsertContactForm } from "@/lib/types";
 
 export default function ContactSection() {
   const { toast } = useToast();
@@ -86,35 +86,35 @@ export default function ContactSection() {
             <div className="bg-card rounded-xl p-6 shadow-lg mb-8">
               <h3 className="font-semibold text-lg mb-4">Follow on Social Media</h3>
               <div className="flex flex-wrap gap-3 sm:gap-4">
-                <a 
-                  href="https://www.linkedin.com/in/satish-mohan-n-8560684" 
-                  target="_blank" 
+                <a
+                  href="https://www.linkedin.com/in/satish-mohan-n-8560684"
+                  target="_blank"
                   rel="noopener noreferrer"
                   className="w-12 h-12 bg-blue-600/10 rounded-lg flex items-center justify-center text-blue-600 hover:bg-blue-600 hover:text-white transition-colors"
                   data-testid="social-linkedin"
                 >
                   <Linkedin size={20} />
                 </a>
-                <a 
-                  href="https://www.instagram.com/innervea_25?igsh=MTV4eXBtcnB5cnhoNw==" 
-                  target="_blank" 
+                <a
+                  href="https://www.instagram.com/innervea_25?igsh=MTV4eXBtcnB5cnhoNw=="
+                  target="_blank"
                   rel="noopener noreferrer"
                   className="w-12 h-12 bg-pink-500/10 rounded-lg flex items-center justify-center text-pink-500 hover:bg-pink-500 hover:text-white transition-colors"
                   data-testid="social-instagram"
                 >
                   <Instagram size={20} />
                 </a>
-                <a 
-                  href="https://www.facebook.com/Innervea" 
-                  target="_blank" 
+                <a
+                  href="https://www.facebook.com/Innervea"
+                  target="_blank"
                   rel="noopener noreferrer"
                   className="w-12 h-12 bg-blue-600/10 rounded-lg flex items-center justify-center text-blue-600 hover:bg-blue-600 hover:text-white transition-colors"
                   data-testid="social-facebook"
                 >
                   <Facebook size={20} />
                 </a>
-                <a 
-                  href="https://x.com/NSatishMohan1?t=8bmTYDscXDNrjgCi1th_lA&s=09" 
+                <a
+                  href="https://x.com/NSatishMohan1?t=8bmTYDscXDNrjgCi1th_lA&s=09"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-12 h-12 bg-sky-500/10 rounded-lg flex items-center justify-center text-sky-500 hover:bg-sky-500 hover:text-white transition-colors"
@@ -122,8 +122,8 @@ export default function ContactSection() {
                 >
                   <Twitter size={20} />
                 </a>
-                <a 
-                  href="https://youtube.com/@innervea?si=VNwZh4esoDIsxKWF" 
+                <a
+                  href="https://youtube.com/@innervea?si=VNwZh4esoDIsxKWF"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-12 h-12 bg-red-500/10 rounded-lg flex items-center justify-center text-red-500 hover:bg-red-500 hover:text-white transition-colors"
@@ -187,10 +187,10 @@ export default function ContactSection() {
                     <FormItem>
                       <FormLabel>Message</FormLabel>
                       <FormControl>
-                        <Textarea 
-                          rows={5} 
-                          placeholder="Tell me about your goals and challenges..." 
-                          className="resize-none" 
+                        <Textarea
+                          rows={5}
+                          placeholder="Tell me about your goals and challenges..."
+                          className="resize-none"
                           {...field}
                           data-testid="input-message"
                         />
@@ -199,9 +199,9 @@ export default function ContactSection() {
                     </FormItem>
                   )}
                 />
-                <Button 
-                  type="submit" 
-                  className="w-full bg-gradient-to-r from-primary to-secondary text-white py-3 px-6 rounded-lg font-semibold hover:from-primary/90 hover:to-secondary/90 transition-all duration-300 transform hover:scale-[1.02] shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100" 
+                <Button
+                  type="submit"
+                  className="w-full bg-gradient-to-r from-primary to-secondary text-white py-3 px-6 rounded-lg font-semibold hover:from-primary/90 hover:to-secondary/90 transition-all duration-300 transform hover:scale-[1.02] shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                   disabled={contactMutation.isPending}
                   data-testid="button-send-message"
                 >

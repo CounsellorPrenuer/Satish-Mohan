@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { insertBlogPostSchema } from "@shared/schema";
+import { insertBlogPostSchema } from "@/lib/types";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { useRequireAuth } from "@/hooks/use-auth";
@@ -18,7 +18,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Plus, Edit, Trash2, Eye, FileText, Bold, Italic, Underline, Heading, Link, Image, List, ListOrdered, X, Sparkles, Wand2, PenLine, Code } from "lucide-react";
-import type { InsertBlogPost, BlogPost } from "@shared/schema";
+import type { InsertBlogPost, BlogPost } from "@/lib/types";
 import { z } from "zod";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -252,8 +252,8 @@ export default function AdminBlogs() {
       description="Create, edit, and manage blog posts with AI assistance"
       headerActions={
         <div className="flex gap-2">
-          <Button 
-            onClick={() => setShowAIModal(true)} 
+          <Button
+            onClick={() => setShowAIModal(true)}
             variant="outline"
             className="border-purple-300 dark:border-purple-700 text-purple-700 dark:text-purple-300 hover:bg-purple-50 dark:hover:bg-purple-950/20"
             data-testid="ai-generate-button"
@@ -284,7 +284,7 @@ export default function AdminBlogs() {
             </p>
           </CardContent>
         </Card>
-        
+
         <Card className="bg-gradient-to-br from-emerald-500 to-teal-500 dark:from-emerald-600 dark:to-teal-600 border-0 text-white shadow-lg">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-white">
@@ -299,7 +299,7 @@ export default function AdminBlogs() {
             </p>
           </CardContent>
         </Card>
-        
+
         <Card className="bg-gradient-to-br from-blue-500 to-cyan-500 dark:from-blue-600 dark:to-cyan-600 border-0 text-white shadow-lg">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-white">
@@ -336,8 +336,8 @@ export default function AdminBlogs() {
               ) : blogPosts && blogPosts.length > 0 ? (
                 <div className="divide-y divide-border">
                   {blogPosts.map((post) => (
-                    <div 
-                      key={post.id} 
+                    <div
+                      key={post.id}
                       className="p-4 hover:bg-muted/30 cursor-pointer transition-colors"
                       onClick={() => setSelectedPost(post)}
                       data-testid={`blog-post-item-${post.id}`}
@@ -434,9 +434,9 @@ export default function AdminBlogs() {
                         <FormItem>
                           <FormLabel>Post Title</FormLabel>
                           <FormControl>
-                            <Input 
-                              placeholder="Enter your blog post title..." 
-                              {...field} 
+                            <Input
+                              placeholder="Enter your blog post title..."
+                              {...field}
                               data-testid="input-title"
                             />
                           </FormControl>
@@ -477,10 +477,10 @@ export default function AdminBlogs() {
                         <FormItem>
                           <FormLabel>Featured Image URL</FormLabel>
                           <FormControl>
-                            <Input 
-                              type="url" 
-                              placeholder="https://images.unsplash.com/photo-..." 
-                              {...field} 
+                            <Input
+                              type="url"
+                              placeholder="https://images.unsplash.com/photo-..."
+                              {...field}
                               value={field.value || ""}
                               data-testid="input-featured-image"
                             />
@@ -497,10 +497,10 @@ export default function AdminBlogs() {
                         <FormItem>
                           <FormLabel>Excerpt</FormLabel>
                           <FormControl>
-                            <Textarea 
-                              rows={3} 
-                              placeholder="Brief description of your post..." 
-                              className="resize-none" 
+                            <Textarea
+                              rows={3}
+                              placeholder="Brief description of your post..."
+                              className="resize-none"
                               {...field}
                               data-testid="input-excerpt"
                             />
@@ -525,10 +525,10 @@ export default function AdminBlogs() {
                               <div className="border border-input rounded-lg">
                                 {/* Markdown Helper Toolbar */}
                                 <div className="flex items-center flex-wrap gap-1 p-2 border-b border-border bg-muted/30">
-                                  <Button 
-                                    type="button" 
-                                    variant="ghost" 
-                                    size="sm" 
+                                  <Button
+                                    type="button"
+                                    variant="ghost"
+                                    size="sm"
                                     title="Bold (**text**)"
                                     onClick={() => {
                                       const textarea = document.querySelector('[data-testid="input-content"]') as HTMLTextAreaElement;
@@ -543,10 +543,10 @@ export default function AdminBlogs() {
                                   >
                                     <Bold className="w-4 h-4" />
                                   </Button>
-                                  <Button 
-                                    type="button" 
-                                    variant="ghost" 
-                                    size="sm" 
+                                  <Button
+                                    type="button"
+                                    variant="ghost"
+                                    size="sm"
                                     title="Italic (*text*)"
                                     onClick={() => {
                                       const textarea = document.querySelector('[data-testid="input-content"]') as HTMLTextAreaElement;
@@ -561,10 +561,10 @@ export default function AdminBlogs() {
                                   >
                                     <Italic className="w-4 h-4" />
                                   </Button>
-                                  <Button 
-                                    type="button" 
-                                    variant="ghost" 
-                                    size="sm" 
+                                  <Button
+                                    type="button"
+                                    variant="ghost"
+                                    size="sm"
                                     title="Code (`code`)"
                                     onClick={() => {
                                       const textarea = document.querySelector('[data-testid="input-content"]') as HTMLTextAreaElement;
@@ -580,10 +580,10 @@ export default function AdminBlogs() {
                                     <Code className="w-4 h-4" />
                                   </Button>
                                   <div className="w-px h-6 bg-border"></div>
-                                  <Button 
-                                    type="button" 
-                                    variant="ghost" 
-                                    size="sm" 
+                                  <Button
+                                    type="button"
+                                    variant="ghost"
+                                    size="sm"
                                     title="Heading (## Heading)"
                                     onClick={() => {
                                       const textarea = document.querySelector('[data-testid="input-content"]') as HTMLTextAreaElement;
@@ -596,10 +596,10 @@ export default function AdminBlogs() {
                                   >
                                     <Heading className="w-4 h-4" />
                                   </Button>
-                                  <Button 
-                                    type="button" 
-                                    variant="ghost" 
-                                    size="sm" 
+                                  <Button
+                                    type="button"
+                                    variant="ghost"
+                                    size="sm"
                                     title="Link ([text](url))"
                                     onClick={() => {
                                       const textarea = document.querySelector('[data-testid="input-content"]') as HTMLTextAreaElement;
@@ -614,10 +614,10 @@ export default function AdminBlogs() {
                                   >
                                     <Link className="w-4 h-4" />
                                   </Button>
-                                  <Button 
-                                    type="button" 
-                                    variant="ghost" 
-                                    size="sm" 
+                                  <Button
+                                    type="button"
+                                    variant="ghost"
+                                    size="sm"
                                     title="Image (![alt](url))"
                                     onClick={() => {
                                       const textarea = document.querySelector('[data-testid="input-content"]') as HTMLTextAreaElement;
@@ -631,10 +631,10 @@ export default function AdminBlogs() {
                                     <Image className="w-4 h-4" />
                                   </Button>
                                   <div className="w-px h-6 bg-border"></div>
-                                  <Button 
-                                    type="button" 
-                                    variant="ghost" 
-                                    size="sm" 
+                                  <Button
+                                    type="button"
+                                    variant="ghost"
+                                    size="sm"
                                     title="Bullet List (- item)"
                                     onClick={() => {
                                       const textarea = document.querySelector('[data-testid="input-content"]') as HTMLTextAreaElement;
@@ -647,10 +647,10 @@ export default function AdminBlogs() {
                                   >
                                     <List className="w-4 h-4" />
                                   </Button>
-                                  <Button 
-                                    type="button" 
-                                    variant="ghost" 
-                                    size="sm" 
+                                  <Button
+                                    type="button"
+                                    variant="ghost"
+                                    size="sm"
                                     title="Numbered List (1. item)"
                                     onClick={() => {
                                       const textarea = document.querySelector('[data-testid="input-content"]') as HTMLTextAreaElement;
@@ -665,8 +665,8 @@ export default function AdminBlogs() {
                                   </Button>
                                 </div>
                                 <FormControl>
-                                  <Textarea 
-                                    rows={12} 
+                                  <Textarea
+                                    rows={12}
                                     placeholder="# Your Blog Title
 
 Start writing your blog post content using Markdown...
@@ -678,8 +678,8 @@ Start writing your blog post content using Markdown...
 
 **Bold text** and *italic text*
 
-[Link text](https://example.com)" 
-                                    className="border-0 rounded-t-none resize-none focus:ring-0 font-mono text-sm" 
+[Link text](https://example.com)"
+                                    className="border-0 rounded-t-none resize-none focus:ring-0 font-mono text-sm"
                                     {...field}
                                     data-testid="input-content"
                                   />
@@ -724,8 +724,8 @@ Start writing your blog post content using Markdown...
                         render={({ field }) => (
                           <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                             <FormControl>
-                              <Checkbox 
-                                checked={field.value || false} 
+                              <Checkbox
+                                checked={field.value || false}
                                 onCheckedChange={field.onChange}
                                 data-testid="checkbox-published"
                               />
@@ -742,8 +742,8 @@ Start writing your blog post content using Markdown...
                         render={({ field }) => (
                           <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                             <FormControl>
-                              <Checkbox 
-                                checked={field.value || false} 
+                              <Checkbox
+                                checked={field.value || false}
                                 onCheckedChange={field.onChange}
                                 data-testid="checkbox-featured"
                               />
@@ -757,8 +757,8 @@ Start writing your blog post content using Markdown...
                     </div>
 
                     <div className="flex justify-between">
-                      <Button 
-                        type="button" 
+                      <Button
+                        type="button"
                         variant="outline"
                         onClick={() => {
                           const draft = { ...form.getValues(), published: false };
@@ -773,17 +773,17 @@ Start writing your blog post content using Markdown...
                         Save as Draft
                       </Button>
                       <div className="flex space-x-4">
-                        <Button 
-                          type="button" 
-                          variant="outline" 
+                        <Button
+                          type="button"
+                          variant="outline"
                           onClick={() => setShowPreview(true)}
                           data-testid="preview-post"
                         >
                           <Eye className="w-4 h-4 mr-2" />
                           Preview
                         </Button>
-                        <Button 
-                          type="submit" 
+                        <Button
+                          type="submit"
                           disabled={createPostMutation.isPending || updatePostMutation.isPending}
                           data-testid="publish-post"
                         >
@@ -824,8 +824,8 @@ Start writing your blog post content using Markdown...
               </CardHeader>
               <CardContent>
                 {selectedPost.featuredImage && (
-                  <img 
-                    src={selectedPost.featuredImage} 
+                  <img
+                    src={selectedPost.featuredImage}
                     alt={selectedPost.title}
                     className="w-full h-48 object-cover rounded-lg mb-6"
                   />
@@ -878,7 +878,7 @@ Start writing your blog post content using Markdown...
               This is how your blog post will appear to readers
             </DialogDescription>
           </DialogHeader>
-          
+
           <div className="space-y-6">
             {/* Header Preview */}
             <div className="bg-gradient-to-r from-primary to-secondary py-8 px-6 rounded-lg">
@@ -896,10 +896,10 @@ Start writing your blog post content using Markdown...
                   </div>
                   <div className="flex items-center">
                     <Eye className="w-4 h-4 mr-2" />
-                    {new Date().toLocaleDateString('en-US', { 
-                      year: 'numeric', 
-                      month: 'long', 
-                      day: 'numeric' 
+                    {new Date().toLocaleDateString('en-US', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric'
                     })}
                   </div>
                 </div>
@@ -908,9 +908,9 @@ Start writing your blog post content using Markdown...
 
             {/* Featured Image */}
             {form.watch("featuredImage") && (
-              <img 
-                src={form.watch("featuredImage") || ""} 
-                alt={form.watch("title") || "Featured image"} 
+              <img
+                src={form.watch("featuredImage") || ""}
+                alt={form.watch("title") || "Featured image"}
                 className="w-full h-64 object-cover rounded-lg shadow-lg"
                 onError={(e) => {
                   (e.target as HTMLImageElement).style.display = 'none';
@@ -950,8 +950,8 @@ Start writing your blog post content using Markdown...
           </div>
 
           <DialogFooter>
-            <Button 
-              onClick={() => setShowPreview(false)} 
+            <Button
+              onClick={() => setShowPreview(false)}
               variant="outline"
               data-testid="close-preview"
             >
@@ -970,7 +970,7 @@ Start writing your blog post content using Markdown...
               Generate a professional blog post using AI based on your topic and preferences.
             </DialogDescription>
           </DialogHeader>
-          
+
           <div className="bg-purple-50 dark:bg-purple-950/20 border border-purple-200 dark:border-purple-900 rounded-lg p-4 mb-4">
             <div className="flex items-start gap-3">
               <Sparkles className="w-5 h-5 text-purple-600 dark:text-purple-400 mt-0.5" />
@@ -993,8 +993,8 @@ Start writing your blog post content using Markdown...
                     <FormItem>
                       <FormLabel>Topic *</FormLabel>
                       <FormControl>
-                        <Input 
-                          placeholder="e.g., How to transition to leadership roles" 
+                        <Input
+                          placeholder="e.g., How to transition to leadership roles"
                           {...field}
                           data-testid="input-ai-topic"
                         />
@@ -1011,8 +1011,8 @@ Start writing your blog post content using Markdown...
                     <FormItem>
                       <FormLabel>Keywords (comma separated)</FormLabel>
                       <FormControl>
-                        <Input 
-                          placeholder="e.g., leadership, career growth, management" 
+                        <Input
+                          placeholder="e.g., leadership, career growth, management"
                           {...field}
                           data-testid="input-ai-keywords"
                         />
@@ -1073,16 +1073,16 @@ Start writing your blog post content using Markdown...
               </div>
 
               <DialogFooter className="gap-2">
-                <Button 
-                  type="button" 
-                  variant="outline" 
+                <Button
+                  type="button"
+                  variant="outline"
                   onClick={() => setShowAIModal(false)}
                   data-testid="cancel-ai-generation"
                 >
                   Cancel
                 </Button>
-                <Button 
-                  type="submit" 
+                <Button
+                  type="submit"
                   disabled={generateBlogMutation.isPending}
                   className="bg-purple-600 hover:bg-purple-700"
                   data-testid="generate-blog-button"

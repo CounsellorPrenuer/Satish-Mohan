@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useParams, Link } from "wouter";
-import type { BlogPost } from "@shared/schema";
+import type { BlogPost } from "@/lib/types";
 import { ArrowLeft, Calendar, User, Tag } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -9,7 +9,7 @@ import rehypeSanitize from "rehype-sanitize";
 
 export default function BlogPostPage() {
   const { id } = useParams<{ id: string }>();
-  
+
   const { data: post, isLoading, error } = useQuery<BlogPost>({
     queryKey: ["/api/blog-posts", id],
     queryFn: () => fetch(`/api/blog-posts/${id}`).then(res => {
@@ -59,25 +59,25 @@ export default function BlogPostPage() {
       {/* Header */}
       <div className="bg-gradient-to-r from-primary to-secondary py-6 sm:py-8">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Link 
-            href="/" 
+          <Link
+            href="/"
             className="inline-flex items-center text-white hover:text-white/80 transition-colors mb-6"
             data-testid="back-home-link"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Home
           </Link>
-          
+
           <div className="text-white">
             <div className="inline-block bg-white/20 text-white px-3 py-1 rounded-full text-sm font-medium mb-4" data-testid="blog-category">
               <Tag className="w-3 h-3 inline mr-1" />
               {post.category}
             </div>
-            
+
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4" data-testid="blog-title">
               {post.title}
             </h1>
-            
+
             <div className="flex items-center space-x-6 text-white/90">
               <div className="flex items-center" data-testid="blog-author">
                 <User className="w-4 h-4 mr-2" />
@@ -85,10 +85,10 @@ export default function BlogPostPage() {
               </div>
               <div className="flex items-center" data-testid="blog-date">
                 <Calendar className="w-4 h-4 mr-2" />
-                {post.createdAt ? new Date(post.createdAt).toLocaleDateString('en-US', { 
-                  year: 'numeric', 
-                  month: 'long', 
-                  day: 'numeric' 
+                {post.createdAt ? new Date(post.createdAt).toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric'
                 }) : ''}
               </div>
             </div>
@@ -99,9 +99,9 @@ export default function BlogPostPage() {
       {/* Content */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         {post.featuredImage && (
-          <img 
-            src={post.featuredImage} 
-            alt={post.title} 
+          <img
+            src={post.featuredImage}
+            alt={post.title}
             className="w-full h-48 sm:h-64 lg:h-80 object-cover rounded-lg mb-6 sm:mb-8 shadow-lg"
             data-testid="blog-featured-image"
           />
@@ -113,7 +113,7 @@ export default function BlogPostPage() {
           </div>
         )}
 
-        <div 
+        <div
           className="prose prose-lg max-w-none dark:prose-invert text-foreground
             prose-headings:text-foreground prose-p:text-foreground 
             prose-strong:text-foreground prose-code:text-foreground
@@ -121,7 +121,7 @@ export default function BlogPostPage() {
             prose-blockquote:border-primary prose-blockquote:text-foreground
             prose-pre:bg-muted prose-pre:text-foreground
             prose-code:bg-muted prose-code:px-1 prose-code:py-0.5 prose-code:rounded
-            prose-img:rounded-lg prose-img:shadow-lg" 
+            prose-img:rounded-lg prose-img:shadow-lg"
           data-testid="blog-content"
         >
           <ReactMarkdown
@@ -131,7 +131,7 @@ export default function BlogPostPage() {
             {post.content}
           </ReactMarkdown>
         </div>
-        
+
         {/* Call to Action */}
         <div className="mt-8 sm:mt-12 p-6 sm:p-8 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-lg border border-primary/20">
           <div className="text-center">
@@ -139,8 +139,8 @@ export default function BlogPostPage() {
             <p className="text-sm sm:text-base text-muted-foreground mb-6">
               Get personalized guidance from Satish Mohan to accelerate your professional growth.
             </p>
-            <Link 
-              href="/" 
+            <Link
+              href="/"
               className="inline-block bg-primary text-primary-foreground px-8 py-3 rounded-lg font-semibold hover:bg-primary/90 transition-colors"
               data-testid="blog-cta-button"
             >
