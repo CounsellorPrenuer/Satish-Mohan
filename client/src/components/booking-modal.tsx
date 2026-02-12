@@ -92,7 +92,7 @@ export default function BookingModal({ isOpen, onClose, selectedService }: Booki
       `Email: ${data.email}`,
       `Phone: ${data.phone}`,
       `Service: ${serviceName}`,
-      `Amount: ₹${price}`,
+      `Amount: Rs.${price}`,
       data.preferredDate ? `Preferred Date: ${data.preferredDate}` : '',
       data.preferredTime ? `Preferred Time: ${data.preferredTime}` : '',
       data.sessionType ? `Session Type: ${data.sessionType}` : '',
@@ -104,42 +104,35 @@ export default function BookingModal({ isOpen, onClose, selectedService }: Booki
     const emailSubject = `Booking Request - ${serviceName} - ${data.fullName}`;
     const mailtoLink = `mailto:innervea@gmail.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
 
-    // Strategy 1: Try window.open (works better in some in-app browsers)
-    const emailWindow = window.open(mailtoLink, '_blank');
+    // Most reliable cross-browser approach: create a hidden <a> and click it
+    // This simulates a real user click, bypassing popup blockers
+    const anchor = document.createElement('a');
+    anchor.href = mailtoLink;
+    anchor.style.display = 'none';
+    document.body.appendChild(anchor);
+    anchor.click();
+    document.body.removeChild(anchor);
 
-    // Strategy 2: If window.open failed or was blocked, try location.href
-    if (!emailWindow || emailWindow.closed) {
-      window.location.href = mailtoLink;
+    // Also copy the email details to clipboard as a safety net
+    const fallbackText = `To: innervea@gmail.com\nSubject: ${emailSubject}\n\n${emailBody}`;
+    try {
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(fallbackText);
+      }
+    } catch (e) {
+      // Clipboard access may fail silently, that's okay
     }
 
-    // Strategy 3: Copy to clipboard as ultimate fallback
-    // Give the mailto a moment to trigger, then check if we need fallback
+    toast({
+      title: "Opening your email app...",
+      description: "Your booking details have been prepared. If your email app didn't open, the details have also been copied to your clipboard — just paste them into an email to innervea@gmail.com",
+    });
+
     setTimeout(() => {
-      const fallbackText = `To: innervea@gmail.com\nSubject: ${emailSubject}\n\n${emailBody}`;
-
-      if (navigator.clipboard) {
-        navigator.clipboard.writeText(fallbackText).then(() => {
-          toast({
-            title: "Email details copied!",
-            description: "If your email app didn't open, the booking details have been copied to your clipboard. Paste them in an email to innervea@gmail.com",
-          });
-        }).catch(() => {
-          toast({
-            title: "Send your booking details",
-            description: `Please email innervea@gmail.com with your booking details for ${serviceName}.`,
-          });
-        });
-      } else {
-        toast({
-          title: "Send your booking details",
-          description: `Please email innervea@gmail.com with your booking details for ${serviceName}.`,
-        });
-      }
-
       setIsSubmitting(false);
       onClose();
       form.reset();
-    }, 1500);
+    }, 2000);
   };
 
   return (
