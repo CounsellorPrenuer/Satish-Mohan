@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { Menu, X, Home, Building2, User, BookOpen, Mail, Calendar, CalendarDays } from "lucide-react";
-import logoImageStatic from "@assets/logo_1758786484720.jpeg";
 import { getLogo } from "@/lib/sanity";
 
 import {
@@ -35,13 +34,20 @@ const services = [
   { title: 'Spiritual Guidance', description: 'Discover your inner path' },
 ];
 
+declare global {
+  interface Window {
+    __PRELOADED_LOGO__?: string;
+  }
+}
+
 export default function Navigation({ onBookingClick }: NavigationProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
   const [location, setLocation] = useLocation();
   const [logoImage, setLogoImage] = useState<string | null>(() => {
-    return localStorage.getItem('site-logo') || null;
+    // Priority: 1. Preloaded variable (most immediate) 2. LocalStorage
+    return window.__PRELOADED_LOGO__ || localStorage.getItem('site-logo') || null;
   });
 
   // Fetch logo from Sanity with high-res params
@@ -54,9 +60,6 @@ export default function Navigation({ onBookingClick }: NavigationProps) {
           setLogoImage(highResUrl);
           localStorage.setItem('site-logo', highResUrl);
         }
-      } else if (!logoImage) {
-        // Only fallback to static if Sanity also returns null and we have no cache
-        setLogoImage(logoImageStatic);
       }
     });
   }, [logoImage]);
@@ -160,8 +163,8 @@ export default function Navigation({ onBookingClick }: NavigationProps) {
                     isScrolled ? "h-10 sm:h-12" : "h-12 sm:h-16"
                   )}
                   onError={() => {
-                    // If cached URL fails (e.g. asset deleted), reset to static
-                    setLogoImage(logoImageStatic);
+                    // If cached URL fails (e.g. asset deleted), reset
+                    setLogoImage(null);
                     localStorage.removeItem('site-logo');
                   }}
                   data-testid="brand-logo"
