@@ -179,10 +179,10 @@ export async function getLogo(): Promise<string | null> {
   }`;
     try {
         const data = await sanityClient.fetch(query);
-        if (data?.logoUrl) return data.logoUrl;
+        if (data && data.logoUrl) return data.logoUrl;
         return null;
     } catch (error) {
-        console.warn("[Sanity] Logo fetch failed, using static fallback:", error);
+        console.error("[Sanity] Logo fetch failed:", error);
         return null;
     }
 }

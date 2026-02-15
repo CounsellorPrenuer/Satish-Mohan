@@ -40,17 +40,23 @@ export default function Navigation({ onBookingClick }: NavigationProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
   const [location, setLocation] = useLocation();
-  const [logoImage, setLogoImage] = useState<string>(() => {
-    // Initial state from localStorage if available, otherwise static fallback
-    return localStorage.getItem('site-logo') || logoImageStatic;
+  const [logoImage, setLogoImage] = useState<string | null>(() => {
+    return localStorage.getItem('site-logo') || null;
   });
 
-  // Fetch logo from Sanity (user may upload a GIF or updated logo)
+  // Fetch logo from Sanity with high-res params
   useEffect(() => {
     getLogo().then(url => {
-      if (url && url !== logoImage) {
-        setLogoImage(url);
-        localStorage.setItem('site-logo', url);
+      if (url) {
+        // Force high resolution and non-compressed GIF if applicable
+        const highResUrl = `${url}?q=100&auto=format`;
+        if (highResUrl !== logoImage) {
+          setLogoImage(highResUrl);
+          localStorage.setItem('site-logo', highResUrl);
+        }
+      } else if (!logoImage) {
+        // Only fallback to static if Sanity also returns null and we have no cache
+        setLogoImage(logoImageStatic);
       }
     });
   }, [logoImage]);
@@ -139,25 +145,38 @@ export default function Navigation({ onBookingClick }: NavigationProps) {
           {/* Logo & Brand */}
           <button
             onClick={scrollToTop}
-            className="flex items-center space-x-3 flex-shrink-0 cursor-pointer"
+            className="flex items-center space-x-3 flex-shrink-0 cursor-pointer group"
             data-testid="logo-scroll-top"
             aria-label="Scroll to top"
           >
-            <div className="relative group">
-              <img
-                src={logoImage}
-                alt="Innervea Logo"
-                className={cn(
-                  "w-auto rounded-xl transition-all duration-300 shadow-lg group-hover:shadow-xl",
-                  isScrolled ? "h-8" : "h-10"
-                )}
-                data-testid="brand-logo"
-              />
+            <div className="relative overflow-hidden rounded-xl bg-white/10">
+              {logoImage ? (
+                <img
+                  src={logoImage}
+                  alt="Innervea Logo"
+                  fetchPriority="high"
+                  className={cn(
+                    "w-auto rounded-xl transition-all duration-500 shadow-md group-hover:shadow-lg object-contain",
+                    isScrolled ? "h-10 sm:h-12" : "h-12 sm:h-16"
+                  )}
+                  onError={() => {
+                    // If cached URL fails (e.g. asset deleted), reset to static
+                    setLogoImage(logoImageStatic);
+                    localStorage.removeItem('site-logo');
+                  }}
+                  data-testid="brand-logo"
+                />
+              ) : (
+                <div className={cn(
+                  "w-12 h-12 bg-muted/20 animate-pulse rounded-xl",
+                  isScrolled ? "h-10 w-10" : "h-12 w-12"
+                )} />
+              )}
             </div>
             <div className="hidden sm:block">
               <h1 className={cn(
-                "font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent transition-all duration-300",
-                isScrolled ? "text-lg" : "text-xl"
+                "font-black tracking-tight bg-gradient-to-r from-primary via-secondary to-primary bg-[length:200%_auto] animate-gradient bg-clip-text text-transparent transition-all duration-300",
+                isScrolled ? "text-xl" : "text-2xl"
               )}>
                 Innervea
               </h1>
