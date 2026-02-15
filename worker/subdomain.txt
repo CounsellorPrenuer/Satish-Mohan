@@ -1,0 +1,39 @@
+﻿
+node.exe : [31mX [41;31m[
+[41;97mERROR[41;31m][0m 
+[1mDeprecation:[0m
+At line:1 char:1
++ & "C:\Program 
+Files\nodejs/node.exe" 
+"C:\Program 
+Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~
+    + CategoryInfo         
+     : NotSpecified: ([3  
+  1mX [41;31m...eprecat   
+ ion:[0m:String) [], R    
+emoteException
+    + FullyQualifiedErrorI 
+   d : NativeCommandError
+ 
+
+  `wrangler subdomain` has 
+been deprecated, please 
+refer to [4mhttps://develo
+pers.cloudflare.com/workers
+/wrangler/migration/depreca
+tions/#subdomain[0m for 
+alternatives
+
+
+≡ƒ¬╡  Logs were written to 
+"C:\Users\Gary\AppData\Roam
+ing\xdg.config\.wrangler\lo
+gs\wrangler-2026-02-15_07-4
+8-41_978.log"
+Assertion failed: 
+!(handle->flags & 
+UV_HANDLE_CLOSING), file 
+src\win\async.c, line 76

@@ -1,0 +1,49 @@
+﻿
+ Γ¢à∩╕Å wrangler 3.114.17 (update available 4.65.0)
+-----------------------------------------------
+
+node.exe : [33mΓû▓ [43;33
+m[[43;30mWARNING[43;33m]
+[0m [1mThe version of 
+Wrangler you are using is 
+now out-of-date.[0m
+At line:1 char:1
++ & "C:\Program 
+Files\nodejs/node.exe" 
+"C:\Program 
+Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~
+    + CategoryInfo         
+     : NotSpecified: ([3  
+  3mΓû▓ [43;3...ut-of-d   
+ ate.[0m:String) [], R    
+emoteException
+    + FullyQualifiedErrorI 
+   d : NativeCommandError
+ 
+
+  Please update to the 
+latest version to prevent 
+critical errors.
+  Run `npm install 
+--save-dev wrangler@4` to 
+update to the latest 
+version.
+  After installation, run 
+Wrangler with `npx 
+wrangler`.
+
+
+Total Upload: 71.43 KiB / gzip: 17.14 KiB
+Worker Startup Time: 3 ms
+Your worker has access to the following bindings:
+- D1 Databases:
+  - DB: innervea-db (e1a9b7a9-b12a-405e-a112-e6182a8831fa)
+- Vars:
+  - ALLOWED_ORIGIN: "*"
+Uploaded innervea-worker (8.25 sec)
+Deployed innervea-worker triggers (1.50 sec)
+  https://innervea-worker.garyphadale.workers.dev
+Current Version ID: eed57452-f7f8-4900-9ff0-e41ed1498a03

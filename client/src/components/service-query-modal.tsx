@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { saveServiceQuery } from "@/lib/api";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useToast } from "@/hooks/use-toast";
@@ -54,6 +55,15 @@ export default function ServiceQueryModal({ isOpen, onClose, serviceTitle }: Ser
     document.body.appendChild(anchor);
     anchor.click();
     document.body.removeChild(anchor);
+
+    // Fire-and-forget: persist service query to D1
+    saveServiceQuery({
+      fullName: data.name,
+      email: data.email,
+      phone: '',
+      serviceType: serviceTitle,
+      query: data.message,
+    });
 
     try {
       if (navigator.clipboard) {

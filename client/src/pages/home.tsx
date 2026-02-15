@@ -12,7 +12,7 @@ import Footer from "@/components/footer";
 import FreeCallModal from "@/components/free-call-modal";
 import BookingModal from "@/components/booking-modal";
 import ServiceQueryModal from "@/components/service-query-modal";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 // Services that require query forms instead of direct booking
 const queryServices = ["workshops", "hospitality-consulting"];
@@ -26,6 +26,20 @@ export default function Home() {
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
   const [isQueryModalOpen, setIsQueryModalOpen] = useState(false);
   const [selectedService, setSelectedService] = useState<string | null>(null);
+
+  useEffect(() => {
+    const scrollTo = sessionStorage.getItem('scrollTo');
+    if (scrollTo) {
+      sessionStorage.removeItem('scrollTo');
+      // Small delay to ensure DOM is ready
+      setTimeout(() => {
+        const element = document.getElementById(scrollTo);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth" });
+        }
+      }, 300);
+    }
+  }, []);
 
   const openBookingModal = (serviceType?: string) => {
     // Handle empty string or undefined as "no service" - open Free Call Modal

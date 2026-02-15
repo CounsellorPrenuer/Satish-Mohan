@@ -91,7 +91,7 @@ export default function AboutSection({ onBookingClick }: AboutSectionProps) {
             <img
               src={displayImage}
               alt="Satish Mohan - Career Counselor and Life Coach"
-              className="rounded-2xl shadow-lg w-64 h-64 object-cover"
+              className="rounded-2xl shadow-lg w-80 h-80 lg:w-96 lg:h-96 object-cover"
               data-testid="about-image"
             />
             <p className="mt-4 text-center text-muted-foreground text-sm max-w-xs">Hospitality expert & Life Coach with 30+ years of leadership.  Provides holistic guidance to empower individuals & organizations to thrive.</p>

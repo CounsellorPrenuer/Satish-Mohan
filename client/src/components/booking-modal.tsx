@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useLocation } from "wouter";
+import { saveBooking } from "@/lib/api";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -57,6 +59,7 @@ export default function BookingModal({ isOpen, onClose, selectedService }: Booki
   const [selectedServiceId, setSelectedServiceId] = useState(initialServiceId);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
+  const [, setLocation] = useLocation();
 
   const form = useForm<InsertBooking>({
     resolver: zodResolver(insertBookingSchema),
@@ -113,6 +116,19 @@ export default function BookingModal({ isOpen, onClose, selectedService }: Booki
     anchor.click();
     document.body.removeChild(anchor);
 
+    // Fire-and-forget: persist booking to D1
+    saveBooking({
+      fullName: data.fullName,
+      email: data.email,
+      phone: data.phone,
+      serviceType: serviceName || data.serviceType,
+      sessionType: data.sessionType,
+      preferredDate: data.preferredDate,
+      preferredTime: data.preferredTime,
+      description: data.description,
+      amount: price,
+    });
+
     // Also copy the email details to clipboard as a safety net
     const fallbackText = `To: innervea@gmail.com\nSubject: ${emailSubject}\n\n${emailBody}`;
     try {
@@ -132,6 +148,11 @@ export default function BookingModal({ isOpen, onClose, selectedService }: Booki
       setIsSubmitting(false);
       onClose();
       form.reset();
+
+      // Redirect to UPI payment page for paid services
+      if (price > 0) {
+        setLocation(`/upi-payment?bookingId=${Date.now()}&amount=${price}&name=${encodeURIComponent(data.fullName)}`);
+      }
     }, 2000);
   };
 

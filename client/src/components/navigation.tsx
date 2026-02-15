@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { Menu, X, Home, Building2, User, BookOpen, Mail, Calendar, CalendarDays } from "lucide-react";
-import logoImage from "@assets/logo_1758786484720.jpeg";
+import logoImageStatic from "@assets/logo_1758786484720.jpeg";
+import { getLogo } from "@/lib/sanity";
+
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -37,7 +39,15 @@ export default function Navigation({ onBookingClick }: NavigationProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
-  const [location] = useLocation();
+  const [location, setLocation] = useLocation();
+  const [logoImage, setLogoImage] = useState<string>(logoImageStatic);
+
+  // Fetch logo from Sanity (user may upload a GIF or updated logo)
+  useEffect(() => {
+    getLogo().then(url => {
+      if (url) setLogoImage(url);
+    });
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -74,6 +84,11 @@ export default function Navigation({ onBookingClick }: NavigationProps) {
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
       setActiveSection(sectionId);
+    } else {
+      sessionStorage.setItem('scrollTo', sectionId);
+      if (location !== "/") {
+        setLocation("/");
+      }
     }
     setIsMobileMenuOpen(false);
   };

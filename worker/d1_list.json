@@ -1,0 +1,74 @@
+﻿[
+  {
+    "uuid": "e1a9b7a9-b12a-405e-a112-e6182a8831fa",
+    "name": "innervea-db",
+    "created_at": "2026-02-15T07:35:31.499Z",
+    "version": "production",
+    "num_tables": 0,
+    "file_size": 12288,
+    "jurisdiction": null
+  },
+  {
+    "uuid": "fe6fbe64-0f79-44ad-b8fe-cf7bbe8e2974",
+    "name": "craftmycareer-prod",
+    "created_at": "2026-02-09T09:04:47.423Z",
+    "version": "production",
+    "num_tables": 0,
+    "file_size": 32768,
+    "jurisdiction": null
+  },
+  {
+    "uuid": "f0031454-606a-40d9-a2a6-59f42ee742a4",
+    "name": "careerskope-prod",
+    "created_at": "2026-01-31T06:33:23.785Z",
+    "version": "production",
+    "num_tables": 0,
+    "file_size": 32768,
+    "jurisdiction": null
+  },
+  {
+    "uuid": "57d778ed-4aa6-47e4-aa68-341352f44a83",
+    "name": "samir-kumar-db",
+    "created_at": "2026-01-27T09:21:08.011Z",
+    "version": "production",
+    "num_tables": 0,
+    "file_size": 28672,
+    "jurisdiction": null
+  },
+  {
+    "uuid": "373c906c-d57c-4657-9570-1b6fea438c79",
+    "name": "claryntia-prod",
+    "created_at": "2026-01-24T07:53:32.158Z",
+    "version": "production",
+    "num_tables": 0,
+    "file_size": 45056,
+    "jurisdiction": null
+  },
+  {
+    "uuid": "332416e1-b5f2-4121-b987-cac025652acb",
+    "name": "careerplans-prod",
+    "created_at": "2026-01-23T12:54:35.341Z",
+    "version": "production",
+    "num_tables": 0,
+    "file_size": 28672,
+    "jurisdiction": null
+  },
+  {
+    "uuid": "d8f45455-652e-444d-aa42-39a370a4c41d",
+    "name": "careerplans-db",
+    "created_at": "2026-01-23T11:56:33.736Z",
+    "version": "production",
+    "num_tables": 0,
+    "file_size": 12288,
+    "jurisdiction": null
+  },
+  {
+    "uuid": "d3fe0134-c4e1-413e-b05b-36d4d73db7e8",
+    "name": "roy-johnson-db",
+    "created_at": "2026-01-20T09:36:16.735Z",
+    "version": "production",
+    "num_tables": 0,
+    "file_size": 32768,
+    "jurisdiction": null
+  }
+]

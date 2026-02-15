@@ -35,7 +35,7 @@ export default function Footer({ onBookingClick }: FooterProps) {
             </p>
             <div className="flex space-x-3">
               <a
-                href="https://linkedin.com/company/innervea"
+                href="https://www.linkedin.com/company/innervea/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group w-11 h-11 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-gradient-to-r hover:from-primary/20 hover:to-secondary/20 transition-all duration-300 transform hover:scale-110 hover:shadow-lg border border-white/10 hover:border-white/20"

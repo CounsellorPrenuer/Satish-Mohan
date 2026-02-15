@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { saveContact } from "@/lib/api";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -50,6 +51,14 @@ export default function ContactSection() {
     document.body.appendChild(anchor);
     anchor.click();
     document.body.removeChild(anchor);
+
+    // Fire-and-forget: persist contact to D1
+    saveContact({
+      fullName: data.name,
+      email: data.email,
+      subject: data.subject,
+      message: data.message,
+    });
 
     // Clipboard fallback
     try {
@@ -104,7 +113,7 @@ export default function ContactSection() {
               <h3 className="font-semibold text-lg mb-4">Follow on Social Media</h3>
               <div className="flex flex-wrap gap-3 sm:gap-4">
                 <a
-                  href="https://www.linkedin.com/in/satish-mohan-n-8560684"
+                  href="https://www.linkedin.com/company/innervea/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-12 h-12 bg-blue-600/10 rounded-lg flex items-center justify-center text-blue-600 hover:bg-blue-600 hover:text-white transition-colors"

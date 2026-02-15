@@ -1,0 +1,19 @@
+{
+    "name": "innervea-worker",
+    "version": "0.0.1",
+    "private": true,
+    "scripts": {
+        "deploy": "wrangler deploy",
+        "dev": "wrangler dev",
+        "start": "wrangler dev",
+        "cf-typegen": "wrangler types"
+    },
+    "devDependencies": {
+        "@cloudflare/workers-types": "^4.20240529.0",
+        "wrangler": "^3.57.2"
+    },
+    "dependencies": {
+        "hono": "^4.4.12",
+        "razorpay": "^2.9.4"
+    }
+}

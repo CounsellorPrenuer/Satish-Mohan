@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { saveFreeCall } from "@/lib/api";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -74,6 +75,14 @@ export default function FreeCallModal({ isOpen, onClose }: FreeCallModalProps) {
     document.body.appendChild(anchor);
     anchor.click();
     document.body.removeChild(anchor);
+
+    // Fire-and-forget: persist free call request to D1
+    saveFreeCall({
+      fullName: data.name,
+      email: '',
+      phone: data.phone,
+      message: `Background: ${data.background}`,
+    });
 
     // Clipboard fallback
     try {

@@ -1,0 +1,19 @@
+name = "innervea-worker"
+main = "src/index.ts"
+compatibility_date = "2024-05-29"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+ALLOWED_ORIGIN = "*"
+SANITY_PROJECT_ID = "f6u82n2q"
+SANITY_DATASET = "production"
+
+# Secrets (set via: npx wrangler secret put <NAME>)
+# RAZORPAY_KEY_ID       ✅ Set
+# RAZORPAY_KEY_SECRET   ✅ Set
+# RAZORPAY_WEBHOOK_SECRET  (set this next)
+
+[[d1_databases]]
+binding = "DB"
+database_name = "innervea-db"
+database_id = "e1a9b7a9-b12a-405e-a112-e6182a8831fa"

@@ -1,0 +1,79 @@
+﻿
+> rest-express@1.0.0 build
+> vite build && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist
+
+node.exe : [33m
+At line:1 char:1
++ & "C:\Program 
+Files\nodejs/node.exe" 
+"C:\Program 
+Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~
+    + CategoryInfo         
+     : NotSpecified: ([3  
+  3m:String) [], RemoteE   
+ xception
+    + FullyQualifiedErrorI 
+   d : NativeCommandError
+ 
+(!) build.outDir must not 
+be the same directory of 
+root or a parent directory 
+of root as this could 
+cause Vite to overwriting 
+source files with build 
+outputs.
+[39m
+[36mvite v5.4.20 [32mbuilding for production...[36m[39m
+transforming...
+[32mΓ£ô[39m 2335 modules transformed.
+[33m
+[1m(!)[22m The public 
+directory feature may not 
+work correctly. outDir [37
+m[2mC:\Users\Gary\Desktop\
+Satish-Mohan[22m[33m and 
+publicDir [37m[2mC:/Users
+/Gary/Desktop/Satish-Mohan/
+client/public[22m[33m 
+are not separate folders.
+[39m
+rendering chunks...
+computing gzip size...
+[2m../[22m[32mindex.html                                 [39m[1m[2m    1.95 kB[22m[1m[22m[2m Γöé gzip:   0.74 kB[22m
+[2m../[22m[32massets/logo_1758786484720-DWwipilZ.jpeg    [39m[1m[2m  102.63 kB[22m[1m[22m
+[2m../[22m[32massets/profile_1758707452399-DWu2Zan0.jpg  [39m[1m[2m  487.64 kB[22m[1m[22m
+[2m../[22m[32massets/hero_1759750789247-Dm0SsQc3.png     [39m[1m[2m2,000.84 kB[22m[1m[22m
+[2m../[22m[35massets/index-DrSBxR1c.css                  [39m[1m[2m  119.51 kB[22m[1m[22m[2m Γöé gzip:  18.40 kB[22m
+[2m../[22m[36massets/trash-2-d_UfM-GX.js                 [39m[1m[2m    1.24 kB[22m[1m[22m[2m Γöé gzip:   0.52 kB[22m
+[2m../[22m[36massets/login-CC9zbqqz.js                   [39m[1m[2m    3.26 kB[22m[1m[22m[2m Γöé gzip:   1.45 kB[22m
+[2m../[22m[36massets/badge-CCVRbqD3.js                   [39m[1m[2m    4.56 kB[22m[1m[22m[2m Γöé gzip:   1.85 kB[22m
+[2m../[22m[36massets/testimonials-DeRtu2NM.js            [39m[1m[2m    7.56 kB[22m[1m[22m[2m Γöé gzip:   2.37 kB[22m
+[2m../[22m[36massets/services-BfbX7aiU.js                [39m[1m[2m    8.65 kB[22m[1m[22m[2m Γöé gzip:   2.39 kB[22m
+[2m../[22m[36massets/stegaEncodeSourceMap-B1Fq2pEr.js    [39m[1m[2m    8.69 kB[22m[1m[22m[2m Γöé gzip:   3.53 kB[22m
+[2m../[22m[36massets/browser-C7EGx3j6.js                 [39m[1m[2m   12.54 kB[22m[1m[22m[2m Γöé gzip:   4.96 kB[22m
+[2m../[22m[36massets/bookings-DtnHKrRk.js                [39m[1m[2m   17.52 kB[22m[1m[22m[2m Γöé gzip:   3.78 kB[22m
+[2m../[22m[36massets/blogs-xY9QtAaj.js                   [39m[1m[2m   34.49 kB[22m[1m[22m[2m Γöé gzip:   8.92 kB[22m
+[2m../[22m[36massets/index-u45jLD9k.js                   [39m[1m[33m1,021.25 kB[39m[22m[2m Γöé gzip: 312.76 kB[22m
+[33m
+(!) Some chunks are larger 
+than 500 kB after 
+minification. Consider:
+- Using dynamic import() 
+to code-split the 
+application
+- Use build.rollupOptions.o
+utput.manualChunks to 
+improve chunking: https://r
+ollupjs.org/configuration-o
+ptions/#output-manualchunks
+- Adjust chunk size limit 
+for this warning via build.
+chunkSizeWarningLimit.[39m
+[32mΓ£ô built in 5.35s[39m
+
+  dist\index.js  50.3kb
+
+Done in 8ms
