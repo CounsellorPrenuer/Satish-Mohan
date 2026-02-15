@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Check, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import RazorpayButton from "@/components/razorpay-button";
 
 interface PricingTierSectionProps {
   onPackageSelect: (packageId: string) => void;
@@ -343,22 +342,18 @@ export default function PricingTierSection({ onPackageSelect }: PricingTierSecti
                   ))}
                 </ul>
 
-                {plan.paymentButtonId ? (
-                  <RazorpayButton paymentButtonId={plan.paymentButtonId} />
-                ) : (
-                  <Button
-                    onClick={() => onPackageSelect(plan.id)}
-                    className={cn(
-                      "w-full py-6 rounded-lg font-semibold transition-all duration-300",
-                      plan.highlighted
-                        ? "bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white"
-                        : "bg-primary hover:bg-primary/90 text-primary-foreground"
-                    )}
-                    data-testid={`button-${plan.id}`}
-                  >
-                    {plan.buttonText}
-                  </Button>
-                )}
+                <Button
+                  onClick={() => onPackageSelect(plan.id)}
+                  className={cn(
+                    "w-full py-6 rounded-lg font-semibold transition-all duration-300",
+                    plan.highlighted
+                      ? "bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white"
+                      : "bg-primary hover:bg-primary/90 text-primary-foreground"
+                  )}
+                  data-testid={`button-${plan.id}`}
+                >
+                  {plan.buttonText}
+                </Button>
               </div>
             ))}
           </div>

@@ -16,6 +16,8 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { X } from "lucide-react";
 import { insertBookingSchema, type InsertBooking } from "@/lib/types";
 
+import { useRazorpay } from "@/hooks/use-razorpay";
+
 interface BookingModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -60,6 +62,7 @@ export default function BookingModal({ isOpen, onClose, selectedService }: Booki
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
   const [, setLocation] = useLocation();
+  const { initializePayment } = useRazorpay();
 
   const form = useForm<InsertBooking>({
     resolver: zodResolver(insertBookingSchema),
@@ -81,13 +84,46 @@ export default function BookingModal({ isOpen, onClose, selectedService }: Booki
     ? { id: packageInfo.serviceId, name: packageInfo.name, price: packageInfo.price }
     : services.find(s => s.id === selectedServiceId);
 
-  const onSubmit = (data: InsertBooking) => {
+  const onSubmit = async (data: InsertBooking) => {
     setIsSubmitting(true);
 
     const serviceName = packageInfo?.name || selectedServiceData?.name || data.serviceType;
     const price = packageInfo?.price || selectedServiceData?.price || 2500;
 
-    // Build email body with all form data
+    // Fire-and-forget: persist booking to D1
+    saveBooking({
+      fullName: data.fullName,
+      email: data.email,
+      phone: data.phone,
+      serviceType: serviceName || data.serviceType,
+      sessionType: data.sessionType,
+      preferredDate: data.preferredDate,
+      preferredTime: data.preferredTime,
+      description: data.description,
+      amount: price,
+    });
+
+    if (price > 0) {
+      // Big Razorpay Modal Flow
+      const paymentSuccess = await initializePayment({
+        amount: price,
+        currency: "INR",
+        bookingId: `BK-${Date.now()}`,
+        customerName: data.fullName,
+        customerEmail: data.email,
+        customerPhone: data.phone,
+      });
+
+      if (paymentSuccess) {
+        setIsSubmitting(false);
+        onClose();
+        form.reset();
+        setLocation("/");
+        return;
+      }
+    }
+
+    // Fallback/Email logic if no payment needed or payment modal closed
     const emailBody = [
       `--- New Booking Request ---`,
       ``,
@@ -107,8 +143,6 @@ export default function BookingModal({ isOpen, onClose, selectedService }: Booki
     const emailSubject = `Booking Request - ${serviceName} - ${data.fullName}`;
     const mailtoLink = `mailto:innervea@gmail.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
 
-    // Most reliable cross-browser approach: create a hidden <a> and click it
-    // This simulates a real user click, bypassing popup blockers
     const anchor = document.createElement('a');
     anchor.href = mailtoLink;
     anchor.style.display = 'none';
@@ -116,43 +150,15 @@ export default function BookingModal({ isOpen, onClose, selectedService }: Booki
     anchor.click();
     document.body.removeChild(anchor);
 
-    // Fire-and-forget: persist booking to D1
-    saveBooking({
-      fullName: data.fullName,
-      email: data.email,
-      phone: data.phone,
-      serviceType: serviceName || data.serviceType,
-      sessionType: data.sessionType,
-      preferredDate: data.preferredDate,
-      preferredTime: data.preferredTime,
-      description: data.description,
-      amount: price,
-    });
-
-    // Also copy the email details to clipboard as a safety net
-    const fallbackText = `To: innervea@gmail.com\nSubject: ${emailSubject}\n\n${emailBody}`;
-    try {
-      if (navigator.clipboard) {
-        navigator.clipboard.writeText(fallbackText);
-      }
-    } catch (e) {
-      // Clipboard access may fail silently, that's okay
-    }
-
     toast({
       title: "Opening your email app...",
-      description: "Your booking details have been prepared. If your email app didn't open, the details have also been copied to your clipboard — just paste them into an email to innervea@gmail.com",
+      description: "Your request has been saved. Please complete the email to finalize.",
     });
 
     setTimeout(() => {
       setIsSubmitting(false);
       onClose();
       form.reset();
-
-      // Redirect to UPI payment page for paid services
-      if (price > 0) {
-        setLocation(`/upi-payment?bookingId=${Date.now()}&amount=${price}&name=${encodeURIComponent(data.fullName)}`);
-      }
     }, 2000);
   };
 
