@@ -8,7 +8,7 @@ const client = createClient({
     projectId: 'f6u82n2q',
     dataset: 'production',
     apiVersion: '2023-05-03',
-    token: 'skgrcUdehLbGdjImYbFiDlQRM5uXO3ffjNEyWHsUq1PDbMdOqnawKA0655dHDcZVFY1Y1L3f7FppJgGWFG8Avbp3A3p0j4ILZrZxxEnHIRN1Pgp1ycIFJ64MYpQsAWltQF1PD2QDpQqpJPl9HduGp7O568tdou0mGNdYVx1yb7vXFZHXPES0',
+    token: 'skmdBbcKodRqpWHD2No8DYVcHweodFOkV1uu1XaGIQIstqOFGh851VYuwqgmVzDpoaHsuY3TVR1u9LSYMBBpmnnoL8az3Leroxy2preZcOWwDyNJMb5J4RGumHyPhV2C8JZrJeE2bMsQq8HLGUl8OgrxNYssu8KVESDJLK9oxpDOpS06O6Nm',
     useCdn: false, // We are writing data
 });
 
@@ -92,8 +92,9 @@ const blogPosts = [
         excerpt: "Discover the key indicators that suggest you're ready for a new professional direction and how to make the transition smoothly.",
         content: [
             {
+                _key: 'block1',
                 _type: 'block',
-                children: [{ _type: 'span', text: "Career transitions can be both exciting and daunting. Here are five clear signs that indicate it might be time to consider a career change..." }]
+                children: [{ _key: 'span1', _type: 'span', text: "Career transitions can be both exciting and daunting. Here are five clear signs that indicate it might be time to consider a career change..." }]
             }
         ],
         imageUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400",
@@ -107,8 +108,9 @@ const blogPosts = [
         excerpt: "Learn how incorporating meditation into your daily routine can transform your stress levels and decision-making abilities.",
         content: [
             {
+                _key: 'block1',
                 _type: 'block',
-                children: [{ _type: 'span', text: "Meditation is more than just a relaxation technique. It's a powerful tool for personal transformation..." }]
+                children: [{ _key: 'span1', _type: 'span', text: "Meditation is more than just a relaxation technique. It's a powerful tool for personal transformation..." }]
             }
         ],
         imageUrl: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400",
@@ -122,8 +124,9 @@ const blogPosts = [
         excerpt: "A comprehensive guide to selecting a college course that aligns with your interests, skills, and career aspirations.",
         content: [
             {
+                _key: 'block1',
                 _type: 'block',
-                children: [{ _type: 'span', text: "Choosing the right college course is one of the most important decisions you'll make..." }]
+                children: [{ _key: 'span1', _type: 'span', text: "Choosing the right college course is one of the most important decisions you'll make..." }]
             }
         ],
         imageUrl: "https://images.unsplash.com/photo-1562774053-701939374585?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400",
@@ -319,12 +322,14 @@ const aboutData = {
     title: "The Innervea Story",
     description: [
         {
+            _key: 'block1',
             _type: 'block',
-            children: [{ _type: 'span', text: "The name itself is a promise: \"inner\" – your authentic self, and \"vea\" – the path. Innervea is the path within. It is where clarity meets action, and calm meets ambition. In today's fast-changing world, many feel torn between ambition, personal fulfillment, and inner peace." }]
+            children: [{ _key: 'span1', _type: 'span', text: "The name itself is a promise: \"inner\" – your authentic self, and \"vea\" – the path. Innervea is the path within. It is where clarity meets action, and calm meets ambition. In today's fast-changing world, many feel torn between ambition, personal fulfillment, and inner peace." }]
         },
         {
+            _key: 'block2',
             _type: 'block',
-            children: [{ _type: 'span', text: "Innervea helps you achieve true success by aligning your career, life, and inner self. Through a blend of career counselling, life coaching, and meditation, Innervea guides you to discover your strengths, build confidence, and find clarity - transforming not just what you do, but who you are." }]
+            children: [{ _key: 'span1', _type: 'span', text: "Innervea helps you achieve true success by aligning your career, life, and inner self. Through a blend of career counselling, life coaching, and meditation, Innervea guides you to discover your strengths, build confidence, and find clarity - transforming not just what you do, but who you are." }]
         }
     ],
     imageName: "profile_1758707452399.jpg", // In attached_assets

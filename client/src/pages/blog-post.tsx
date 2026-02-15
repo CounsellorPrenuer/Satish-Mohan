@@ -2,19 +2,16 @@ import { useQuery } from "@tanstack/react-query";
 import { useParams, Link } from "wouter";
 import type { BlogPost } from "@/lib/types";
 import { ArrowLeft, Calendar, User, Tag } from "lucide-react";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-import rehypeRaw from "rehype-raw";
-import rehypeSanitize from "rehype-sanitize";
-
+import { PortableText } from "@portabletext/react";
+import { useState } from "react";
+import BookingModal from "@/components/booking-modal";
 import { getPost } from "@/lib/sanity";
-
-// ... imports remain the same
 
 export default function BlogPostPage() {
   const { id } = useParams<{ id: string }>();
+  const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
 
-  const { data: post, isLoading, error } = useQuery<BlogPost>({
+  const { data: post, isLoading, error } = useQuery<BlogPost | undefined | null>({
     queryKey: ["sanity-post", id],
     queryFn: () => getPost(id!),
     enabled: !!id,
@@ -54,6 +51,16 @@ export default function BlogPostPage() {
       </div>
     );
   }
+
+  // Component for rendering custom portable text types if needed
+  const components = {
+    block: {
+      h1: ({ children }: any) => <h2 className="text-3xl font-bold mt-8 mb-4">{children}</h2>,
+      h2: ({ children }: any) => <h2 className="text-2xl font-bold mt-6 mb-4">{children}</h2>,
+      h3: ({ children }: any) => <h3 className="text-xl font-bold mt-4 mb-2">{children}</h3>,
+      normal: ({ children }: any) => <p className="mb-4 leading-relaxed">{children}</p>,
+    },
+  };
 
   return (
     <div className="min-h-screen bg-background" data-testid="blog-post-page">
@@ -125,12 +132,11 @@ export default function BlogPostPage() {
             prose-img:rounded-lg prose-img:shadow-lg"
           data-testid="blog-content"
         >
-          <ReactMarkdown
-            remarkPlugins={[remarkGfm]}
-            rehypePlugins={[rehypeRaw, rehypeSanitize]}
-          >
-            {post.content}
-          </ReactMarkdown>
+          {typeof post.content === 'string' ? (
+            <div dangerouslySetInnerHTML={{ __html: post.content }} />
+          ) : (
+            <PortableText value={post.content} components={components} />
+          )}
         </div>
 
         {/* Call to Action */}
@@ -140,16 +146,21 @@ export default function BlogPostPage() {
             <p className="text-sm sm:text-base text-muted-foreground mb-6">
               Get personalized guidance from Satish Mohan to accelerate your professional growth.
             </p>
-            <Link
-              href="/"
-              className="inline-block bg-primary text-primary-foreground px-8 py-3 rounded-lg font-semibold hover:bg-primary/90 transition-colors"
+            <button
+              onClick={() => setIsBookingModalOpen(true)}
+              className="inline-block bg-primary text-primary-foreground px-8 py-3 rounded-lg font-semibold hover:bg-primary/90 transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-1"
               data-testid="blog-cta-button"
             >
               Book a Session
-            </Link>
+            </button>
           </div>
         </div>
       </div>
+
+      <BookingModal
+        isOpen={isBookingModalOpen}
+        onClose={() => setIsBookingModalOpen(false)}
+      />
     </div>
   );
 }

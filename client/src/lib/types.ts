@@ -34,7 +34,7 @@ export interface BlogPost {
     title: string;
     slug: string;
     excerpt: string;
-    content: string;
+    content: any; // Can be string or array of blocks (Portable Text)
     featuredImage?: string;
     category: string;
     published: boolean;

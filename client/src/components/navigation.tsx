@@ -40,14 +40,20 @@ export default function Navigation({ onBookingClick }: NavigationProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
   const [location, setLocation] = useLocation();
-  const [logoImage, setLogoImage] = useState<string>(logoImageStatic);
+  const [logoImage, setLogoImage] = useState<string>(() => {
+    // Initial state from localStorage if available, otherwise static fallback
+    return localStorage.getItem('site-logo') || logoImageStatic;
+  });
 
   // Fetch logo from Sanity (user may upload a GIF or updated logo)
   useEffect(() => {
     getLogo().then(url => {
-      if (url) setLogoImage(url);
+      if (url && url !== logoImage) {
+        setLogoImage(url);
+        localStorage.setItem('site-logo', url);
+      }
     });
-  }, []);
+  }, [logoImage]);
 
   useEffect(() => {
     const handleScroll = () => {

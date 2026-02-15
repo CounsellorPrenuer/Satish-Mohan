@@ -9,6 +9,7 @@ export const sanityClient = createClient({
     dataset: "production",
     useCdn: true, // set to `false` to bypass the edge cache
     apiVersion: "2023-05-03", // use current date (YYYY-MM-DD) to target the latest API version
+    token: "skmdBbcKodRqpWHD2No8DYVcHweodFOkV1uu1XaGIQIstqOFGh851VYuwqgmVzDpoaHsuY3TVR1u9LSYMBBpmnnoL8az3Leroxy2preZcOWwDyNJMb5J4RGumHyPhV2C8JZrJeE2bMsQq8HLGUl8OgrxNYssu8KVESDJLK9oxpDOpS06O6Nm"
 });
 
 // Helper to fetch data with automatic fallback
