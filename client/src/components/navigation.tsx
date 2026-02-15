@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { Menu, X, Home, Building2, User, BookOpen, Mail, Calendar, CalendarDays } from "lucide-react";
-import { getLogo } from "@/lib/sanity";
-
+import logoImageStatic from "@assets/logo_1758786484720.jpeg";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -34,35 +33,12 @@ const services = [
   { title: 'Spiritual Guidance', description: 'Discover your inner path' },
 ];
 
-declare global {
-  interface Window {
-    __PRELOADED_LOGO__?: string;
-  }
-}
-
 export default function Navigation({ onBookingClick }: NavigationProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
   const [location, setLocation] = useLocation();
-  const [logoImage, setLogoImage] = useState<string | null>(() => {
-    // Priority: 1. Preloaded variable (most immediate) 2. LocalStorage
-    return window.__PRELOADED_LOGO__ || localStorage.getItem('site-logo') || null;
-  });
-
-  // Fetch logo from Sanity with high-res params
-  useEffect(() => {
-    getLogo().then(url => {
-      if (url) {
-        // Force high resolution and non-compressed GIF if applicable
-        const highResUrl = `${url}?q=100&auto=format`;
-        if (highResUrl !== logoImage) {
-          setLogoImage(highResUrl);
-          localStorage.setItem('site-logo', highResUrl);
-        }
-      }
-    });
-  }, [logoImage]);
+  const logoImage = logoImageStatic;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -162,11 +138,6 @@ export default function Navigation({ onBookingClick }: NavigationProps) {
                     "w-auto rounded-xl transition-all duration-500 shadow-md group-hover:shadow-lg object-contain",
                     isScrolled ? "h-10 sm:h-12" : "h-12 sm:h-16"
                   )}
-                  onError={() => {
-                    // If cached URL fails (e.g. asset deleted), reset
-                    setLogoImage(null);
-                    localStorage.removeItem('site-logo');
-                  }}
                   data-testid="brand-logo"
                 />
               ) : (

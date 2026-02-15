@@ -13,13 +13,31 @@ interface HeroData {
   heroImage?: string;
 }
 
+declare global {
+  interface Window {
+    __PRELOADED_HERO__?: string;
+  }
+}
+
 export default function HeroSection({ onBookingClick }: HeroSectionProps) {
   const animationRef = useRef<HTMLDivElement>(null);
-  const [heroData, setHeroData] = useState<HeroData | null>(null);
+  const [heroData, setHeroData] = useState<HeroData | null>(() => {
+    const cachedHero = typeof window !== 'undefined' ? (window as any).__PRELOADED_HERO__ || localStorage.getItem('hero-image') : null;
+    return cachedHero ? { heroImage: cachedHero } : null;
+  });
 
   useEffect(() => {
-    getHero().then(data => {
-      if (data) setHeroData(data);
+    getHero().then((data: HeroData | null) => {
+      if (data) {
+        // Force high resolution for the uploaded GIF
+        const highResUrl = data.heroImage ? `${data.heroImage}?q=100&auto=format` : null;
+        const modernizedData: HeroData = { ...data, heroImage: highResUrl || data.heroImage };
+
+        setHeroData(modernizedData);
+        if (highResUrl) {
+          localStorage.setItem('hero-image', highResUrl);
+        }
+      }
     });
   }, []);
 

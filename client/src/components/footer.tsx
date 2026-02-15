@@ -23,7 +23,7 @@ export default function Footer({ onBookingClick }: FooterProps) {
               <img
                 src={logoImage}
                 alt="Innervea Logo"
-                className="h-16 w-auto rounded-xl shadow-lg border border-white/10"
+                className="h-16 w-auto rounded-xl shadow-lg border border-white/10 object-contain"
                 data-testid="footer-logo"
               />
             </div>
