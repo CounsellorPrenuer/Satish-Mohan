@@ -2,10 +2,12 @@ import { useQuery } from "@tanstack/react-query";
 import { Link } from "wouter";
 import { ArrowLeft, Calendar, User } from "lucide-react";
 import type { BlogPost } from "@/lib/types";
+import { getPosts } from "@/lib/sanity";
 
 export default function BlogsPage() {
   const { data: blogPosts, isLoading } = useQuery<BlogPost[]>({
-    queryKey: ["/api/blog-posts?published=true"],
+    queryKey: ["sanity-posts-all"],
+    queryFn: getPosts
   });
 
   if (isLoading) {

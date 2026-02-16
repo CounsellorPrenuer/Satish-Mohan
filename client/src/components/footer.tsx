@@ -181,26 +181,7 @@ export default function Footer({ onBookingClick }: FooterProps) {
             </ul>
           </div>
 
-          <div>
-            <h3 className="font-bold text-lg mb-6 text-white/90 relative">
-              <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Admin Access</span>
-              <div className="absolute bottom-0 left-0 w-8 h-0.5 bg-gradient-to-r from-primary to-secondary rounded-full"></div>
-            </h3>
-            <ul className="space-y-3">
-              <li>
-                <Link href="/admin/bookings" className="group text-white/70 hover:text-white transition-all duration-300 text-sm flex items-center space-x-2">
-                  <span className="w-1.5 h-1.5 bg-white/40 rounded-full group-hover:bg-accent transition-colors"></span>
-                  <span>Admin Dashboard</span>
-                </Link>
-              </li>
-              <li>
-                <Link href="/admin/blogs" className="group text-white/70 hover:text-white transition-all duration-300 text-sm flex items-center space-x-2">
-                  <span className="w-1.5 h-1.5 bg-white/40 rounded-full group-hover:bg-accent transition-colors"></span>
-                  <span>Blog Management</span>
-                </Link>
-              </li>
-            </ul>
-          </div>
+
         </div>
 
         <div className="relative mt-16 pt-8">
