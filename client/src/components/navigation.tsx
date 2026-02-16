@@ -195,6 +195,22 @@ export default function Navigation({ onBookingClick }: NavigationProps) {
                     </button>
                   </NavigationMenuLink>
                 </NavigationMenuItem>
+                <NavigationMenuItem>
+                  <NavigationMenuLink asChild>
+                    <button
+                      onClick={() => scrollToSection(navigationItems[5].id)}
+                      className={cn(
+                        "relative px-4 py-2 text-sm font-medium transition-all duration-300 nav-link-hover",
+                        activeSection === navigationItems[5].id
+                          ? "text-primary nav-link-active"
+                          : "text-gray-700 hover:text-primary"
+                      )}
+                      data-testid={`nav-${navigationItems[5].id}`}
+                    >
+                      {navigationItems[5].label}
+                    </button>
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
               </NavigationMenuList>
             </NavigationMenu>
           </div>
